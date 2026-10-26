@@ -1,0 +1,41 @@
+{
+  "gate": "quartus-sta",
+  "timestamp_utc": "2026-10-26T14:55:14.910774+00:00",
+  "project_dir": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
+  "revision": "top",
+  "clock_filter": "clk_main",
+  "min_setup_slack_ns": 0.0,
+  "min_hold_slack_ns": 0.0,
+  "status": "failed",
+  "map_summary": {
+    "exists": true,
+    "path": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
+    "error_count": 0,
+    "errors": [],
+    "lpm_divide_error_count": 0,
+    "lpm_divide_errors": [],
+    "warning_10268_count": 0,
+    "warning_10268": []
+  },
+  "sta_summary": {
+    "exit_code": 3,
+    "netlist_mode": null,
+    "clocks": [],
+    "wns_setup_ns": null,
+    "wns_hold_ns": null,
+    "failing_setup_count": 0,
+    "failing_hold_count": 0,
+    "setup_paths": [],
+    "hold_paths": [],
+    "stderr_tail": [
+      "------------------------------------------------",
+      "ERROR: Can't run TimeQuest Timing Analyzer (quartus_sta) -- Fitter (quartus_fit) failed or was not run. Run the Fitter (quartus_fit) successfully before running the TimeQuest analyzer (create_timing_netlist).",
+      "",
+      "    while executing",
+      "\"create_timing_netlist\"",
+      "    (file \"vulcan_sta_yqlp95tv.tcl\" line 2)",
+      "------------------------------------------------"
+    ]
+  },
+  "detail": "quartus_sta exited with code 3; No setup timing paths extracted from quartus_sta"
+}

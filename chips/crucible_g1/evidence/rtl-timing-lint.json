@@ -1,0 +1,25 @@
+{
+  "gate": "rtl-timing-lint",
+  "timestamp_utc": "2026-10-26T14:55:56.583364+00:00",
+  "root": "/data/sufeng/crucible-g1-line/workspace/project",
+  "status": "passed",
+  "max_comb_div_width": 0,
+  "rtl_files_checked": 8,
+  "source_sha256": {
+    "rtl/crucible_g1_top.sv": "f797e4e9f1f2efafac52d61a25d51473a676735a2262167224cf0c60da7a2231",
+    "rtl/g1_clipper.sv": "ceec5889645725ca56da9e31e1266ce019b1998b70c0f032b79253336fa1c652",
+    "rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+    "rtl/g1_dot4.sv": "2c1bf3b27cbb9cbf30ea127052b1b78a05ca491d2b9b5b22fbd031e6aebe92f6",
+    "rtl/g1_edge.sv": "6dd27341a45cea6e9cce1132652d337856fa4f46aee881a9786e96962cc2f79c",
+    "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+    "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+    "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1"
+  },
+  "netlist_sha256": {},
+  "rtl_div_mod_hazards": [],
+  "netlist_div_mod_hazards": [],
+  "mixed_assign_hazards": [],
+  "lut_clock_gate_hazards": [],
+  "detail": "Zero combinational divider/modulo, LUT clock-gate, or mixed-assignment hazards detected.",
+  "applicable": true
+}
