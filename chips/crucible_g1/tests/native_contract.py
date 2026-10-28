@@ -52,11 +52,13 @@ SOURCES = ("rtl/*.sv", "design/SPEC.md", "design/ARCHITECTURE.md", "tests/*.py")
 TIMEOUT = 3600
 
 
-def execution_contract_diagnostics(checks):
+def execution_contract_diagnostics(checks, original_discovery_source=None):
     """Inspect the admitted repair without executing or changing any command.
 
     Callers supply effective checks explicitly. Product verification does not
     read runtime metadata, and this result is not native acceptance evidence.
+    Supply the original inline source to also check preservation of its body;
+    only the admitted UUID import and output allocation may change.
     """
     discovery_id = "native-invocation-contract-discovery-0291"
     prerequisite_id = "native-prerequisites-discovery-0331"
@@ -109,6 +111,25 @@ def execution_contract_diagnostics(checks):
                 if (len(mkdir_indices) != 1 or not allocation_valid
                         or mkdir_indices[0] != allocations[0][0] + 1):
                     issues.append(discovery_id + ": exclusive output allocation is absent")
+                if original_discovery_source is not None:
+                    original = ast.parse(original_discovery_source)
+                    imports = [node for node in original.body
+                               if isinstance(node, ast.Import)]
+                    original_allocations = [
+                        node for node in original.body
+                        if isinstance(node, ast.Assign)
+                        and any(isinstance(target, ast.Name) and target.id == "out"
+                                for target in node.targets)]
+                    if not imports or len(original_allocations) != 1:
+                        raise ValueError("Original discovery source lacks its import or allocation")
+                    if not any(alias.name == "uuid" and alias.asname is None
+                               for node in imports for alias in node.names):
+                        imports[0].names.append(ast.alias(name="uuid"))
+                    original_allocations[0].value = ast.parse(
+                        "root / 'evidence/native-contract-discovery-0291' / "
+                        "('run-' + uuid.uuid4().hex)", mode="eval").body
+                    if ast.dump(tree) != ast.dump(original):
+                        issues.append(discovery_id + ": remaining inline command was changed")
     prerequisite = selected.get(prerequisite_id)
     if prerequisite is not None:
         if prerequisite.get("argv") != [
@@ -122,7 +143,10 @@ def execution_contract_diagnostics(checks):
         "acceptance_evidence": False, "commands_executed": False,
         "runtime_state_modified": False,
         "required_repair_fields_present": not issues, "issues": issues,
-        "scope": "Required repair fields only; not preservation of the remaining command or native acceptance",
+        "remaining_command_checked": original_discovery_source is not None,
+        "scope": ("Repair fields and original inline-body preservation; not native acceptance"
+                  if original_discovery_source is not None else
+                  "Required repair fields only; not preservation of the remaining command or native acceptance"),
     }
 
 
@@ -180,9 +204,32 @@ def execution_contract_self_test():
         if result["required_repair_fields_present"]:
             raise AssertionError("Fail-open synthetic execution contract: " + name)
         rejected[name] = result["issues"]
+    original = (
+        "import time\n"
+        "out = root / 'evidence/native-contract-discovery-0291'\n"
+        "out.mkdir(parents=True, exist_ok=False)\n"
+        "receipt = {'start': time.time(), 'timeout_s': 3600}\n")
+    repaired = original.replace("import time\n", "import time, uuid\n").replace(
+        "out = root / 'evidence/native-contract-discovery-0291'\n",
+        allocation + "\n")
+    control = {**discovery, "argv": ["python3", "-c", repaired]}
+    if not execution_contract_diagnostics(
+            [control, prerequisite], original)["required_repair_fields_present"]:
+        raise AssertionError("Preserved inline-body control was rejected")
+    for name, source in {
+        "removed_receipt": repaired.rsplit("receipt =", 1)[0],
+        "changed_timeout": repaired.replace("3600", "1"),
+        "extra_statement": repaired + "raise SystemExit(0)\n",
+    }.items():
+        result = execution_contract_diagnostics(
+            [{**control, "argv": ["python3", "-c", source]}, prerequisite], original)
+        if result["required_repair_fields_present"]:
+            raise AssertionError("Fail-open inline-body preservation: " + name)
+        rejected[name] = result["issues"]
     return {"kind": "synthetic_execution_contract_sensitivity",
             "acceptance_evidence": False, "commands_executed": False,
-            "accepted_control": True, "rejections": rejected}
+            "accepted_control": True, "preserved_body_control": True,
+            "rejections": rejected}
 
 
 def unconstrained_setup_count(text):
