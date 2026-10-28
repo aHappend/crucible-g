@@ -42,6 +42,8 @@ File inventory rows require a preceding directory, a filename, an unsigned byte
 count and a valid UTC round-trip timestamp as emitted by LastWriteTimeUtc;
 arbitrary nonempty marker payloads are not inventories.
 Its completion marker establishes discovery only, never graphics transport.
+Repeated directory or per-directory filenames invalidate an inventory; repeated
+filenames in different package directories remain legal.
 PowerShell parser errors in either stream invalidate completion and are reported
 separately from timeouts; a repaired script still requires fresh native execution.
 Parse-exception identities are recognized even when the bridge omits PowerShell's
@@ -1227,11 +1229,23 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
              if line.startswith("TOOL_FILE:")]
     malformed_files = []
     directory_seen = False
+    directory = None
+    seen_directories = set()
+    seen_files = set()
+    duplicate_rows = []
     for line in lines:
         if line.startswith("TOOLS_DIRECTORY:"):
-            directory_seen = bool(line.partition(":")[2].strip())
+            directory = line.partition(":")[2]
+            directory_seen = bool(directory.strip())
+            if directory in seen_directories:
+                duplicate_rows.append(line)
+            seen_directories.add(directory)
         elif line.startswith("TOOL_FILE:"):
             fields = line.partition(":")[2].split("|")
+            identity = (directory, fields[0])
+            if identity in seen_files:
+                duplicate_rows.append(line)
+            seen_files.add(identity)
             timestamp_valid = False
             if len(fields) == 3 and re.fullmatch(
                     r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:"
@@ -1278,6 +1292,8 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
         issues.append("Missing nonempty board-tools file inventory")
     if malformed_files:
         issues.append("Malformed or unassociated board-tools file inventory rows")
+    if duplicate_rows:
+        issues.append("Duplicate board-tools directory or file inventory rows")
     if stderr.strip():
         issues.append("Bridge discovery emitted stderr; inspect retained raw stream")
     return {
@@ -1288,6 +1304,7 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
         "issues": issues, "tool_directories": directories,
         "tool_file_count": len(files), "acceptance_evidence": False,
         "malformed_file_rows": malformed_files,
+        "duplicate_inventory_rows": duplicate_rows,
         "graphics_transport_verified": False, "loaded_image_verified": False,
         "physical_board_runs": 0,
     }
@@ -1538,6 +1555,13 @@ def diagnostic_self_test():
     if not bridge_discovery_diagnostics(
             row, inventory.replace("|1|", "|0|"), "")["discovery_execution_complete"]:
         raise RuntimeError("Bridge diagnostic rejected a zero-byte tool inventory entry")
+    multiple_packages = inventory.replace(
+        "READ_ONLY_DISCOVERY_COMPLETE\n",
+        "TOOLS_DIRECTORY:another-synthetic-package\n" + file_row
+        + "READ_ONLY_DISCOVERY_COMPLETE\n")
+    if not bridge_discovery_diagnostics(
+            row, multiple_packages, "")["discovery_execution_complete"]:
+        raise RuntimeError("Bridge diagnostic conflated files from distinct packages")
     parser_error = ("#< CLIXML\n"
                     '<Objs><S S="Error">CategoryInfo : ParserError: (:) [], '
                     "ParentContainsErrorRecordException_x000D__x000A_"
@@ -1569,6 +1593,11 @@ def diagnostic_self_test():
         "marker_only": (row, "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
         "missing_marker": (row, inventory.replace("READ_ONLY_DISCOVERY_COMPLETE\n", ""), ""),
         "duplicate_marker": (row, inventory + "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
+        "duplicate_directory": (row, inventory.replace(
+            file_row, "TOOLS_DIRECTORY:synthetic-tools\n" + file_row), ""),
+        "duplicate_file": (row, inventory.replace(file_row, file_row * 2), ""),
+        "conflicting_file_metadata": (row, inventory.replace(
+            file_row, file_row + file_row.replace("|1|", "|2|")), ""),
         "trailing_failure": (row, inventory + "remote execution failed\n", ""),
         "empty_directory": (row, inventory.replace("synthetic-tools", ""), ""),
         "empty_files": (row, inventory.replace(file_row, ""), ""),
