@@ -38,6 +38,8 @@ count and a timestamp; arbitrary nonempty marker payloads are not inventories.
 Its completion marker establishes discovery only, never graphics transport.
 PowerShell parser errors in either stream invalidate completion and are reported
 separately from timeouts; a repaired script still requires fresh native execution.
+Bridge diagnostics retain exit/timeout facts and independent execution-failure
+categories; a parser failure must not be diagnosed as unavailable hardware.
 Clock period and both setup/hold slacks are checked separately from query
 success. Meeting those numerical limits never overrides incomplete coverage.
 The queried project must name the exact required device and top-level entity.
@@ -1072,6 +1074,15 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
                 malformed_files.append(line)
     parser_error = any(re.search(r"\bParserError\b", stream) is not None
                        for stream in (stdout, stderr))
+    execution_failures = []
+    if row["timed_out"]:
+        execution_failures.append("timeout")
+    if row["exit_code"] is None:
+        execution_failures.append("missing_exit_status")
+    elif row["exit_code"] != 0:
+        execution_failures.append("nonzero_exit")
+    if parser_error:
+        execution_failures.append("powershell_parser_error")
     issues = []
     if row["exit_code"] != 0 or row["timed_out"]:
         issues.append("Bridge discovery command did not complete successfully")
@@ -1092,6 +1103,8 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
     return {
         "discovery_execution_complete": not issues,
         "powershell_parser_error_reported": parser_error,
+        "tool_exit_code": row["exit_code"], "timed_out": row["timed_out"],
+        "execution_failures": execution_failures,
         "issues": issues, "tool_directories": directories,
         "tool_file_count": len(files), "acceptance_evidence": False,
         "malformed_file_rows": malformed_files,
@@ -1333,7 +1346,10 @@ def diagnostic_self_test():
                  "READ_ONLY_DISCOVERY_COMPLETE\n")
     bridge_control = bridge_discovery_diagnostics(row, inventory, "")
     if (not bridge_control["discovery_execution_complete"]
-            or bridge_control["powershell_parser_error_reported"]):
+            or bridge_control["powershell_parser_error_reported"]
+            or bridge_control["execution_failures"]
+            or bridge_control["tool_exit_code"] != 0
+            or bridge_control["timed_out"]):
         raise RuntimeError("Bridge diagnostic rejected its synthetic inventory")
     if not bridge_discovery_diagnostics(
             row, inventory.replace("|1|", "|0|"), "")["discovery_execution_complete"]:
@@ -1378,6 +1394,25 @@ def diagnostic_self_test():
         if bridge_discovery_diagnostics(status, stdout, stderr)[
                 "discovery_execution_complete"]:
             raise RuntimeError("Fail-open synthetic bridge discovery: " + name)
+    outcome_controls = {}
+    for name, status, stdout, stderr, expected in (
+        ("parser_exit_not_timeout", {**row, "exit_code": 1}, "", parser_error,
+         ["nonzero_exit", "powershell_parser_error"]),
+        ("timeout_without_exit", {**row, "exit_code": None, "timed_out": True},
+         "", "", ["timeout", "missing_exit_status"]),
+        ("nonzero_without_parser", {**row, "exit_code": 1}, inventory, "",
+         ["nonzero_exit"]),
+        ("missing_exit", {**row, "exit_code": None}, inventory, "",
+         ["missing_exit_status"]),
+        ("incomplete_inventory_exit_zero", row, "", "", []),
+    ):
+        diagnostic = bridge_discovery_diagnostics(status, stdout, stderr)
+        if (diagnostic["discovery_execution_complete"]
+                or diagnostic["execution_failures"] != expected
+                or diagnostic["tool_exit_code"] != status["exit_code"]
+                or diagnostic["timed_out"] != status["timed_out"]):
+            raise RuntimeError("Bridge failure classification lost facts: " + name)
+        outcome_controls[name] = diagnostic
     return {
         "kind": "synthetic_native_prerequisite_diagnostic_sensitivity",
         "acceptance_evidence": False, "native_gate_executed": False,
@@ -1397,6 +1432,7 @@ def diagnostic_self_test():
         "local_binding_rejections": sorted(bindings),
         "bridge_discovery_rejections": sorted(bridge_variants),
         "bridge_parser_error_rejections": sorted(parser_controls),
+        "bridge_execution_outcome_controls": outcome_controls,
     }
 
 
