@@ -43,6 +43,8 @@ count and a timestamp; arbitrary nonempty marker payloads are not inventories.
 Its completion marker establishes discovery only, never graphics transport.
 PowerShell parser errors in either stream invalidate completion and are reported
 separately from timeouts; a repaired script still requires fresh native execution.
+Parse-exception identities are recognized even when the bridge omits PowerShell's
+CategoryInfo line; generic remote failures remain distinct from parser failures.
 Bridge diagnostics retain exit/timeout facts and independent execution-failure
 categories; a parser failure must not be diagnosed as unavailable hardware.
 Clock period and both setup/hold slacks are checked separately from query
@@ -1077,8 +1079,14 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
                     or re.fullmatch(r"[0-9]+", fields[1]) is None
                     or not fields[2].strip()):
                 malformed_files.append(line)
-    parser_error = any(re.search(r"\bParserError\b", stream) is not None
-                       for stream in (stdout, stderr))
+    parser_error = any(
+        re.search(r"\bParserError\b|\bParseException\b", stream) is not None
+        or re.search(
+            r"\bFullyQualifiedErrorId\s*:\s*"
+            r"(?:MissingEndParenthesisInExpression|UnexpectedToken|"
+            r"MissingEndCurlyBrace|TerminatorExpectedAtEndOfString)\b",
+            stream) is not None
+        for stream in (stdout, stderr))
     execution_failures = []
     if row["timed_out"]:
         execution_failures.append("timeout")
@@ -1368,6 +1376,17 @@ def diagnostic_self_test():
         "clixml_parser_error": (row, inventory, parser_error),
         "stdout_parser_error_with_completion": (row, parser_error + inventory, ""),
         "failed_parser_command": ({**row, "exit_code": 1}, "", parser_error),
+        "parse_exception_without_category": (
+            row, inventory, "System.Management.Automation.ParseException\n"),
+        "missing_parenthesis_identity_without_category": (
+            row, inventory,
+            "FullyQualifiedErrorId : MissingEndParenthesisInExpression\n"),
+        "unexpected_token_identity_without_category": (
+            row, inventory, "FullyQualifiedErrorId : UnexpectedToken\n"),
+        "missing_brace_identity_without_category": (
+            row, inventory, "FullyQualifiedErrorId : MissingEndCurlyBrace\n"),
+        "missing_terminator_identity_without_category": (
+            row, inventory, "FullyQualifiedErrorId : TerminatorExpectedAtEndOfString\n"),
     }
     for name, (status, stdout, stderr) in parser_controls.items():
         diagnostic = bridge_discovery_diagnostics(status, stdout, stderr)
@@ -1406,6 +1425,11 @@ def diagnostic_self_test():
         ("timeout_without_exit", {**row, "exit_code": None, "timed_out": True},
          "", "", ["timeout", "missing_exit_status"]),
         ("nonzero_without_parser", {**row, "exit_code": 1}, inventory, "",
+         ["nonzero_exit"]),
+        ("remote_runtime_error_not_parser", {**row, "exit_code": 1}, inventory,
+         "FullyQualifiedErrorId : CommandNotFoundException\n", ["nonzero_exit"]),
+        ("incomplete_parser_identity_not_parser", {**row, "exit_code": 1}, inventory,
+         "FullyQualifiedErrorId : MissingEndParenthesisInExpressionSuffix\n",
          ["nonzero_exit"]),
         ("missing_exit", {**row, "exit_code": None}, inventory, "",
          ["missing_exit_status"]),
