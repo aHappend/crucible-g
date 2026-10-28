@@ -34,6 +34,7 @@ that a native coverage query succeeded.
 """
 
 import argparse
+import ast
 import base64
 import hashlib
 import json
@@ -49,6 +50,139 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ("rtl/*.sv", "design/SPEC.md", "design/ARCHITECTURE.md", "tests/*.py")
 TIMEOUT = 3600
+
+
+def execution_contract_diagnostics(checks):
+    """Inspect the admitted repair without executing or changing any command.
+
+    Callers supply effective checks explicitly. Product verification does not
+    read runtime metadata, and this result is not native acceptance evidence.
+    """
+    discovery_id = "native-invocation-contract-discovery-0291"
+    prerequisite_id = "native-prerequisites-discovery-0331"
+    issues = []
+    selected = {}
+    for identifier in (discovery_id, prerequisite_id):
+        matches = [check for check in checks if check.get("id") == identifier]
+        if len(matches) != 1:
+            issues.append(f"{identifier}: expected exactly one effective check; found {len(matches)}")
+        else:
+            selected[identifier] = matches[0]
+    discovery = selected.get(discovery_id)
+    if discovery is not None:
+        if discovery.get("outputs") != ["evidence/native-contract-discovery-0291/run-*/"]:
+            issues.append(discovery_id + ": fresh-run output selector is absent")
+        argv = discovery.get("argv")
+        if (not isinstance(argv, list) or len(argv) != 3
+                or argv[:2] != ["python3", "-c"] or not isinstance(argv[2], str)):
+            issues.append(discovery_id + ": expected the preserved inline Python command")
+        else:
+            try:
+                tree = ast.parse(argv[2])
+            except SyntaxError:
+                issues.append(discovery_id + ": inline Python is not syntactically valid")
+            else:
+                uuid_imports = [
+                    index for index, node in enumerate(tree.body)
+                    if isinstance(node, ast.Import)
+                    and any(alias.name == "uuid" and alias.asname is None
+                            for alias in node.names)]
+                expected = ast.dump(ast.parse(
+                    "root / 'evidence/native-contract-discovery-0291' / "
+                    "('run-' + uuid.uuid4().hex)", mode="eval").body)
+                allocations = [
+                    (index, node.value) for index, node in enumerate(tree.body)
+                    if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == "out"
+                            for target in node.targets)]
+                allocation_valid = (
+                    len(allocations) == 1
+                    and ast.dump(allocations[0][1]) == expected
+                    and any(index < allocations[0][0] for index in uuid_imports))
+                if not allocation_valid:
+                    issues.append(discovery_id + ": admitted UUID child allocation is absent")
+                mkdir = ast.dump(ast.parse(
+                    "out.mkdir(parents=True, exist_ok=False)", mode="eval").body)
+                mkdir_indices = [
+                    index for index, node in enumerate(tree.body)
+                    if isinstance(node, ast.Expr) and ast.dump(node.value) == mkdir]
+                if (len(mkdir_indices) != 1 or not allocation_valid
+                        or mkdir_indices[0] != allocations[0][0] + 1):
+                    issues.append(discovery_id + ": exclusive output allocation is absent")
+    prerequisite = selected.get(prerequisite_id)
+    if prerequisite is not None:
+        if prerequisite.get("argv") != [
+                "python3", "tests/native_prerequisites.py", "--fit-dir",
+                ".vulcan/engineering/run-0001/quartus_sta_work", "--revision", "top"]:
+            issues.append(prerequisite_id + ": admitted prerequisite argv is absent")
+        if prerequisite.get("outputs") != ["evidence/native-prerequisites/run-*/"]:
+            issues.append(prerequisite_id + ": prerequisite output selector is absent")
+    return {
+        "kind": "read_only_execution_contract_diagnostic",
+        "acceptance_evidence": False, "commands_executed": False,
+        "runtime_state_modified": False,
+        "required_repair_fields_present": not issues, "issues": issues,
+        "scope": "Required repair fields only; not preservation of the remaining command or native acceptance",
+    }
+
+
+def execution_contract_self_test():
+    discovery = {
+        "id": "native-invocation-contract-discovery-0291",
+        "argv": ["python3", "-c",
+                 "import uuid\n"
+                 "out = root / 'evidence/native-contract-discovery-0291' / "
+                 "('run-' + uuid.uuid4().hex)\n"
+                 "out.mkdir(parents=True, exist_ok=False)\n"],
+        "outputs": ["evidence/native-contract-discovery-0291/run-*/"],
+    }
+    prerequisite = {
+        "id": "native-prerequisites-discovery-0331",
+        "argv": ["python3", "tests/native_prerequisites.py", "--fit-dir",
+                 ".vulcan/engineering/run-0001/quartus_sta_work", "--revision", "top"],
+        "outputs": ["evidence/native-prerequisites/run-*/"],
+    }
+    if not execution_contract_diagnostics([discovery, prerequisite])[
+            "required_repair_fields_present"]:
+        raise AssertionError("Synthetic repaired-contract control was rejected")
+    variants = {
+        "missing_prerequisite": [discovery],
+        "duplicate_discovery": [discovery, discovery, prerequisite],
+        "occupied_allocation": [
+            {**discovery, "argv": ["python3", "-c",
+                                  "out = root / 'evidence/native-contract-discovery-0291'\n"
+                                  "out.mkdir(parents=True, exist_ok=False)\n"]}, prerequisite],
+        "old_selector": [{**discovery, "outputs": ["evidence/native-contract-discovery-0291/"]},
+                         prerequisite],
+        "nonexclusive": [
+            {**discovery, "argv": [*discovery["argv"][:2],
+                                  discovery["argv"][2].replace("exist_ok=False", "exist_ok=True")]},
+            prerequisite],
+        "syntax_failure": [{**discovery, "argv": ["python3", "-c", "("]}, prerequisite],
+        "substitute": [{**discovery, "argv": ["python3", "tests/native_contract.py"]}, prerequisite],
+        "wrong_prerequisite": [discovery, {**prerequisite, "argv": ["python3", "--version"]}],
+        "missing_prerequisite_outputs": [discovery, {**prerequisite, "outputs": []}],
+    }
+    script = discovery["argv"][2]
+    allocation, mkdir = script.splitlines()[1:]
+    for name, source in {
+        "dead_allocation": "import uuid\nif False:\n    " + allocation
+                           + "\n" + mkdir + "\n",
+        "dead_mkdir": "import uuid\n" + allocation + "\nif False:\n    " + mkdir + "\n",
+        "premature_mkdir": "import uuid\n" + mkdir + "\n" + allocation + "\n",
+        "late_uuid_import": allocation + "\n" + mkdir + "\nimport uuid\n",
+    }.items():
+        variants[name] = [
+            {**discovery, "argv": ["python3", "-c", source]}, prerequisite]
+    rejected = {}
+    for name, checks in variants.items():
+        result = execution_contract_diagnostics(checks)
+        if result["required_repair_fields_present"]:
+            raise AssertionError("Fail-open synthetic execution contract: " + name)
+        rejected[name] = result["issues"]
+    return {"kind": "synthetic_execution_contract_sensitivity",
+            "acceptance_evidence": False, "commands_executed": False,
+            "accepted_control": True, "rejections": rejected}
 
 
 def unconstrained_setup_count(text):

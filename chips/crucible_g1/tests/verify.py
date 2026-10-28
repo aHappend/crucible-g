@@ -24,7 +24,9 @@ import uuid
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from reference import Q, edge, model  # noqa: E402
-from native_contract import coverage_marker_self_test  # noqa: E402
+from native_contract import (  # noqa: E402
+    coverage_marker_self_test, execution_contract_self_test,
+)
 from native_prerequisites import (  # noqa: E402
     coverage_report_self_test, diagnostic_self_test, report_parser_self_test,
     timing_observation_self_test,
@@ -744,6 +746,7 @@ def main():
             shutil.copy2(ROOT / path, target)
         write_json(output / "transfer-checker-sensitivity.json", transfer_self_test())
         write_json(output / "coverage-marker-sensitivity.json", coverage_marker_self_test())
+        write_json(output / "execution-contract-sensitivity.json", execution_contract_self_test())
         write_json(output / "diagnostic-sensitivity.json", diagnostic_self_test())
         write_json(output / "timing-observation-sensitivity.json",
                    timing_observation_self_test())
