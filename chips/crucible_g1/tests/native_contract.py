@@ -27,6 +27,8 @@ other mandatory check and all discovery fields outside the admitted repair.
 Matching repaired fields alone does not establish that checks were preserved.
 The original check list supplies the authoritative inline body automatically;
 a conflicting separately supplied original body is an invalid diagnostic input.
+An absent effective list is reported as unavailable evidence, never inferred
+from the other list or treated as an empty, confirmed runtime contract.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -70,6 +72,9 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
     discovery_id = "native-invocation-contract-discovery-0291"
     prerequisite_id = "native-prerequisites-discovery-0331"
     issues = []
+    if checks is None:
+        issues.append("Effective check list is unavailable; contract confirmation is incomplete")
+        checks = []
     selected = {}
     for identifier in (discovery_id, prerequisite_id):
         matches = [check for check in checks if check.get("id") == identifier]
@@ -190,6 +195,8 @@ def effective_contract_diagnostics(config_checks, execution_checks,
         discovery_id = "native-invocation-contract-discovery-0291"
         prerequisite_id = "native-prerequisites-discovery-0331"
         for name, checks in (("config", config_checks), ("execution", execution_checks)):
+            if checks is None:
+                continue
             for original in original_checks:
                 identifier = original["id"]
                 matches = [check for check in checks if check.get("id") == identifier]
@@ -305,6 +312,9 @@ def execution_contract_self_test():
         "config_only_repaired": (effective, unrepaired),
         "execution_only_repaired": (unrepaired, effective),
         "missing_from_both": ([], []),
+        "config_list_unavailable": (None, effective),
+        "execution_list_unavailable": (effective, None),
+        "both_lists_unavailable": (None, None),
         "divergent_effective_lists": (
             effective, [*effective, {"id": "unexpected-check", "argv": ["python3"]}]),
     }.items():
@@ -353,6 +363,17 @@ def execution_contract_self_test():
             raise AssertionError("Fail-open mandatory-check preservation: " + name)
         preservation_rejections[name] = result["issues"]
     baseline_rejections = {}
+    for name, config_checks, execution_checks in (
+        ("config_list_unavailable", None, preserved),
+        ("execution_list_unavailable", preserved, None),
+        ("both_lists_unavailable", None, None),
+    ):
+        result = effective_contract_diagnostics(
+            config_checks, execution_checks, original_checks=baseline)
+        if (result["required_repair_fields_present"]
+                or not any("unavailable" in issue for issue in result["issues"])):
+            raise AssertionError("Unavailable effective contract was inferred: " + name)
+        preservation_rejections[name] = result["issues"]
     for name, source, checks in (
         ("conflicting_original_source", repaired, baseline),
         ("missing_original_discovery", None, [portable]),
