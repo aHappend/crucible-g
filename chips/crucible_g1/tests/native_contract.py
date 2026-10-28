@@ -25,6 +25,8 @@ one-sided repairs or divergent lists. It never loads runtime metadata itself.
 When supplied the original check list, it also verifies preservation of every
 other mandatory check and all discovery fields outside the admitted repair.
 Matching repaired fields alone does not establish that checks were preserved.
+Preservation includes the original check order; supplemental checks cannot
+reorder earlier mandatory checks.
 The original check list supplies the authoritative inline body automatically;
 a conflicting separately supplied original body is an invalid diagnostic input.
 An absent effective list is reported as unavailable evidence, never inferred
@@ -197,6 +199,11 @@ def effective_contract_diagnostics(config_checks, execution_checks,
         for name, checks in (("config", config_checks), ("execution", execution_checks)):
             if checks is None:
                 continue
+            original_ids = [check["id"] for check in original_checks]
+            retained_order = [check.get("id") for check in checks
+                              if check.get("id") in original_ids]
+            if retained_order != original_ids:
+                issues.append(f"{name}: original mandatory-check order was changed")
             for original in original_checks:
                 identifier = original["id"]
                 matches = [check for check in checks if check.get("id") == identifier]
@@ -343,6 +350,7 @@ def execution_contract_self_test():
     preservation_rejections = {}
     for name, checks in {
         "removed_portable_l1": effective,
+        "reordered_original_checks": [control, portable, prerequisite],
         "duplicate_portable_l1": [portable, *preserved],
         "replaced_portable_argv": [
             {**portable, "argv": ["python3", "--version"]}, *effective],
