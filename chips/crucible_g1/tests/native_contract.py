@@ -1,0 +1,240 @@
+#!/usr/bin/env python3
+"""Discover native CLI syntax, not timing or hardware acceptance.
+
+Run from the product root with ``python3 tests/native_contract.py`` after
+independent admission as an additional check. Each run preserves fresh files
+and emits their exact bytes in a stdout capsule. The latter lets the shared
+runtime diagnose output-retention discrepancies without reconstructing an
+earlier execution. Historical missing evidence remains missing.
+Each new receipt also retains the native CLI version before its command help;
+help syntax alone does not identify the tool that produced it.
+
+For the invocation-discovery check's independently reviewed command repair, use
+``python3 tests/native_contract.py --invocation-discovery`` and select outputs
+``evidence/native-contract-discovery-0291/run-*/``. This allocates exclusive
+children without overwriting the earlier fixed-directory receipt or logs.
+The default retention-capsule command and output namespace are unchanged.
+Changing the admitted command/output selector remains a shared-runtime action;
+this entry point does not modify the execution contract or certify native gates.
+
+The independent coverage-marker guard and its synthetic regression are also
+used by portable L1. They do not execute STA, repair the native parser, or prove
+that a native coverage query succeeded.
+"""
+
+import argparse
+import base64
+import hashlib
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import time
+import uuid
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCES = ("rtl/*.sv", "design/SPEC.md", "design/ARCHITECTURE.md", "tests/*.py")
+TIMEOUT = 3600
+
+
+def unconstrained_setup_count(text):
+    """Parse one explicit native marker; absent/ambiguous evidence is not zero.
+
+    A parsed zero alone is not timing acceptance: the producer must separately
+    establish a successful coverage query and complete synchronous-path scope.
+    """
+    marker = "UNCONSTRAINED_SETUP_PATHS"
+    lines = [line.strip() for line in text.splitlines() if marker in line]
+    if len(lines) != 1:
+        raise ValueError("Expected exactly one unconstrained setup-path marker")
+    match = re.fullmatch(marker + r":([0-9]+)", lines[0])
+    if match is None:
+        raise ValueError("Malformed unconstrained setup-path count")
+    return int(match.group(1))
+
+
+def require_zero_unconstrained_setup(text):
+    count = unconstrained_setup_count(text)
+    if count != 0:
+        raise ValueError(f"Unconstrained setup paths remain: {count}")
+    return count
+
+
+def coverage_marker_self_test():
+    """Synthetic evidence-validation sensitivity, never a native-gate result."""
+    valid = {
+        "explicit_zero": "UNCONSTRAINED_SETUP_PATHS:0\n",
+        "surrounding_output": "Info: TimeQuest\nUNCONSTRAINED_SETUP_PATHS:0\nInfo: done\n",
+    }
+    rejected = {
+        "missing": "",
+        "slack_only": "Setup WNS = 0.280 ns\nHold WNS = 0.039 ns\n",
+        "malformed": "UNCONSTRAINED_SETUP_PATHS:not-a-count\n",
+        "empty_count": "UNCONSTRAINED_SETUP_PATHS:\n",
+        "negative": "UNCONSTRAINED_SETUP_PATHS:-1\n",
+        "fractional": "UNCONSTRAINED_SETUP_PATHS:0.0\n",
+        "unknown": "UNCONSTRAINED_SETUP_PATHS:x\n",
+        "non_ascii_digit": "UNCONSTRAINED_SETUP_PATHS:\u0660\n",
+        "trailing_text": "UNCONSTRAINED_SETUP_PATHS:0 query failed\n",
+        "prefixed_text": "ERROR: UNCONSTRAINED_SETUP_PATHS:0\n",
+        "duplicate_zero": "UNCONSTRAINED_SETUP_PATHS:0\n" * 2,
+        "conflicting_counts": "UNCONSTRAINED_SETUP_PATHS:0\nUNCONSTRAINED_SETUP_PATHS:1\n",
+        "malformed_then_zero": "UNCONSTRAINED_SETUP_PATHS:bad\nUNCONSTRAINED_SETUP_PATHS:0\n",
+        "nonzero": "UNCONSTRAINED_SETUP_PATHS:1\n",
+        "nonzero_many": "UNCONSTRAINED_SETUP_PATHS:20\n",
+    }
+    accepted = {name: require_zero_unconstrained_setup(text)
+                for name, text in valid.items()}
+    if accepted != dict.fromkeys(valid, 0):
+        raise AssertionError("Explicit-zero coverage-marker control failed")
+    for count in (1, 20):
+        if unconstrained_setup_count(f"UNCONSTRAINED_SETUP_PATHS:{count}\n") != count:
+            raise AssertionError("Nonzero coverage count was lost")
+    reasons = {}
+    for name, text in rejected.items():
+        try:
+            require_zero_unconstrained_setup(text)
+        except ValueError as error:
+            reasons[name] = str(error)
+        else:
+            raise AssertionError("Fail-open coverage-marker fixture: " + name)
+    return {
+        "kind": "synthetic_coverage_marker_sensitivity",
+        "acceptance_evidence": False, "native_gate_executed": False,
+        "runtime_parser_repaired": False,
+        "scope": "Marker syntax and zero-count rejection only; not query-success or timing proof",
+        "accepted_controls": accepted, "rejections": reasons,
+        "fixtures": {"accepted": valid, "rejected": rejected},
+    }
+
+
+def save(path, value):
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+    if json.loads(path.read_text()) != value:
+        raise RuntimeError("Receipt read-back mismatch")
+
+
+def capture(root, output, name, argv, receipt):
+    row = {
+        "name": name, "argv": argv, "cwd": ".", "start": time.time(),
+        "timeout_s": TIMEOUT, "exit_code": None, "timed_out": False,
+        "stdout": (output / (name + ".stdout")).relative_to(root).as_posix(),
+        "stderr": (output / (name + ".stderr")).relative_to(root).as_posix(),
+    }
+    receipt["commands"].append(row)
+    save(output / "receipt.json", receipt)
+    try:
+        with (root / row["stdout"]).open("xb") as stdout, (
+                root / row["stderr"]).open("xb") as stderr:
+            result = subprocess.run(argv, cwd=root, stdout=stdout, stderr=stderr,
+                                    timeout=TIMEOUT, check=False)
+            row["exit_code"] = result.returncode
+    except subprocess.TimeoutExpired:
+        row["timed_out"] = True
+        raise
+    finally:
+        row["end"] = time.time()
+        save(output / "receipt.json", receipt)
+    if row["exit_code"] != 0:
+        raise RuntimeError(name + " command failed; inspect retained raw streams")
+    if not any((root / row[stream]).stat().st_size
+               for stream in ("stdout", "stderr")):
+        raise RuntimeError(name + " returned empty command output")
+
+
+def capture_version(root, output, receipt):
+    """Bind this invocation's help output to its actual native CLI version."""
+    capture(root, output, "vulcan-version", ["vulcan", "--version"], receipt)
+    row = receipt["commands"][-1]
+    receipt["tool_versions"] = {
+        "python3": {"version": sys.version},
+        "vulcan": {key: row[key] for key in ("argv", "stdout", "stderr", "exit_code")},
+    }
+    save(output / "receipt.json", receipt)
+
+
+def emit_capsule(root, output, receipt):
+    """Include actual retained bytes, never replacement historical evidence."""
+    files = {}
+    for row in receipt["commands"]:
+        for stream in ("stdout", "stderr"):
+            path = root / row[stream]
+            if not path.is_file():
+                raise RuntimeError("Missing new execution stream: " + row[stream])
+            data = path.read_bytes()
+            files[row[stream]] = {
+                "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+                "base64": base64.b64encode(data).decode("ascii"),
+            }
+    receipt["retained_files"] = {
+        name: {key: value for key, value in item.items() if key != "base64"}
+        for name, item in files.items()
+    }
+    save(output / "receipt.json", receipt)
+    data = (output / "receipt.json").read_bytes()
+    files[(output / "receipt.json").relative_to(root).as_posix()] = {
+        "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+        "base64": base64.b64encode(data).decode("ascii"),
+    }
+    print(json.dumps({
+        "kind": "native-invocation-discovery-capsule", "schema": 1,
+        "acceptance_evidence": False, "historical_evidence_reconstructed": False,
+        "files": files,
+    }, sort_keys=True), flush=True)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Retain native invocation help, not acceptance.")
+    parser.add_argument(
+        "--invocation-discovery", action="store_true",
+        help="Use fresh children of the historical invocation-discovery directory.")
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    options = parser.parse_args(arguments)
+    namespace = ("native-contract-discovery-0291" if options.invocation_discovery
+                 else "native-contract")
+    output = ROOT / "evidence" / namespace / ("run-" + uuid.uuid4().hex)
+    output.mkdir(parents=True, exist_ok=False)
+    receipt = {
+        "kind": "native-invocation-contract-discovery",
+        "acceptance_evidence": False, "historical_evidence_reconstructed": False,
+        "argv": ["python3", "tests/native_contract.py", *arguments], "cwd": ".",
+        "start": time.time(), "end": None, "exit_code": None,
+        "python_version": sys.version, "commands": [], "source_sha256": {},
+        "status": "running",
+    }
+    save(output / "receipt.json", receipt)
+    try:
+        for selector in SOURCES:
+            paths = sorted(ROOT.glob(selector))
+            if not paths:
+                raise RuntimeError("Source selector has no inputs: " + selector)
+            for path in paths:
+                receipt["source_sha256"][path.relative_to(ROOT).as_posix()] = (
+                    hashlib.sha256(path.read_bytes()).hexdigest())
+        save(output / "receipt.json", receipt)
+        if shutil.which("vulcan") is None:
+            raise RuntimeError("Missing prerequisite executable: vulcan")
+        capture_version(ROOT, output, receipt)
+        for name in ("quartus-sta", "board-hil"):
+            capture(ROOT, output, name,
+                    ["vulcan", "hardware", "fpga", name, "--help"], receipt)
+        receipt["status"] = "invocation_help_retained_not_native_acceptance"
+        receipt["exit_code"] = 0
+    except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
+        receipt["status"] = "failed"
+        receipt["exit_code"] = 1
+        receipt["error"] = type(error).__name__ + ": " + str(error)
+        print(receipt["error"], file=sys.stderr, flush=True)
+    finally:
+        receipt["end"] = time.time()
+        save(output / "receipt.json", receipt)
+        emit_capsule(ROOT, output, receipt)
+        print((output / "receipt.json").relative_to(ROOT).as_posix(), flush=True)
+    return receipt["exit_code"]
+
+
+if __name__ == "__main__":
+    sys.exit(main())
