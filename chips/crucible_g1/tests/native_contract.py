@@ -22,6 +22,9 @@ native-prerequisites-discovery-0331 with the admitted command
 execution; another passing diagnostic or unchanged L1 run cannot repair them.
 The paired diagnostic accepts both effective check lists explicitly and rejects
 one-sided repairs or divergent lists. It never loads runtime metadata itself.
+When supplied the original check list, it also verifies preservation of every
+other mandatory check and all discovery fields outside the admitted repair.
+Matching repaired fields alone does not establish that checks were preserved.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -153,8 +156,9 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
 
 
 def effective_contract_diagnostics(config_checks, execution_checks,
-                                   original_discovery_source=None):
-    """Require the admitted repair in both caller-supplied effective contracts."""
+                                   original_discovery_source=None,
+                                   original_checks=None):
+    """Inspect repair and optional baseline preservation without changing state."""
     diagnostics = {
         "config": execution_contract_diagnostics(
             config_checks, original_discovery_source),
@@ -166,12 +170,32 @@ def effective_contract_diagnostics(config_checks, execution_checks,
         for name, result in diagnostics.items() for issue in result["issues"]]
     if config_checks != execution_checks:
         issues.append("Config and execution effective check lists differ")
+    if original_checks is not None:
+        discovery_id = "native-invocation-contract-discovery-0291"
+        prerequisite_id = "native-prerequisites-discovery-0331"
+        for name, checks in (("config", config_checks), ("execution", execution_checks)):
+            for original in original_checks:
+                identifier = original["id"]
+                matches = [check for check in checks if check.get("id") == identifier]
+                if len(matches) != 1:
+                    issues.append(
+                        f"{name}: original check {identifier} is missing or duplicated")
+                    continue
+                current = matches[0]
+                if identifier in (discovery_id, prerequisite_id):
+                    original = {key: value for key, value in original.items()
+                                if key not in ("argv", "outputs")}
+                    current = {key: value for key, value in current.items()
+                               if key not in ("argv", "outputs")}
+                if current != original:
+                    issues.append(f"{name}: original check {identifier} was changed")
     return {
         "kind": "read_only_paired_execution_contract_diagnostic",
         "acceptance_evidence": False, "commands_executed": False,
         "runtime_state_modified": False,
         "required_repair_fields_present": not issues,
         "remaining_command_checked": original_discovery_source is not None,
+        "original_checks_preservation_checked": original_checks is not None,
         "contracts": diagnostics, "issues": issues,
     }
 
@@ -273,11 +297,43 @@ def execution_contract_self_test():
         if result["required_repair_fields_present"]:
             raise AssertionError("Fail-open paired execution contracts: " + name)
         paired_rejections[name] = result["issues"]
+    portable = {
+        "id": "portable-l1", "argv": ["python3", "tests/verify.py"],
+        "inputs": ["rtl/*.sv", "tests/*.py"], "outputs": [],
+        "requires": ["python3", "iverilog", "vvp", "yosys"],
+        "timeout_s": 86400,
+    }
+    baseline = [portable, *unrepaired]
+    preserved = [portable, *effective]
+    preservation_control = effective_contract_diagnostics(
+        preserved, preserved, original, baseline)
+    if not preservation_control["required_repair_fields_present"]:
+        raise AssertionError("Original mandatory-check preservation control was rejected")
+    preservation_rejections = {}
+    for name, checks in {
+        "removed_portable_l1": effective,
+        "duplicate_portable_l1": [portable, *preserved],
+        "replaced_portable_argv": [
+            {**portable, "argv": ["python3", "--version"]}, *effective],
+        "removed_portable_inputs": [{**portable, "inputs": []}, *effective],
+        "removed_portable_dependency": [
+            {**portable, "requires": ["python3"]}, *effective],
+        "shortened_portable_timeout": [
+            {**portable, "timeout_s": 1}, *effective],
+        "altered_discovery_inputs": [
+            portable, {**control, "inputs": []}, prerequisite],
+    }.items():
+        result = effective_contract_diagnostics(checks, checks, original, baseline)
+        if result["required_repair_fields_present"]:
+            raise AssertionError("Fail-open mandatory-check preservation: " + name)
+        preservation_rejections[name] = result["issues"]
     return {"kind": "synthetic_execution_contract_sensitivity",
             "acceptance_evidence": False, "commands_executed": False,
             "accepted_control": True, "preserved_body_control": True,
             "rejections": rejected, "paired_control": paired_control,
-            "paired_rejections": paired_rejections}
+            "paired_rejections": paired_rejections,
+            "preservation_control": preservation_control,
+            "preservation_rejections": preservation_rejections}
 
 
 def unconstrained_setup_count(text):
