@@ -1,334 +1,338 @@
 {
-  "gate": "quartus-sta",
-  "timestamp_utc": "2026-10-28T05:36:01.417253+00:00",
-  "project_dir": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
-  "revision": "top",
+  "applicable": true,
   "clock_filter": "clk_main",
-  "min_setup_slack_ns": 0.0,
-  "min_hold_slack_ns": 0.0,
-  "status": "passed",
+  "clock_period_ns": 10.0,
+  "clock_port": "clk",
+  "critical_path_delay_ns": 9.72,
+  "detail": "Timing closed: Setup WNS = 0.280 ns",
+  "fmax_mhz": 102.88,
+  "gate": "quartus-sta",
   "map_summary": {
-    "exists": true,
-    "path": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
     "error_count": 0,
     "errors": [],
+    "exists": true,
     "lpm_divide_error_count": 0,
     "lpm_divide_errors": [],
-    "warning_10268_count": 0,
-    "warning_10268": [],
+    "path": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
     "uninferred_ram_count": 2,
     "uninferred_rams": [
       "Info (276007): RAM logic \"g1_clipper:clipper|bank0\" is uninferred due to asynchronous read logic File: /data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/rtl_staged/g1_clipper.sv Line: 22",
       "Info (276007): RAM logic \"g1_clipper:clipper|bank1\" is uninferred due to asynchronous read logic File: /data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/rtl_staged/g1_clipper.sv Line: 23"
-    ]
+    ],
+    "warning_10268": [],
+    "warning_10268_count": 0
   },
+  "min_hold_slack_ns": 0.0,
+  "min_setup_slack_ns": 0.0,
+  "parameters": {},
+  "project_dir": "/data/sufeng/crucible-g1-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
+  "revision": "top",
+  "source_sha256": "470eaba88e625ed374219a204780bf892ca54770cf47fb5e474497089e43566e",
   "sta_summary": {
-    "exit_code": 0,
-    "netlist_mode": "post_fit",
     "clocks": [
       {
         "name": "clk_main",
         "period_ns": 10.0
       }
     ],
-    "wns_setup_ns": 0.28,
-    "wns_hold_ns": 0.039,
-    "failing_setup_count": 0,
+    "exit_code": 0,
     "failing_hold_count": 0,
-    "setup_paths": [
-      {
-        "slack_ns": 0.28,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~42981"
-      },
-      {
-        "slack_ns": 0.312,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|a[80]"
-      },
-      {
-        "slack_ns": 0.324,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~40326"
-      },
-      {
-        "slack_ns": 0.324,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|output_vertex[44]"
-      },
-      {
-        "slack_ns": 0.332,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|a[44]"
-      },
-      {
-        "slack_ns": 0.333,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~36230"
-      },
-      {
-        "slack_ns": 0.339,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[1]|g1_clipper:clipper|bank0~40326"
-      },
-      {
-        "slack_ns": 0.344,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|a[2]"
-      },
-      {
-        "slack_ns": 0.348,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[1]|g1_clipper:clipper|bank0~36230"
-      },
-      {
-        "slack_ns": 0.369,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[5]|g1_clipper:clipper|a[80]"
-      },
-      {
-        "slack_ns": 0.375,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~32471"
-      },
-      {
-        "slack_ns": 0.379,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|a[74]"
-      },
-      {
-        "slack_ns": 0.381,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[5]|g1_clipper:clipper|output_vertex[44]"
-      },
-      {
-        "slack_ns": 0.381,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~24279"
-      },
-      {
-        "slack_ns": 0.383,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[1]|g1_clipper:clipper|a[80]"
-      },
-      {
-        "slack_ns": 0.388,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|a[44]"
-      },
-      {
-        "slack_ns": 0.389,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[5]|g1_clipper:clipper|a[44]"
-      },
-      {
-        "slack_ns": 0.389,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[0]|g1_clipper:clipper|output_vertex[44]"
-      },
-      {
-        "slack_ns": 0.395,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[1]|g1_clipper:clipper|output_vertex[44]"
-      },
-      {
-        "slack_ns": 0.395,
-        "from_clock": "clk_main",
-        "to_clock": "clk_main",
-        "from_node": "g1_clipper:clipper",
-        "to_node": "count[5]|g1_clipper:clipper|a[2]"
-      }
-    ],
+    "failing_setup_count": 0,
     "hold_paths": [
       {
-        "slack_ns": 0.039,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "matrix[162]",
+        "slack_ns": 0.039,
+        "to_clock": "clk_main",
         "to_node": "matrix[162]"
       },
       {
-        "slack_ns": 0.042,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "matrix[368]",
+        "slack_ns": 0.042,
+        "to_clock": "clk_main",
         "to_node": "matrix[368]"
       },
       {
-        "slack_ns": 0.042,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.042,
+        "to_clock": "clk_main",
         "to_node": "result[105]|g1_transform:transform|result[105]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "matrix[97]",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "matrix[97]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "vertices[240]",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "vertices[240]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "vertices[325]",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "vertices[325]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[323]|g1_transform:transform|result[323]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[325]|g1_transform:transform|result[325]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[144]|g1_transform:transform|result[144]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[147]|g1_transform:transform|result[147]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[62]|g1_transform:transform|result[62]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[379]|g1_transform:transform|result[379]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[370]|g1_transform:transform|result[370]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[238]|g1_transform:transform|result[238]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[102]|g1_transform:transform|result[102]"
       },
       {
-        "slack_ns": 0.043,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "g1_transform:transform",
+        "slack_ns": 0.043,
+        "to_clock": "clk_main",
         "to_node": "result[356]|g1_transform:transform|result[356]"
       },
       {
-        "slack_ns": 0.044,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "vertices[308]",
+        "slack_ns": 0.044,
+        "to_clock": "clk_main",
         "to_node": "vertices[308]"
       },
       {
-        "slack_ns": 0.044,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "vertices[50]",
+        "slack_ns": 0.044,
+        "to_clock": "clk_main",
         "to_node": "vertices[50]"
       },
       {
-        "slack_ns": 0.044,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "vertices[163]",
+        "slack_ns": 0.044,
+        "to_clock": "clk_main",
         "to_node": "vertices[163]"
       },
       {
-        "slack_ns": 0.044,
         "from_clock": "clk_main",
-        "to_clock": "clk_main",
         "from_node": "matrix[310]",
+        "slack_ns": 0.044,
+        "to_clock": "clk_main",
         "to_node": "matrix[310]"
       }
     ],
-    "stderr_tail": []
+    "netlist_mode": "post_fit",
+    "raw_stdout": "UNCONSTRAINED_SETUP_PATHS:0\n",
+    "setup_paths": [
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.28,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~42981"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.312,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|a[80]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.324,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~40326"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.324,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|output_vertex[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.332,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|a[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.333,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~36230"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.339,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[1]|g1_clipper:clipper|bank0~40326"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.344,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|a[2]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.348,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[1]|g1_clipper:clipper|bank0~36230"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.369,
+        "to_clock": "clk_main",
+        "to_node": "count[5]|g1_clipper:clipper|a[80]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.375,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~32471"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.379,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|a[74]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.381,
+        "to_clock": "clk_main",
+        "to_node": "count[5]|g1_clipper:clipper|output_vertex[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.381,
+        "to_clock": "clk_main",
+        "to_node": "seed_index[0]|g1_clipper:clipper|bank0~24279"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.383,
+        "to_clock": "clk_main",
+        "to_node": "count[1]|g1_clipper:clipper|a[80]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.388,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|a[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.389,
+        "to_clock": "clk_main",
+        "to_node": "count[5]|g1_clipper:clipper|a[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.389,
+        "to_clock": "clk_main",
+        "to_node": "count[0]|g1_clipper:clipper|output_vertex[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.395,
+        "to_clock": "clk_main",
+        "to_node": "count[1]|g1_clipper:clipper|output_vertex[44]"
+      },
+      {
+        "from_clock": "clk_main",
+        "from_node": "g1_clipper:clipper",
+        "slack_ns": 0.395,
+        "to_clock": "clk_main",
+        "to_node": "count[5]|g1_clipper:clipper|a[2]"
+      }
+    ],
+    "stderr_tail": [],
+    "unapproved_timing_exceptions": 0,
+    "unconstrained_functional_endpoints": 0,
+    "unconstrained_setup_paths": 0,
+    "wns_hold_ns": 0.039,
+    "wns_setup_ns": 0.28
   },
-  "detail": "Timing closed: Setup WNS = 0.280 ns",
-  "top_module": "crucible_g1_top",
-  "clock_port": "clk",
-  "clock_period_ns": 10.0,
+  "status": "passed",
   "target_frequency_mhz": 100.0,
-  "fmax_mhz": 102.88,
-  "critical_path_delay_ns": 9.72,
-  "parameters": {},
-  "source_sha256": "470eaba88e625ed374219a204780bf892ca54770cf47fb5e474497089e43566e",
-  "applicable": true
+  "timestamp_utc": "2026-10-28T05:36:01.417253+00:00",
+  "top_module": "crucible_g1_top"
 }
