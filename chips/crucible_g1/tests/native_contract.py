@@ -26,7 +26,8 @@ When supplied the original check list, it also verifies preservation of every
 other mandatory check and all discovery fields outside the admitted repair.
 Matching repaired fields alone does not establish that checks were preserved.
 Preservation includes the original check order; supplemental checks cannot
-reorder earlier mandatory checks.
+precede or interleave earlier mandatory checks, even when their relative order
+is unchanged.
 The original check list supplies the authoritative inline body automatically;
 a conflicting separately supplied original body is an invalid diagnostic input.
 An absent effective list is reported as unavailable evidence, never inferred
@@ -204,6 +205,9 @@ def effective_contract_diagnostics(config_checks, execution_checks,
                               if check.get("id") in original_ids]
             if retained_order != original_ids:
                 issues.append(f"{name}: original mandatory-check order was changed")
+            if [check.get("id") for check in checks[:len(original_ids)]] != original_ids:
+                issues.append(
+                    f"{name}: supplemental checks must be appended after original mandatory checks")
             for original in original_checks:
                 identifier = original["id"]
                 matches = [check for check in checks if check.get("id") == identifier]
@@ -342,6 +346,11 @@ def execution_contract_self_test():
         preserved, preserved, original, baseline)
     if not preservation_control["required_repair_fields_present"]:
         raise AssertionError("Original mandatory-check preservation control was rejected")
+    supplemented = [*preserved, {"id": "supplement", "argv": ["python3", "--version"]}]
+    appended_control = effective_contract_diagnostics(
+        supplemented, supplemented, original_checks=baseline)
+    if not appended_control["required_repair_fields_present"]:
+        raise AssertionError("Append-only supplemental-check control was rejected")
     inferred_control = effective_contract_diagnostics(
         preserved, preserved, original_checks=baseline)
     if (not inferred_control["required_repair_fields_present"]
@@ -351,6 +360,13 @@ def execution_contract_self_test():
     for name, checks in {
         "removed_portable_l1": effective,
         "reordered_original_checks": [control, portable, prerequisite],
+        "prepended_prerequisite": [prerequisite, portable, control],
+        "interleaved_prerequisite": [portable, prerequisite, control],
+        "prepended_supplement": [
+            {"id": "supplement", "argv": ["python3", "--version"]}, *preserved],
+        "interleaved_supplement": [
+            portable, {"id": "supplement", "argv": ["python3", "--version"]},
+            control, prerequisite],
         "duplicate_portable_l1": [portable, *preserved],
         "replaced_portable_argv": [
             {**portable, "argv": ["python3", "--version"]}, *effective],
@@ -401,6 +417,7 @@ def execution_contract_self_test():
             "rejections": rejected, "paired_control": paired_control,
             "paired_rejections": paired_rejections,
             "preservation_control": preservation_control,
+            "appended_supplement_control": appended_control,
             "inferred_body_control": inferred_control,
             "preservation_rejections": preservation_rejections,
             "baseline_rejections": baseline_rejections}
