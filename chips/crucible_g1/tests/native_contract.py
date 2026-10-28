@@ -20,6 +20,8 @@ native-prerequisites-discovery-0331 with the admitted command
 .vulcan/engineering/run-0001/quartus_sta_work --revision top`` and outputs
 ``evidence/native-prerequisites/run-*/``. Confirm both effective contracts before
 execution; another passing diagnostic or unchanged L1 run cannot repair them.
+The paired diagnostic accepts both effective check lists explicitly and rejects
+one-sided repairs or divergent lists. It never loads runtime metadata itself.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -150,6 +152,30 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
     }
 
 
+def effective_contract_diagnostics(config_checks, execution_checks,
+                                   original_discovery_source=None):
+    """Require the admitted repair in both caller-supplied effective contracts."""
+    diagnostics = {
+        "config": execution_contract_diagnostics(
+            config_checks, original_discovery_source),
+        "execution": execution_contract_diagnostics(
+            execution_checks, original_discovery_source),
+    }
+    issues = [
+        name + ": " + issue
+        for name, result in diagnostics.items() for issue in result["issues"]]
+    if config_checks != execution_checks:
+        issues.append("Config and execution effective check lists differ")
+    return {
+        "kind": "read_only_paired_execution_contract_diagnostic",
+        "acceptance_evidence": False, "commands_executed": False,
+        "runtime_state_modified": False,
+        "required_repair_fields_present": not issues,
+        "remaining_command_checked": original_discovery_source is not None,
+        "contracts": diagnostics, "issues": issues,
+    }
+
+
 def execution_contract_self_test():
     discovery = {
         "id": "native-invocation-contract-discovery-0291",
@@ -226,10 +252,32 @@ def execution_contract_self_test():
         if result["required_repair_fields_present"]:
             raise AssertionError("Fail-open inline-body preservation: " + name)
         rejected[name] = result["issues"]
+    effective = [control, prerequisite]
+    paired_control = effective_contract_diagnostics(effective, effective, original)
+    if not paired_control["required_repair_fields_present"]:
+        raise AssertionError("Paired effective-contract control was rejected")
+    unrepaired = [
+        {**control, "argv": ["python3", "-c", original],
+         "outputs": ["evidence/native-contract-discovery-0291/"]}]
+    paired_rejections = {}
+    for name, (config_checks, execution_checks) in {
+        "both_unrepaired": (unrepaired, unrepaired),
+        "config_only_repaired": (effective, unrepaired),
+        "execution_only_repaired": (unrepaired, effective),
+        "missing_from_both": ([], []),
+        "divergent_effective_lists": (
+            effective, [*effective, {"id": "unexpected-check", "argv": ["python3"]}]),
+    }.items():
+        result = effective_contract_diagnostics(
+            config_checks, execution_checks, original)
+        if result["required_repair_fields_present"]:
+            raise AssertionError("Fail-open paired execution contracts: " + name)
+        paired_rejections[name] = result["issues"]
     return {"kind": "synthetic_execution_contract_sensitivity",
             "acceptance_evidence": False, "commands_executed": False,
             "accepted_control": True, "preserved_body_control": True,
-            "rejections": rejected}
+            "rejections": rejected, "paired_control": paired_control,
+            "paired_rejections": paired_rejections}
 
 
 def unconstrained_setup_count(text):
