@@ -33,6 +33,8 @@ which image is loaded, even when local files are present.
 Bridge prerequisites are inventoried together before snapshots are copied, so
 an absent client cannot hide an independently absent heartbeat.
 Bridge discovery requires a completed, nonempty inventory, not merely exit zero.
+File inventory rows require a preceding directory, a filename, an unsigned byte
+count and a timestamp; arbitrary nonempty marker payloads are not inventories.
 Its completion marker establishes discovery only, never graphics transport.
 PowerShell parser errors in either stream invalidate completion and are reported
 separately from timeouts; a repaired script still requires fresh native execution.
@@ -1056,6 +1058,18 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
                    if line.startswith("TOOLS_DIRECTORY:")]
     files = [line.partition(":")[2] for line in lines
              if line.startswith("TOOL_FILE:")]
+    malformed_files = []
+    directory_seen = False
+    for line in lines:
+        if line.startswith("TOOLS_DIRECTORY:"):
+            directory_seen = bool(line.partition(":")[2].strip())
+        elif line.startswith("TOOL_FILE:"):
+            fields = line.partition(":")[2].split("|")
+            if (not directory_seen or len(fields) != 3
+                    or not fields[0].strip()
+                    or re.fullmatch(r"[0-9]+", fields[1]) is None
+                    or not fields[2].strip()):
+                malformed_files.append(line)
     parser_error = any(re.search(r"\bParserError\b", stream) is not None
                        for stream in (stdout, stderr))
     issues = []
@@ -1071,6 +1085,8 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
         issues.append("Missing nonempty board-tools directory inventory")
     if not files or any(not name.strip() for name in files):
         issues.append("Missing nonempty board-tools file inventory")
+    if malformed_files:
+        issues.append("Malformed or unassociated board-tools file inventory rows")
     if stderr.strip():
         issues.append("Bridge discovery emitted stderr; inspect retained raw stream")
     return {
@@ -1078,6 +1094,7 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
         "powershell_parser_error_reported": parser_error,
         "issues": issues, "tool_directories": directories,
         "tool_file_count": len(files), "acceptance_evidence": False,
+        "malformed_file_rows": malformed_files,
         "graphics_transport_verified": False, "loaded_image_verified": False,
         "physical_board_runs": 0,
     }
@@ -1318,6 +1335,9 @@ def diagnostic_self_test():
     if (not bridge_control["discovery_execution_complete"]
             or bridge_control["powershell_parser_error_reported"]):
         raise RuntimeError("Bridge diagnostic rejected its synthetic inventory")
+    if not bridge_discovery_diagnostics(
+            row, inventory.replace("|1|", "|0|"), "")["discovery_execution_complete"]:
+        raise RuntimeError("Bridge diagnostic rejected a zero-byte tool inventory entry")
     parser_error = ("#< CLIXML\n"
                     '<Objs><S S="Error">CategoryInfo : ParserError: (:) [], '
                     "ParentContainsErrorRecordException_x000D__x000A_"
@@ -1341,6 +1361,15 @@ def diagnostic_self_test():
         "trailing_failure": (row, inventory + "remote execution failed\n", ""),
         "empty_directory": (row, inventory.replace("synthetic-tools", ""), ""),
         "empty_files": (row, inventory.replace("TOOL_FILE:example.exe|1|date\n", ""), ""),
+        "malformed_file": (row, inventory.replace("example.exe|1|date", "arbitrary"), ""),
+        "missing_filename": (row, inventory.replace("example.exe|1|date", "|1|date"), ""),
+        "negative_size": (row, inventory.replace("|1|date", "|-1|date"), ""),
+        "nonnumeric_size": (row, inventory.replace("|1|date", "|unknown|date"), ""),
+        "missing_timestamp": (row, inventory.replace("|1|date", "|1|"), ""),
+        "extra_field": (row, inventory.replace("|1|date", "|1|date|extra"), ""),
+        "file_before_directory": (row,
+            "TOOL_FILE:example.exe|1|date\nTOOLS_DIRECTORY:synthetic-tools\n"
+            "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
         "stderr_failure": (row, inventory, "Remote command failed\n"),
         "nonzero_exit": ({**row, "exit_code": 1}, inventory, ""),
         "timeout": ({**row, "timed_out": True}, inventory, ""),
