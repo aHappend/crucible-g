@@ -25,6 +25,8 @@ one-sided repairs or divergent lists. It never loads runtime metadata itself.
 When supplied the original check list, it also verifies preservation of every
 other mandatory check and all discovery fields outside the admitted repair.
 Matching repaired fields alone does not establish that checks were preserved.
+The original check list supplies the authoritative inline body automatically;
+a conflicting separately supplied original body is an invalid diagnostic input.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -159,6 +161,20 @@ def effective_contract_diagnostics(config_checks, execution_checks,
                                    original_discovery_source=None,
                                    original_checks=None):
     """Inspect repair and optional baseline preservation without changing state."""
+    if original_checks is not None:
+        discoveries = [
+            check for check in original_checks
+            if check.get("id") == "native-invocation-contract-discovery-0291"]
+        if len(discoveries) != 1:
+            raise ValueError("Original checks must contain exactly one discovery command")
+        argv = discoveries[0].get("argv")
+        if (not isinstance(argv, list) or len(argv) != 3
+                or argv[:2] != ["python3", "-c"] or not isinstance(argv[2], str)):
+            raise ValueError("Original discovery must contain its inline Python command")
+        if (original_discovery_source is not None
+                and original_discovery_source != argv[2]):
+            raise ValueError("Original discovery source conflicts with original checks")
+        original_discovery_source = argv[2]
     diagnostics = {
         "config": execution_contract_diagnostics(
             config_checks, original_discovery_source),
@@ -309,6 +325,11 @@ def execution_contract_self_test():
         preserved, preserved, original, baseline)
     if not preservation_control["required_repair_fields_present"]:
         raise AssertionError("Original mandatory-check preservation control was rejected")
+    inferred_control = effective_contract_diagnostics(
+        preserved, preserved, original_checks=baseline)
+    if (not inferred_control["required_repair_fields_present"]
+            or not inferred_control["remaining_command_checked"]):
+        raise AssertionError("Original inline-body inference control was rejected")
     preservation_rejections = {}
     for name, checks in {
         "removed_portable_l1": effective,
@@ -322,18 +343,38 @@ def execution_contract_self_test():
             {**portable, "timeout_s": 1}, *effective],
         "altered_discovery_inputs": [
             portable, {**control, "inputs": []}, prerequisite],
+        "altered_inline_body_without_explicit_source": [
+            portable, {**control, "argv": [
+                "python3", "-c", repaired.replace("3600", "1")]}, prerequisite],
     }.items():
-        result = effective_contract_diagnostics(checks, checks, original, baseline)
+        result = effective_contract_diagnostics(
+            checks, checks, original_checks=baseline)
         if result["required_repair_fields_present"]:
             raise AssertionError("Fail-open mandatory-check preservation: " + name)
         preservation_rejections[name] = result["issues"]
+    baseline_rejections = {}
+    for name, source, checks in (
+        ("conflicting_original_source", repaired, baseline),
+        ("missing_original_discovery", None, [portable]),
+        ("duplicate_original_discovery", None, [*baseline, unrepaired[0]]),
+        ("noninline_original_discovery", None, [
+            portable, {**unrepaired[0], "argv": ["python3", "--version"]}]),
+    ):
+        try:
+            effective_contract_diagnostics(preserved, preserved, source, checks)
+        except ValueError as error:
+            baseline_rejections[name] = str(error)
+        else:
+            raise AssertionError("Invalid original-check baseline accepted: " + name)
     return {"kind": "synthetic_execution_contract_sensitivity",
             "acceptance_evidence": False, "commands_executed": False,
             "accepted_control": True, "preserved_body_control": True,
             "rejections": rejected, "paired_control": paired_control,
             "paired_rejections": paired_rejections,
             "preservation_control": preservation_control,
-            "preservation_rejections": preservation_rejections}
+            "inferred_body_control": inferred_control,
+            "preservation_rejections": preservation_rejections,
+            "baseline_rejections": baseline_rejections}
 
 
 def unconstrained_setup_count(text):
