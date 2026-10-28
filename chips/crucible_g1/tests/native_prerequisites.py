@@ -51,6 +51,10 @@ categories; a parser failure must not be diagnosed as unavailable hardware.
 The source regression rejects the historical split Get-FileHash statement before
 bridge execution. This narrow line-layout guard is not a PowerShell parser or
 evidence that the repaired script has executed successfully on the native host.
+Before discovery, the supported bridge invokes PowerShell's parser without
+executing the payload. Its source-bound result and raw streams are retained
+separately; only a successful parse permits the unchanged discovery payload.
+Parser success alone is neither completed inventory nor a native gate pass.
 Clock period and both setup/hold slacks are checked separately from query
 success. Meeting those numerical limits never overrides incomplete coverage.
 The queried project must name the exact required device and top-level entity.
@@ -79,6 +83,7 @@ their names alone do not justify false-path exceptions.
 """
 
 import argparse
+import base64
 from datetime import datetime
 from decimal import Decimal
 import hashlib
@@ -191,6 +196,91 @@ def remote_source_self_test():
         "scope": "Known Get-FileHash line-break failure only",
         "source_sha256": hashlib.sha256(REMOTE_DISCOVERY.encode()).hexdigest(),
         "repaired_source_control": "accepted", "rejections": rejected,
+    }
+
+
+def remote_parse_command(script):
+    """Ask the native parser about exact source bytes without executing them."""
+    encoded = base64.b64encode(script.encode("utf-8")).decode("ascii")
+    return r"""
+$ErrorActionPreference = 'Stop'
+$bytes = [Convert]::FromBase64String('@SOURCE@')
+$source = [Text.Encoding]::UTF8.GetString($bytes)
+$sha = [Security.Cryptography.SHA256]::Create()
+try {
+    $hash = [BitConverter]::ToString($sha.ComputeHash($bytes)).Replace('-', '').ToLowerInvariant()
+} finally {
+    $sha.Dispose()
+}
+$tokens = $null
+$parseErrors = $null
+$null = [System.Management.Automation.Language.Parser]::ParseInput($source, [ref]$tokens, [ref]$parseErrors)
+Write-Output ("PARSE_SOURCE_SHA256:" + $hash)
+Write-Output ("POWERSHELL_PARSE_ERRORS:" + $parseErrors.Count)
+if ($parseErrors.Count -ne 0) {
+    foreach ($errorRecord in $parseErrors) { Write-Output $errorRecord.ToString() }
+    exit 1
+}
+""".replace("@SOURCE@", encoded)
+
+
+def remote_parse_diagnostics(row, script, stdout, stderr):
+    expected_hash = hashlib.sha256(script.encode("utf-8")).hexdigest()
+    expected = ["PARSE_SOURCE_SHA256:" + expected_hash, "POWERSHELL_PARSE_ERRORS:0"]
+    issues = []
+    if row["exit_code"] != 0 or row["timed_out"]:
+        issues.append("PowerShell parse preflight did not complete successfully")
+    if stdout.splitlines() != expected:
+        issues.append("Missing, malformed or mismatched source-bound parse result")
+    if stderr.strip():
+        issues.append("PowerShell parse preflight emitted stderr; inspect retained raw stream")
+    return {
+        "parse_execution_complete": not issues, "issues": issues,
+        "source_sha256": expected_hash,
+        "tool_exit_code": row["exit_code"], "timed_out": row["timed_out"],
+        "payload_executed": False, "acceptance_evidence": False,
+        "discovery_execution_complete": False, "native_gate_pass_claimed": False,
+    }
+
+
+def remote_parse_self_test():
+    """Exercise the preflight checker, not a local replacement for PowerShell."""
+    row = {"exit_code": 0, "timed_out": False}
+    source_hash = hashlib.sha256(REMOTE_DISCOVERY.encode("utf-8")).hexdigest()
+    stdout = "PARSE_SOURCE_SHA256:" + source_hash + "\nPOWERSHELL_PARSE_ERRORS:0\n"
+    command = remote_parse_command(REMOTE_DISCOVERY)
+    encoded = base64.b64encode(REMOTE_DISCOVERY.encode("utf-8")).decode("ascii")
+    if (command.count("'" + encoded + "'") != 1
+            or "::ParseInput(" not in command
+            or REMOTE_DISCOVERY in command):
+        raise RuntimeError("Parse-only command failed source-encoding control")
+    control = remote_parse_diagnostics(row, REMOTE_DISCOVERY, stdout, "")
+    if not control["parse_execution_complete"] or control["payload_executed"]:
+        raise RuntimeError("Parse diagnostic rejected its synthetic source-bound control")
+    variants = {
+        "empty": (row, REMOTE_DISCOVERY, "", ""),
+        "count_only": (row, REMOTE_DISCOVERY, "POWERSHELL_PARSE_ERRORS:0\n", ""),
+        "wrong_source": (row, REMOTE_DISCOVERY + "\n", stdout, ""),
+        "nonzero_count": (row, REMOTE_DISCOVERY, stdout.replace("ERRORS:0", "ERRORS:1"), ""),
+        "duplicate": (row, REMOTE_DISCOVERY, stdout + stdout, ""),
+        "reordered": (row, REMOTE_DISCOVERY, "\n".join(reversed(stdout.splitlines())), ""),
+        "trailing_error": (row, REMOTE_DISCOVERY, stdout + "ParserError\n", ""),
+        "stderr_error": (row, REMOTE_DISCOVERY, stdout, "ParserError\n"),
+        "nonzero_exit": ({**row, "exit_code": 1}, REMOTE_DISCOVERY, stdout, ""),
+        "missing_exit": ({**row, "exit_code": None}, REMOTE_DISCOVERY, stdout, ""),
+        "timeout": ({**row, "timed_out": True}, REMOTE_DISCOVERY, stdout, ""),
+    }
+    reasons = {}
+    for name, (status, script, output, error) in variants.items():
+        diagnostic = remote_parse_diagnostics(status, script, output, error)
+        if diagnostic["parse_execution_complete"]:
+            raise RuntimeError("Fail-open synthetic PowerShell preflight: " + name)
+        reasons[name] = diagnostic["issues"]
+    return {
+        "kind": "synthetic_remote_parse_diagnostic_sensitivity",
+        "acceptance_evidence": False, "powershell_parser_executed": False,
+        "native_gate_executed": False, "accepted_control": control,
+        "rejections": reasons,
     }
 
 
@@ -1182,6 +1272,7 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
 
 def diagnostic_self_test():
     remote_source = remote_source_self_test()
+    remote_parse = remote_parse_self_test()
     banner = ("Quartus Prime TimeQuest Timing Analyzer\n"
               "Version 17.1.0 Build 590 10/25/2017 SJ Standard Edition\n")
     version_control = quartus_version(banner)
@@ -1509,6 +1600,7 @@ def diagnostic_self_test():
         "kind": "synthetic_native_prerequisite_diagnostic_sensitivity",
         "acceptance_evidence": False, "native_gate_executed": False,
         "remote_source_layout_regression": remote_source,
+        "remote_parse_diagnostic_regression": remote_parse,
         "quartus_version_control": version_control,
         "quartus_version_rejections": version_rejections,
         "query_rejections": sorted(variants),
@@ -1751,6 +1843,21 @@ def main():
             if help_row["exit_code"] == 0 and not help_row["timed_out"]:
                 require_single_line_hash_statement(REMOTE_DISCOVERY)
                 (output / "remote-discovery.ps1").write_text(REMOTE_DISCOVERY)
+                parse_command = remote_parse_command(REMOTE_DISCOVERY)
+                (output / "remote-parse.ps1").write_text(parse_command)
+                parse_row = discovery.capture("bridge-powershell-parse", [
+                    "python3", str(bridge / "run_remote.py"), "--timeout", str(TIMEOUT),
+                    parse_command])
+                parse_diagnostics = remote_parse_diagnostics(
+                    parse_row, REMOTE_DISCOVERY,
+                    (ROOT / parse_row["stdout"]).read_text(),
+                    (ROOT / parse_row["stderr"]).read_text())
+                save(output / "bridge-parse-diagnostics.json", parse_diagnostics)
+                for issue in parse_diagnostics["issues"]:
+                    discovery.issue(issue)
+            else:
+                parse_diagnostics = None
+            if parse_diagnostics is not None and parse_diagnostics["parse_execution_complete"]:
                 row = discovery.capture("bridge-read-only-discovery", [
                     "python3", str(bridge / "run_remote.py"), "--timeout", str(TIMEOUT),
                     REMOTE_DISCOVERY])
