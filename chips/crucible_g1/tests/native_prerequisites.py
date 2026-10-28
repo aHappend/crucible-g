@@ -55,6 +55,8 @@ Before discovery, the supported bridge invokes PowerShell's parser without
 executing the payload. Its source-bound result and raw streams are retained
 separately; only a successful parse permits the unchanged discovery payload.
 Parser success alone is neither completed inventory nor a native gate pass.
+The parse receipt retains the actual PowerShell version; an absent or malformed
+version is incomplete tool provenance, even when the parse-error count is zero.
 Clock period and both setup/hold slacks are checked separately from query
 success. Meeting those numerical limits never overrides incomplete coverage.
 The queried project must name the exact required device and top-level entity.
@@ -175,7 +177,8 @@ def remote_source_self_test():
     rejected = {}
     for name, script in {
         "historical_split_after_literal_path": REMOTE_DISCOVERY.replace(
-            "-LiteralPath $file.FullName", "-LiteralPath\n                    $file.FullName"),
+            "Get-FileHash -LiteralPath $file.FullName",
+            "Get-FileHash -LiteralPath\n                    $file.FullName", 1),
         "split_before_algorithm": REMOTE_DISCOVERY.replace(
             "$file.FullName -Algorithm", "$file.FullName\n                    -Algorithm"),
         "missing_hash_statement": "\n".join(
@@ -204,6 +207,7 @@ def remote_parse_command(script):
     encoded = base64.b64encode(script.encode("utf-8")).decode("ascii")
     return r"""
 $ErrorActionPreference = 'Stop'
+Write-Output ("POWERSHELL_VERSION:" + $PSVersionTable.PSVersion.ToString())
 $bytes = [Convert]::FromBase64String('@SOURCE@')
 $source = [Text.Encoding]::UTF8.GetString($bytes)
 $sha = [Security.Cryptography.SHA256]::Create()
@@ -227,16 +231,25 @@ if ($parseErrors.Count -ne 0) {
 def remote_parse_diagnostics(row, script, stdout, stderr):
     expected_hash = hashlib.sha256(script.encode("utf-8")).hexdigest()
     expected = ["PARSE_SOURCE_SHA256:" + expected_hash, "POWERSHELL_PARSE_ERRORS:0"]
+    lines = stdout.splitlines()
+    version = None
+    if lines:
+        match = re.fullmatch(r"POWERSHELL_VERSION:([0-9]+(?:\.[0-9]+){1,3})", lines[0])
+        if match is not None:
+            version = match.group(1)
     issues = []
     if row["exit_code"] != 0 or row["timed_out"]:
         issues.append("PowerShell parse preflight did not complete successfully")
-    if stdout.splitlines() != expected:
+    if version is None:
+        issues.append("Missing or malformed PowerShell parser version")
+    if lines[1:] != expected:
         issues.append("Missing, malformed or mismatched source-bound parse result")
     if stderr.strip():
         issues.append("PowerShell parse preflight emitted stderr; inspect retained raw stream")
     return {
         "parse_execution_complete": not issues, "issues": issues,
         "source_sha256": expected_hash,
+        "powershell_version": version,
         "tool_exit_code": row["exit_code"], "timed_out": row["timed_out"],
         "payload_executed": False, "acceptance_evidence": False,
         "discovery_execution_complete": False, "native_gate_pass_claimed": False,
@@ -247,7 +260,8 @@ def remote_parse_self_test():
     """Exercise the preflight checker, not a local replacement for PowerShell."""
     row = {"exit_code": 0, "timed_out": False}
     source_hash = hashlib.sha256(REMOTE_DISCOVERY.encode("utf-8")).hexdigest()
-    stdout = "PARSE_SOURCE_SHA256:" + source_hash + "\nPOWERSHELL_PARSE_ERRORS:0\n"
+    stdout = ("POWERSHELL_VERSION:5.1.19041.5607\nPARSE_SOURCE_SHA256:"
+              + source_hash + "\nPOWERSHELL_PARSE_ERRORS:0\n")
     command = remote_parse_command(REMOTE_DISCOVERY)
     encoded = base64.b64encode(REMOTE_DISCOVERY.encode("utf-8")).decode("ascii")
     if (command.count("'" + encoded + "'") != 1
@@ -255,11 +269,20 @@ def remote_parse_self_test():
             or REMOTE_DISCOVERY in command):
         raise RuntimeError("Parse-only command failed source-encoding control")
     control = remote_parse_diagnostics(row, REMOTE_DISCOVERY, stdout, "")
-    if not control["parse_execution_complete"] or control["payload_executed"]:
+    if (not control["parse_execution_complete"] or control["payload_executed"]
+            or control["powershell_version"] != "5.1.19041.5607"):
         raise RuntimeError("Parse diagnostic rejected its synthetic source-bound control")
     variants = {
         "empty": (row, REMOTE_DISCOVERY, "", ""),
         "count_only": (row, REMOTE_DISCOVERY, "POWERSHELL_PARSE_ERRORS:0\n", ""),
+        "missing_version": (row, REMOTE_DISCOVERY,
+                            "\n".join(stdout.splitlines()[1:]) + "\n", ""),
+        "malformed_version": (row, REMOTE_DISCOVERY,
+                              stdout.replace("5.1.19041.5607", "unknown"), ""),
+        "version_extra_component": (row, REMOTE_DISCOVERY,
+                                   stdout.replace("5.1.19041.5607", "5.1.2.3.4"), ""),
+        "version_trailing_text": (row, REMOTE_DISCOVERY,
+                                 stdout.replace("5.1.19041.5607", "5.1 parse failed"), ""),
         "wrong_source": (row, REMOTE_DISCOVERY + "\n", stdout, ""),
         "nonzero_count": (row, REMOTE_DISCOVERY, stdout.replace("ERRORS:0", "ERRORS:1"), ""),
         "duplicate": (row, REMOTE_DISCOVERY, stdout + stdout, ""),
