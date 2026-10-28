@@ -39,7 +39,8 @@ Bridge prerequisites are inventoried together before snapshots are copied, so
 an absent client cannot hide an independently absent heartbeat.
 Bridge discovery requires a completed, nonempty inventory, not merely exit zero.
 File inventory rows require a preceding directory, a filename, an unsigned byte
-count and a timestamp; arbitrary nonempty marker payloads are not inventories.
+count and a valid UTC round-trip timestamp as emitted by LastWriteTimeUtc;
+arbitrary nonempty marker payloads are not inventories.
 Its completion marker establishes discovery only, never graphics transport.
 PowerShell parser errors in either stream invalidate completion and are reported
 separately from timeouts; a repaired script still requires fresh native execution.
@@ -47,6 +48,9 @@ Parse-exception identities are recognized even when the bridge omits PowerShell'
 CategoryInfo line; generic remote failures remain distinct from parser failures.
 Bridge diagnostics retain exit/timeout facts and independent execution-failure
 categories; a parser failure must not be diagnosed as unavailable hardware.
+The source regression rejects the historical split Get-FileHash statement before
+bridge execution. This narrow line-layout guard is not a PowerShell parser or
+evidence that the repaired script has executed successfully on the native host.
 Clock period and both setup/hold slacks are checked separately from query
 success. Meeting those numerical limits never overrides incomplete coverage.
 The queried project must name the exact required device and top-level entity.
@@ -75,6 +79,7 @@ their names alone do not justify false-path exceptions.
 """
 
 import argparse
+from datetime import datetime
 from decimal import Decimal
 import hashlib
 import json
@@ -147,6 +152,46 @@ def digest(path):
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             value.update(chunk)
         return value.hexdigest()
+
+
+def require_single_line_hash_statement(script):
+    """Guard the retained failure, not arbitrary PowerShell syntax."""
+    statement = (
+        'Write-Output ("SHA256:" + (Get-FileHash -LiteralPath '
+        '$file.FullName -Algorithm SHA256).Hash)')
+    lines = [line.strip() for line in script.splitlines()
+             if "Get-FileHash" in line]
+    if lines != [statement]:
+        raise RuntimeError("Discovery hash statement must remain complete on one line")
+
+
+def remote_source_self_test():
+    require_single_line_hash_statement(REMOTE_DISCOVERY)
+    rejected = {}
+    for name, script in {
+        "historical_split_after_literal_path": REMOTE_DISCOVERY.replace(
+            "-LiteralPath $file.FullName", "-LiteralPath\n                    $file.FullName"),
+        "split_before_algorithm": REMOTE_DISCOVERY.replace(
+            "$file.FullName -Algorithm", "$file.FullName\n                    -Algorithm"),
+        "missing_hash_statement": "\n".join(
+            line for line in REMOTE_DISCOVERY.splitlines() if "Get-FileHash" not in line),
+        "duplicate_hash_statement": REMOTE_DISCOVERY + "\n" + next(
+            line for line in REMOTE_DISCOVERY.splitlines() if "Get-FileHash" in line),
+    }.items():
+        try:
+            require_single_line_hash_statement(script)
+        except RuntimeError as error:
+            rejected[name] = str(error)
+        else:
+            raise RuntimeError("Hash-statement source regression failed: " + name)
+    return {
+        "kind": "synthetic_remote_source_layout_regression",
+        "acceptance_evidence": False, "native_gate_executed": False,
+        "powershell_parser_executed": False,
+        "scope": "Known Get-FileHash line-break failure only",
+        "source_sha256": hashlib.sha256(REMOTE_DISCOVERY.encode()).hexdigest(),
+        "repaired_source_control": "accepted", "rejections": rejected,
+    }
 
 
 def save(path, value):
@@ -1074,10 +1119,19 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
             directory_seen = bool(line.partition(":")[2].strip())
         elif line.startswith("TOOL_FILE:"):
             fields = line.partition(":")[2].split("|")
+            timestamp_valid = False
+            if len(fields) == 3 and re.fullmatch(
+                    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:"
+                    r"[0-9]{2}\.[0-9]{7}Z", fields[2]):
+                try:
+                    datetime.strptime(fields[2][:19], "%Y-%m-%dT%H:%M:%S")
+                    timestamp_valid = True
+                except ValueError:
+                    timestamp_valid = False
             if (not directory_seen or len(fields) != 3
                     or not fields[0].strip()
                     or re.fullmatch(r"[0-9]+", fields[1]) is None
-                    or not fields[2].strip()):
+                    or not timestamp_valid):
                 malformed_files.append(line)
     parser_error = any(
         re.search(r"\bParserError\b|\bParseException\b", stream) is not None
@@ -1127,6 +1181,7 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
 
 
 def diagnostic_self_test():
+    remote_source = remote_source_self_test()
     banner = ("Quartus Prime TimeQuest Timing Analyzer\n"
               "Version 17.1.0 Build 590 10/25/2017 SJ Standard Edition\n")
     version_control = quartus_version(banner)
@@ -1355,8 +1410,10 @@ def diagnostic_self_test():
     for name, value in bindings.items():
         if not local_binding_issues(value):
             raise RuntimeError("Fail-open synthetic local image inventory: " + name)
-    inventory = ("TOOLS_DIRECTORY:synthetic-tools\nTOOL_FILE:example.exe|1|date\n"
-                 "READ_ONLY_DISCOVERY_COMPLETE\n")
+    timestamp = "2024-02-29T12:34:56.1234567Z"
+    file_row = "TOOL_FILE:example.exe|1|" + timestamp + "\n"
+    inventory = ("TOOLS_DIRECTORY:synthetic-tools\n" + file_row
+                 + "READ_ONLY_DISCOVERY_COMPLETE\n")
     bridge_control = bridge_discovery_diagnostics(row, inventory, "")
     if (not bridge_control["discovery_execution_complete"]
             or bridge_control["powershell_parser_error_reported"]
@@ -1400,15 +1457,21 @@ def diagnostic_self_test():
         "duplicate_marker": (row, inventory + "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
         "trailing_failure": (row, inventory + "remote execution failed\n", ""),
         "empty_directory": (row, inventory.replace("synthetic-tools", ""), ""),
-        "empty_files": (row, inventory.replace("TOOL_FILE:example.exe|1|date\n", ""), ""),
-        "malformed_file": (row, inventory.replace("example.exe|1|date", "arbitrary"), ""),
-        "missing_filename": (row, inventory.replace("example.exe|1|date", "|1|date"), ""),
-        "negative_size": (row, inventory.replace("|1|date", "|-1|date"), ""),
-        "nonnumeric_size": (row, inventory.replace("|1|date", "|unknown|date"), ""),
-        "missing_timestamp": (row, inventory.replace("|1|date", "|1|"), ""),
-        "extra_field": (row, inventory.replace("|1|date", "|1|date|extra"), ""),
+        "empty_files": (row, inventory.replace(file_row, ""), ""),
+        "malformed_file": (row, inventory.replace(file_row, "TOOL_FILE:arbitrary\n"), ""),
+        "missing_filename": (row, inventory.replace("example.exe|", "|"), ""),
+        "negative_size": (row, inventory.replace("|1|", "|-1|"), ""),
+        "nonnumeric_size": (row, inventory.replace("|1|", "|unknown|"), ""),
+        "missing_timestamp": (row, inventory.replace(timestamp, ""), ""),
+        "arbitrary_timestamp": (row, inventory.replace(timestamp, "date"), ""),
+        "invalid_calendar_timestamp": (
+            row, inventory.replace("2024-02-29", "2023-02-29"), ""),
+        "invalid_clock_timestamp": (
+            row, inventory.replace("12:34:56", "25:34:56"), ""),
+        "non_utc_timestamp": (row, inventory.replace(timestamp, timestamp[:-1]), ""),
+        "extra_field": (row, inventory.replace(timestamp, timestamp + "|extra"), ""),
         "file_before_directory": (row,
-            "TOOL_FILE:example.exe|1|date\nTOOLS_DIRECTORY:synthetic-tools\n"
+            file_row + "TOOLS_DIRECTORY:synthetic-tools\n"
             "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
         "stderr_failure": (row, inventory, "Remote command failed\n"),
         "nonzero_exit": ({**row, "exit_code": 1}, inventory, ""),
@@ -1445,6 +1508,7 @@ def diagnostic_self_test():
     return {
         "kind": "synthetic_native_prerequisite_diagnostic_sensitivity",
         "acceptance_evidence": False, "native_gate_executed": False,
+        "remote_source_layout_regression": remote_source,
         "quartus_version_control": version_control,
         "quartus_version_rejections": version_rejections,
         "query_rejections": sorted(variants),
@@ -1685,6 +1749,7 @@ def main():
             help_row = discovery.capture(
                 "bridge-help", ["python3", str(bridge / "run_remote.py"), "--help"])
             if help_row["exit_code"] == 0 and not help_row["timed_out"]:
+                require_single_line_hash_statement(REMOTE_DISCOVERY)
                 (output / "remote-discovery.ps1").write_text(REMOTE_DISCOVERY)
                 row = discovery.capture("bridge-read-only-discovery", [
                     "python3", str(bridge / "run_remote.py"), "--timeout", str(TIMEOUT),
