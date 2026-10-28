@@ -34,6 +34,8 @@ Bridge prerequisites are inventoried together before snapshots are copied, so
 an absent client cannot hide an independently absent heartbeat.
 Bridge discovery requires a completed, nonempty inventory, not merely exit zero.
 Its completion marker establishes discovery only, never graphics transport.
+PowerShell parser errors in either stream invalidate completion and are reported
+separately from timeouts; a repaired script still requires fresh native execution.
 Clock period and both setup/hold slacks are checked separately from query
 success. Meeting those numerical limits never overrides incomplete coverage.
 The queried project must name the exact required device and top-level entity.
@@ -1054,9 +1056,13 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
                    if line.startswith("TOOLS_DIRECTORY:")]
     files = [line.partition(":")[2] for line in lines
              if line.startswith("TOOL_FILE:")]
+    parser_error = any(re.search(r"\bParserError\b", stream) is not None
+                       for stream in (stdout, stderr))
     issues = []
     if row["exit_code"] != 0 or row["timed_out"]:
         issues.append("Bridge discovery command did not complete successfully")
+    if parser_error:
+        issues.append("PowerShell parser error reported; read-only discovery execution unproven")
     if lines.count(completion) != 1:
         issues.append("Expected exactly one bridge discovery completion marker")
     elif any(line.strip() for line in lines[lines.index(completion) + 1:]):
@@ -1069,6 +1075,7 @@ def bridge_discovery_diagnostics(row, stdout, stderr):
         issues.append("Bridge discovery emitted stderr; inspect retained raw stream")
     return {
         "discovery_execution_complete": not issues,
+        "powershell_parser_error_reported": parser_error,
         "issues": issues, "tool_directories": directories,
         "tool_file_count": len(files), "acceptance_evidence": False,
         "graphics_transport_verified": False, "loaded_image_verified": False,
@@ -1307,9 +1314,25 @@ def diagnostic_self_test():
             raise RuntimeError("Fail-open synthetic local image inventory: " + name)
     inventory = ("TOOLS_DIRECTORY:synthetic-tools\nTOOL_FILE:example.exe|1|date\n"
                  "READ_ONLY_DISCOVERY_COMPLETE\n")
-    if not bridge_discovery_diagnostics(row, inventory, "")[
-            "discovery_execution_complete"]:
+    bridge_control = bridge_discovery_diagnostics(row, inventory, "")
+    if (not bridge_control["discovery_execution_complete"]
+            or bridge_control["powershell_parser_error_reported"]):
         raise RuntimeError("Bridge diagnostic rejected its synthetic inventory")
+    parser_error = ("#< CLIXML\n"
+                    '<Objs><S S="Error">CategoryInfo : ParserError: (:) [], '
+                    "ParentContainsErrorRecordException_x000D__x000A_"
+                    "FullyQualifiedErrorId : MissingEndParenthesisInExpression"
+                    "</S></Objs>\n")
+    parser_controls = {
+        "clixml_parser_error": (row, inventory, parser_error),
+        "stdout_parser_error_with_completion": (row, parser_error + inventory, ""),
+        "failed_parser_command": ({**row, "exit_code": 1}, "", parser_error),
+    }
+    for name, (status, stdout, stderr) in parser_controls.items():
+        diagnostic = bridge_discovery_diagnostics(status, stdout, stderr)
+        if (diagnostic["discovery_execution_complete"]
+                or not diagnostic["powershell_parser_error_reported"]):
+            raise RuntimeError("Unrecognized synthetic PowerShell parser failure: " + name)
     bridge_variants = {
         "empty_exit_zero": (row, "", ""),
         "marker_only": (row, "READ_ONLY_DISCOVERY_COMPLETE\n", ""),
@@ -1344,6 +1367,7 @@ def diagnostic_self_test():
         "endpoint_reconciliation_rejections": detail_readiness,
         "local_binding_rejections": sorted(bindings),
         "bridge_discovery_rejections": sorted(bridge_variants),
+        "bridge_parser_error_rejections": sorted(parser_controls),
     }
 
 
