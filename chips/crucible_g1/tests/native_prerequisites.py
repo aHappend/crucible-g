@@ -10,6 +10,8 @@ The optional --bridge-dir overrides VULCAN_BRIDGE_DIR or the supported bridge
 client's default ~/netsys17_bridge. Remote operations only enumerate tool files
 and read narrowly named graphics transport/manifests. Missing documentation is
 an unresolved interface, not proof of unavailable hardware.
+Both the remote bridge watchdog and local subprocess watchdog allow 3600 seconds;
+a short bridge timeout must not truncate an otherwise progressing discovery.
 
 Quartus 17.1 coverage uses report_ucp and check_timing; it does not expose
 get_unconstrained_paths. Reported unconstrained I/O is retained separately from
@@ -1567,8 +1569,8 @@ def main():
             if help_row["exit_code"] == 0 and not help_row["timed_out"]:
                 (output / "remote-discovery.ps1").write_text(REMOTE_DISCOVERY)
                 row = discovery.capture("bridge-read-only-discovery", [
-                    "python3", str(bridge / "run_remote.py"), "--timeout", "300",
-                    REMOTE_DISCOVERY], timeout=360)
+                    "python3", str(bridge / "run_remote.py"), "--timeout", str(TIMEOUT),
+                    REMOTE_DISCOVERY])
                 diagnostics = bridge_discovery_diagnostics(
                     row, (ROOT / row["stdout"]).read_text(),
                     (ROOT / row["stderr"]).read_text())
