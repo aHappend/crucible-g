@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Read-only native prerequisite discovery; never a timing or board pass.
 
-After append-only admission, run from the project root:
+After the shared runtime restores the already admitted
+native-prerequisites-discovery-0331 check, run from the project root:
 python3 tests/native_prerequisites.py --fit-dir <existing-fit> --revision top
+
+Restoration is not a request for a substitute or duplicate check. A source
+repair alone does not schedule discovery: confirm the effective admitted argv
+and evidence/native-prerequisites/run-*/ output selector before execution.
 
 The fit path is project-relative. TimeQuest opens a disposable copy, never the
 original fit. No map, fit, assembly, programming or graphics test is launched.

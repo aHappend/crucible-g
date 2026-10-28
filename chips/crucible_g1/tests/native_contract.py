@@ -9,13 +9,24 @@ earlier execution. Historical missing evidence remains missing.
 Each new receipt also retains the native CLI version before its command help;
 help syntax alone does not identify the tool that produced it.
 
-For the invocation-discovery check's independently reviewed command repair, use
-``python3 tests/native_contract.py --invocation-discovery`` and select outputs
-``evidence/native-contract-discovery-0291/run-*/``. This allocates exclusive
-children without overwriting the earlier fixed-directory receipt or logs.
-The default retention-capsule command and output namespace are unchanged.
-Changing the admitted command/output selector remains a shared-runtime action;
-this entry point does not modify the execution contract or certify native gates.
+The independently reviewed repair for native-invocation-contract-discovery-0291
+preserves its inline Python command. The shared runtime must add ``uuid`` to
+that command's imports, replace its allocation expression with
+``root / 'evidence/native-contract-discovery-0291' / ('run-' + uuid.uuid4().hex)``,
+retain exclusive mkdir and the remaining command, and select outputs
+``evidence/native-contract-discovery-0291/run-*/``. It must also restore
+native-prerequisites-discovery-0331 with the admitted command
+``python3 tests/native_prerequisites.py --fit-dir
+.vulcan/engineering/run-0001/quartus_sta_work --revision top`` and outputs
+``evidence/native-prerequisites/run-*/``. Confirm both effective contracts before
+execution; another passing diagnostic or unchanged L1 run cannot repair them.
+
+The optional ``--invocation-discovery`` mode only allocates fresh children of
+the historical directory. It is not the admitted inline-command repair and
+must not replace that check or be appended as a substitute. The default
+retention-capsule command and output namespace are unchanged. This entry point
+does not modify execution contracts, overwrite historical evidence or certify
+native gates.
 
 The independent coverage-marker guard and its synthetic regression are also
 used by portable L1. They do not execute STA, repair the native parser, or prove
@@ -190,7 +201,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Retain native invocation help, not acceptance.")
     parser.add_argument(
         "--invocation-discovery", action="store_true",
-        help="Use fresh children of the historical invocation-discovery directory.")
+        help=("Use fresh children of the historical invocation-discovery directory; "
+              "not a replacement for the admitted inline-command repair."))
     arguments = list(sys.argv[1:] if argv is None else argv)
     options = parser.parse_args(arguments)
     namespace = ("native-contract-discovery-0291" if options.invocation_discovery
