@@ -47,6 +47,8 @@ Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
 Original and effective lists also reject malformed check objects and ambiguous
 identifiers before comparing preservation; invalid exports are diagnostic errors.
+The single-list API rejects malformed containers and entries explicitly too,
+without leaking attribute errors from check selection.
 Malformed original inline Python is rejected before inspecting either effective
 list, even when discovery is missing. It cannot certify body preservation or
 escape the diagnostic CLI as an unhandled parser exception.
@@ -109,6 +111,10 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
     Supply the original inline source to also check preservation of its body;
     only the admitted UUID import and output allocation may change.
     """
+    if checks is not None and (
+            not isinstance(checks, list)
+            or not all(isinstance(check, dict) for check in checks)):
+        raise ValueError("Effective checks must be a list of check objects")
     discovery_id = "native-invocation-contract-discovery-0291"
     prerequisite_id = "native-prerequisites-discovery-0331"
     original = None
@@ -515,6 +521,18 @@ def execution_contract_self_test():
                 baseline_rejections[name + "_" + suffix] = str(error)
             else:
                 raise AssertionError("Invalid original inline source accepted: " + name)
+    for name, checks in (
+        ("single_list_mapping", {}),
+        ("single_list_text", "unavailable"),
+        ("single_list_nonobject", [None]),
+        ("single_list_mixed_entries", [control, 42, prerequisite]),
+    ):
+        try:
+            execution_contract_diagnostics(checks, original)
+        except ValueError as error:
+            baseline_rejections[name] = str(error)
+        else:
+            raise AssertionError("Malformed single-list contract accepted: " + name)
     for name, field, value in (
         ("original_not_list", "original_checks", {}),
         ("original_nonobject", "original_checks", [None]),
