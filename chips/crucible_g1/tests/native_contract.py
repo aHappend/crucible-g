@@ -40,6 +40,9 @@ object with original_checks, config_checks and execution_checks using
 This mode prints the paired diagnostic and exits nonzero for an unapplied
 repair. It does not open runtime metadata, allocate evidence or invoke tools;
 the caller must retain its input, stdout, stderr and execution receipt.
+The diagnostic hashes the exact exported bytes it inspected, so its result
+cannot be mistaken for confirmation of a different or subsequently edited
+export. This binding does not establish that an export is current runtime state.
 Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
 Original and effective lists also reject malformed check objects and ambiguous
@@ -710,7 +713,8 @@ def export_json_self_test():
 
 def check_contract_export(path):
     """Inspect an explicit export, never discover or modify runtime state."""
-    data = json.loads(path.read_text(), object_pairs_hook=unique_json_object)
+    source = path.read_bytes()
+    data = json.loads(source, object_pairs_hook=unique_json_object)
     if not isinstance(data, dict):
         raise ValueError("Contract export must be a JSON object")
     for key in ("original_checks", "config_checks", "execution_checks"):
@@ -718,9 +722,12 @@ def check_contract_export(path):
             raise ValueError("Contract export is missing " + key)
         validate_check_list(
             data[key], key, allow_unavailable=key != "original_checks")
-    return effective_contract_diagnostics(
+    result = effective_contract_diagnostics(
         data["config_checks"], data["execution_checks"],
         original_checks=data["original_checks"])
+    result["export_sha256"] = hashlib.sha256(source).hexdigest()
+    result["export_bytes"] = len(source)
+    return result
 
 
 def main(argv=None):
