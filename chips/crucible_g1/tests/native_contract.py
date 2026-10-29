@@ -40,6 +40,8 @@ object with original_checks, config_checks and execution_checks using
 This mode prints the paired diagnostic and exits nonzero for an unapplied
 repair. It does not open runtime metadata, allocate evidence or invoke tools;
 the caller must retain its input, stdout, stderr and execution receipt.
+Duplicate JSON keys are rejected at every nesting level: a shadowed check
+field cannot serve as unambiguous evidence of an effective contract.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -259,6 +261,7 @@ def effective_contract_diagnostics(config_checks, execution_checks,
 
 
 def execution_contract_self_test():
+    export_json_self_test()
     discovery = {
         "id": "native-invocation-contract-discovery-0291",
         "argv": ["python3", "-c",
@@ -605,9 +608,37 @@ def emit_capsule(root, output, receipt):
     }, sort_keys=True), flush=True)
 
 
+def unique_json_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Contract export contains duplicate JSON key: " + key)
+        result[key] = value
+    return result
+
+
+def export_json_self_test():
+    control = '{"config_checks":[{"id":"one","outputs":[]}],"execution_checks":[]}'
+    if json.loads(control, object_pairs_hook=unique_json_object) != json.loads(control):
+        raise AssertionError("Unambiguous contract JSON control was changed")
+    for text in (
+        '{"config_checks":[],"config_checks":null}',
+        '{"config_checks":[{"id":"one","id":"two"}]}',
+        '{"config_checks":[{"outputs":[],"outputs":["replacement"]}]}',
+        '{"config_checks":[{"extra":{"timeout_s":3600,"timeout_s":1}}]}',
+    ):
+        try:
+            json.loads(text, object_pairs_hook=unique_json_object)
+        except ValueError as error:
+            if "duplicate JSON key" not in str(error):
+                raise
+        else:
+            raise AssertionError("Ambiguous contract JSON was accepted: " + text)
+
+
 def check_contract_export(path):
     """Inspect an explicit export, never discover or modify runtime state."""
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(), object_pairs_hook=unique_json_object)
     if not isinstance(data, dict):
         raise ValueError("Contract export must be a JSON object")
     for key in ("original_checks", "config_checks", "execution_checks"):
