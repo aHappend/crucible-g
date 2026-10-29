@@ -219,10 +219,43 @@ No approximate reciprocal, float, combinational division/modulo, or simulation
 replacement datapath is used. Physical multiplier mapping and actual timing
 closure still require the admitted native gates.
 
+### Quartus DSP clock-enable recovery
+
+The retained mapping failure is
+`evidence/preparation/verifier-coordinator-quartus-map-20261029T155314Z-45cc74aa/receipt.json`.
+Quartus17.1 exited2 in DSP chain-adder inference with an incompatible
+clock-enable assertion, before producing a mapped netlist. The diagnostic
+does not identify the triggering module; the unsupported FAST FIT warning
+is separate from that terminal assertion.
+
+The deliverable `g1_dot4` and `g2_interpolator` now refresh their registered
+multiply/add trees on every released clock edge instead of giving successive
+arithmetic registers different state-decoded enables. Multipliers remain
+eligible for DSP inference; no global or local DSP-disable assignment is used.
+Widths, signedness, arithmetic expressions, asynchronous resets and register
+boundaries are unchanged. Operand capture remains handshake-controlled, and
+public result capture remains state-controlled, so intermediate refreshes
+cannot change a stalled result or accept another transaction.
+
+For the dot product, operands captured at E0 propagate through products at E1,
+pairs at E2 and total at E3; saturation still captures at E4. For interpolation,
+weights are correct at E1, the denominator at E3, and weighted products,
+pairs and numerators are correct by their scheduled E4/E5/E6 edges.
+The third-vertex product stays numerically stable while the pair propagates
+because captured attributes and weights remain unchanged for the transaction.
+All six dividers still accept at E7, with public output first valid after E596.
+Earlier or repeated internal computations are not additional valid transactions.
+
+This is the admitted inference repair, not evidence that Quartus mapping or
+timing now passes. Independent behavioral/synthesis regression, fresh mapping
+linked to the retained failure, and all mandatory native timing/hardware gates
+remain required. Existing failed receipts must not be overwritten.
+
 ## Parent preservation and timing-oriented memory changes
 
-All eight parent-named modules are present. Six are exact copies:
-g1_divider, g1_dot4, g1_edge, g1_project, g1_raster and g1_transform.
+All eight parent-named modules are present. Five are exact copies:
+g1_divider, g1_edge, g1_project, g1_raster and g1_transform.
+The deliverable g1_dot4 has the arithmetic-enable repair described above.
 The deliverable g1_clipper and crucible_g1_top make only numerically neutral
 synchronous-memory scheduling changes:
 
@@ -232,7 +265,7 @@ synchronous-memory scheduling changes:
 * Top projected-polygon reads become one synchronous read port with two
   issue/capture pairs per fan; writes move to a posedge-only RAM process.
 
-These changes avoid large asynchronous RAM muxes and reset-process memory
+The memory changes avoid large asynchronous RAM muxes and reset-process memory
 expansion while retaining every arithmetic operation, clip insertion order,
 record, status, fan/sample order and handshake stability. They do not claim
 cycle-for-cycle top latency. Retained leaf schedules are unchanged:

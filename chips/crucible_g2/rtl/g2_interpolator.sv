@@ -42,7 +42,8 @@ module g2_interpolator (
                 wire signed [58:0] positive_weight = {1'b0,weight[v]};
                 always @(posedge clk or negedge rst_n) begin
                     if (!rst_n) product[v*6+a]<=0;
-                    else if (state==PRODUCT)
+                    // Match the adder stages' unconditional arithmetic enables.
+                    else
                         product[v*6+a]<=positive_weight*attribute_value;
                 end
             end
@@ -51,10 +52,8 @@ module g2_interpolator (
                     pair_sum[a]<=0; numerator[a]<=0;
                     result[a*32 +:32]<=0;
                 end else begin
-                    if (state==PAIR_PRODUCT)
-                        pair_sum[a]<=product[a]+product[6+a];
-                    if (state==NUMERATOR)
-                        numerator[a]<=pair_sum[a]+product[12+a];
+                    pair_sum[a]<=product[a]+product[6+a];
+                    numerator[a]<=pair_sum[a]+product[12+a];
                     if (state==WAIT_RESULT && (&div_valid))
                         result[a*32 +:32]<=quotient[a][31:0];
                 end
@@ -69,7 +68,7 @@ module g2_interpolator (
                     if (state==IDLE && s_valid) begin
                         lambda[v]<=input_lambda; q[v]<=s_q[v*41 +:41];
                     end
-                    if (state==WEIGHT) weight[v]<=lambda[v]*q[v];
+                    weight[v]<=lambda[v]*q[v];
                 end
             end
         end
@@ -81,17 +80,13 @@ module g2_interpolator (
         if (!rst_n) begin
             state<=IDLE; attributes<=0; weight_pair<=0; denominator<=0;
         end else begin
+            weight_pair<={1'b0,weight[0]}+{1'b0,weight[1]};
+            denominator<={5'd0,weight_pair}+{6'd0,weight[2]};
             case (state)
                 IDLE: if (s_valid) begin attributes<=s_attributes; state<=WEIGHT; end
                 WEIGHT: state<=PAIR_WEIGHT;
-                PAIR_WEIGHT: begin
-                    weight_pair<={1'b0,weight[0]}+{1'b0,weight[1]};
-                    state<=DENOMINATOR;
-                end
-                DENOMINATOR: begin
-                    denominator<={5'd0,weight_pair}+{6'd0,weight[2]};
-                    state<=PRODUCT;
-                end
+                PAIR_WEIGHT: state<=DENOMINATOR;
+                DENOMINATOR: state<=PRODUCT;
                 PRODUCT: state<=PAIR_PRODUCT;
                 PAIR_PRODUCT: state<=NUMERATOR;
                 NUMERATOR: state<=ISSUE;
