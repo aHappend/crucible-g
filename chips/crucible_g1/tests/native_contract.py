@@ -42,6 +42,8 @@ repair. It does not open runtime metadata, allocate evidence or invoke tools;
 the caller must retain its input, stdout, stderr and execution receipt.
 Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
+Original and effective lists also reject malformed check objects and ambiguous
+identifiers before comparing preservation; invalid exports are diagnostic errors.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -72,6 +74,23 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ("rtl/*.sv", "design/SPEC.md", "design/ARCHITECTURE.md", "tests/*.py")
 TIMEOUT = 3600
+
+
+def validate_check_list(checks, label, allow_unavailable=False):
+    if checks is None and allow_unavailable:
+        return
+    if (not isinstance(checks, list)
+            or not all(isinstance(check, dict) for check in checks)):
+        raise ValueError(label + " must be a list of check objects")
+    identifiers = set()
+    for index, check in enumerate(checks):
+        identifier = check.get("id")
+        if not isinstance(identifier, str) or not identifier.strip():
+            raise ValueError(
+                f"{label}[{index}] must have a nonempty string id")
+        if identifier in identifiers:
+            raise ValueError(label + " contains duplicate check id: " + identifier)
+        identifiers.add(identifier)
 
 
 def execution_contract_diagnostics(checks, original_discovery_source=None):
@@ -195,7 +214,14 @@ def effective_contract_diagnostics(config_checks, execution_checks,
                                    original_discovery_source=None,
                                    original_checks=None):
     """Inspect repair and optional baseline preservation without changing state."""
+    for label, checks in (("config_checks", config_checks),
+                          ("execution_checks", execution_checks)):
+        if checks is not None and (
+                not isinstance(checks, list)
+                or not all(isinstance(check, dict) for check in checks)):
+            raise ValueError(label + " must be a list of check objects")
     if original_checks is not None:
+        validate_check_list(original_checks, "original_checks")
         discoveries = [
             check for check in original_checks
             if check.get("id") == "native-invocation-contract-discovery-0291"]
@@ -450,6 +476,28 @@ def execution_contract_self_test():
             baseline_rejections[name] = str(error)
         else:
             raise AssertionError("Invalid original-check baseline accepted: " + name)
+    for name, field, value in (
+        ("original_not_list", "original_checks", {}),
+        ("original_nonobject", "original_checks", [None]),
+        ("original_missing_id", "original_checks", [*baseline, {}]),
+        ("original_blank_id", "original_checks", [*baseline, {"id": " "}]),
+        ("original_duplicate_id", "original_checks", [*baseline, portable]),
+        ("config_not_list", "config_checks", {}),
+        ("config_nonobject", "config_checks", [None]),
+        ("execution_not_list", "execution_checks", "unavailable"),
+        ("execution_nonobject", "execution_checks", [None]),
+    ):
+        arguments = {
+            "config_checks": preserved, "execution_checks": preserved,
+            "original_checks": baseline,
+        }
+        arguments[field] = value
+        try:
+            effective_contract_diagnostics(**arguments)
+        except ValueError as error:
+            baseline_rejections[name] = str(error)
+        else:
+            raise AssertionError("Malformed contract input accepted: " + name)
     return {"kind": "synthetic_execution_contract_sensitivity",
             "acceptance_evidence": False, "commands_executed": False,
             "accepted_control": True, "preserved_body_control": True,
@@ -644,14 +692,8 @@ def check_contract_export(path):
     for key in ("original_checks", "config_checks", "execution_checks"):
         if key not in data:
             raise ValueError("Contract export is missing " + key)
-        checks = data[key]
-        if checks is None and key != "original_checks":
-            continue
-        if (not isinstance(checks, list)
-                or not all(isinstance(check, dict) for check in checks)):
-            raise ValueError(key + " must be a list of check objects")
-        if not all(isinstance(check.get("id"), str) for check in checks):
-            raise ValueError(key + " contains a check without a string id")
+        validate_check_list(
+            data[key], key, allow_unavailable=key != "original_checks")
     return effective_contract_diagnostics(
         data["config_checks"], data["execution_checks"],
         original_checks=data["original_checks"])
