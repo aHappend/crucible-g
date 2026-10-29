@@ -26,7 +26,8 @@ from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tests"))
-from model import Q, Projected, attributes, signed, transform  # noqa: E402
+from model import (Q, Projected, attributes, clip, edge, project, samples,
+                   signed, transform)  # noqa: E402
 from scenarios import (CELLS, SEEDS, Campaign, command, compact_campaign, directed,
                        matrix_campaign, triangle)  # noqa: E402
 
@@ -188,9 +189,21 @@ def execute_campaign(evidence, campaign, executable, name, thresholds=False):
                     compared_words=expected_words, observed_stall_cycles=int(match[3]),
                     receipt_command=len(evidence.records)-1, outcome="passed",
                     vectors=relative(vectors))
+    if thresholds:
+        coverage["required"]=required_coverage(campaign.cell)
     evidence.coverage.append(coverage)
     evidence.save()
     return coverage
+
+
+def required_coverage(cell):
+    singleton=cell[0]==cell[1]==1
+    return {"draws":32,"draws_per_precision":16,
+            "depth_decisions":16 if singleton else 128,
+            "six_attribute_outputs":16 if singleton else 64,
+            "rejected_tiles":2,"surviving_tiles":2,"disabled_strict_failures":2,
+            "passing_and_failing_both_precisions":True,"both_windings":True,
+            "base_modes":[2,3,6,7]}
 
 
 def pack(values, bits):
@@ -224,6 +237,15 @@ def leaf_vectors(path, compact):
         expected = attributes(vertices,lambdas)
         rows.append((2,pack([a for v in attrs for a in v],32),pack(qs,41),
                      pack(lambdas,17),pack(expected,32),0))
+    endpoint_attributes=(
+        (-(1<<31),(1<<31)-1,-1,0,1,-65537),
+        ((1<<31)-1,-(1<<31),65537,-2,3,0),
+        (0,1,-2,3,-4,5))
+    qs=(1,1<<40,1234567)
+    for selected in range(3):
+        lambdas=tuple(Q if i==selected else 0 for i in range(3))
+        rows.append((2,pack([a for v in endpoint_attributes for a in v],32),
+                     pack(qs,41),pack(lambdas,17),pack(endpoint_attributes[selected],32),0))
     for coordinates in (
         ((0,0),(65536,0),(0,65536)), ((65536,65536),(0,0),(65536,0)),
         ((0,0),(0,0),(65536,65536)), ((255,128),(129,65535),(32768,17)),
@@ -231,9 +253,17 @@ def leaf_vectors(path, compact):
         (ax,ay),(bx,by),(px,py)=coordinates
         result=(bx-ax)*(py-ay)-(by-ay)*(px-ax)
         rows.append((3,pack([pack(v,17) for v in coordinates],34),0,0,result&((1<<37)-1),0))
+    dots = [
+        ((Q,0,0,0),(Q,0,0,0)), ((-Q,0,0,0),(Q//3,0,0,0)),
+        ((-(1<<31),)*4, ((1<<31)-1,)*4),
+        (((1<<31)-1,)*4, ((1<<31)-1,)*4),
+        (((1<<31)-1,)*4, ((1<<31)-1,-((1<<31)-1),Q,-Q)),
+    ]
     for index in range(8 if compact else 64):
         a = tuple(rng.randrange(-(1<<31),1<<31) for _ in range(4))
         b = tuple(rng.randrange(-(1<<31),1<<31) for _ in range(4))
+        dots.append((a,b))
+    for a,b in dots:
         result=max(-(1<<31),min((1<<31)-1,sum(x*y for x,y in zip(a,b))//Q))
         rows.append((4,pack(a,32),pack(b,32),0,result&0xffffffff,0))
     with path.open("w",encoding="ascii") as output:
@@ -282,6 +312,7 @@ def leaves(evidence, compact=False, backend="icarus"):
 
 def compact(evidence, backend="verilator"):
     leaves(evidence,compact=True,backend="icarus")
+    units(evidence)
     campaign=compact_campaign()
     executable,obj=compile_stream(evidence,campaign.cell,backend)
     try:
@@ -289,6 +320,76 @@ def compact(evidence, backend="verilator"):
     finally:
         clean_intermediates(obj)
     synthesis(evidence, compact_only=True)
+
+
+def packed_projected(v):
+    return (v.x | v.y<<17 | v.q<<34 | v.depth<<75 |
+            pack(v.attributes,32)<<99)
+
+
+def units(evidence):
+    rows=[]
+    vertices,attrs=triangle(False)
+    vertices[2]=(0,2*Q,Q//2,Q)
+    wide=[tuple(v)+tuple(a) for v,a in zip(vertices,attrs)]
+    polygon,_=clip(wide)
+    rows.append((0,pack([pack(v,32) for v in wide],320),0,
+                 [pack(v,32) for v in polygon],0,len(polygon)))
+    for w in (1,19001,251111,(1<<31)-1):
+        vertex=(-w,w//2,w//3,w,*attrs[0])
+        for precision in (16,24):
+            projected=project(vertex,3,3,precision)
+            rows.append((1,pack(vertex,32),3 | 3<<9 | int(precision==24)<<18,
+                         [packed_projected(projected)],-1,0))
+    for mode in (2,7):
+        words=command(123,3,3,mode,vertices=vertices,attrs=attrs)
+        transformed=[transform(v,tuple(signed(x) for x in words[3:19]),mode==7) for v in wide]
+        polygon,_=clip(transformed)
+        projected=[project(v,3,3,24 if mode&1 else 16) for v in polygon]
+        rows.append((2,pack(words,32),0,[packed_projected(v) for v in projected],1,len(projected)))
+    raster_vertices,raster_attributes=triangle(False)
+    projected=[project(tuple(v)+tuple(a),3,3,16)
+               for v,a in zip(raster_vertices,raster_attributes)]
+    if edge(projected[0],projected[1],(projected[2].x,projected[2].y))<0:
+        projected[1],projected[2]=projected[2],projected[1]
+    for tx,ty in ((0,0),(2,0),(0,2),(2,2)):
+        outputs=[x | y<<8 | pack(lambdas,17)<<16
+                 for x,y,lambdas in samples(projected,(tx,ty,min(2,tx+1),min(2,ty+1)))]
+        rows.append((3,pack([v.x | v.y<<17 for v in projected],34),
+                     3 | 3<<9 | tx<<18 | ty<<26,outputs,2,0))
+    for precision in (16,24):
+        memory={(x,y):(1<<precision)-1 for x in range(3) for y in range(3)}
+        rows.append((4,0,3 | 3<<9 | int(precision==24)<<18,[0],-1,0))
+        for x,y,depth in ((0,0,11),(0,0,11),(0,0,12),(0,0,10),
+                          (1,0,20),(0,1,30),(1,1,40),(2,2,7)):
+            passing=depth<memory[x,y]
+            if passing:
+                memory[x,y]=depth
+            rows.append((6,0,x | y<<8 | depth<<16,[int(passing)],-1,0))
+        for tx,ty,zmin in ((0,0,39),(0,0,40),(0,0,41),(2,2,6),(2,2,7),(2,0,99)):
+            maximum=max(memory[x,y] for y in range(ty,min(3,ty+2))
+                        for x in range(tx,min(3,tx+2)))
+            rows.append((5,0,tx | ty<<8 | zmin<<16,[int(zmin>=maximum)],-1,0))
+    vectors=evidence.path/("units-"+uuid.uuid4().hex[:8]+".txt")
+    count=sum(len(row[3])+int(row[4]>=0) for row in rows)
+    with vectors.open("w",encoding="ascii") as output:
+        for mode,a,b,expected,di,dc in rows:
+            output.write(f"{mode} {a:x} {b:x} {len(expected)} {di} {dc}\n")
+            for value in expected:
+                output.write(f"{value:x}\n")
+    binary=evidence.path/("units-"+uuid.uuid4().hex[:8]+".vvp")
+    evidence.run("unit-compile",["iverilog","-g2012","-Wall","-s","unit_tb",
+                 "-o",relative(binary),*rtl_paths(),"tests/unit_tb.sv"])
+    record,out,_=evidence.run("unit-behavior",["vvp",relative(binary),"+vectors="+relative(vectors)])
+    match=re.search(r"UNIT_OK transactions=(\d+) comparisons=(\d+) cycles=(\d+)",out)
+    assert match and int(match[1])==len(rows) and int(match[2])==count, (
+        "MISSING_UNIT_COMPARISONS",record["stdout"])
+    assert int(match[3])<=500000
+    evidence.receipt["public_unit_channels"]={
+        "outcome":"passed","transactions":len(rows),"comparisons":count,
+        "cycles":int(match[3]),"command":len(evidence.records)-1,
+        "modules":["g2_clipper","g2_project","g2_setup","g2_raster","g2_zbuffer"]}
+    evidence.save()
 
 
 def source_rules():
@@ -407,7 +508,12 @@ def mutations(evidence):
     campaign=compact_campaign((7,5,1))
     vectors=evidence.path/("mutations-"+uuid.uuid4().hex[:8]+".txt")
     campaign.write(vectors)
-    for name,filename,old,new,intention in MUTATIONS:
+    ledger=[{"name":m[0],"outcome":"not-executed"} for m in MUTATIONS]
+    evidence.receipt["mutation_matrix"]=ledger
+    evidence.save()
+    for row,(name,filename,old,new,intention) in zip(ledger,MUTATIONS):
+        row["outcome"]="running"
+        evidence.save()
         directory=evidence.path/(name+"-"+uuid.uuid4().hex[:8])
         directory.mkdir()
         for source in (ROOT/"rtl").glob("*.sv"):
@@ -442,6 +548,7 @@ def mutations(evidence):
                 "mutant_sha256":mutant_hash,"outcome":"behaviorally-rejected",
                 "case":case.name,"word":index,"command":len(evidence.records)-1,
                 "source_copy":relative(directory)})
+            row.update(evidence.receipt["mutations"][-1])
             evidence.save()
         finally:
             clean_intermediates(obj)
@@ -459,13 +566,25 @@ def illegal_parameters(evidence):
 
 
 def legacy_regression(evidence):
-    c=Campaign((7,5,1),89)
+    c=Campaign((256,256,3),89)
     c.add("legacy-3d",7,5,0)
     c.add("legacy-2d",7,5,1)
     c.add("legacy-invalid-mode",7,5,123)
     v,a=triangle(False)
     v[2]=(0,2*Q,Q//2,Q)
     c.add("legacy-clipped",7,5,0,vertices=v,attrs=a)
+    for outside in ((0,0,0,-Q),(-2*Q,0,Q//2,Q),(2*Q,0,Q//2,Q),
+                    (0,-2*Q,Q//2,Q),(0,2*Q,Q//2,Q),
+                    (0,0,-Q,Q),(0,0,2*Q,Q)):
+        vertices,attrs=triangle(False)
+        vertices[2]=outside
+        c.add("legacy-each-clip-plane",3,3,0,vertices=vertices,attrs=attrs)
+    c.add("legacy-near-zero-w",1,1,0,
+          vertices=[(-1,-1,0,1),(1,-1,0,1),(0,1,0,1)])
+    c.add("legacy-degenerate",3,3,0,vertices=[(0,0,0,Q)]*3)
+    c.add("legacy-fully-clipped",3,3,0,vertices=[(0,0,-Q,Q)]*3)
+    corner=[(65024,-65536,0,Q),(65536,-65536,0,Q),(65536,-65024,0,Q)]
+    c.add("legacy-maximum-viewport",256,256,0,vertices=corner)
     for parent in (True,False):
         executable,obj=compile_stream(evidence,c.cell,"verilator",parent=parent)
         try:
@@ -491,9 +610,14 @@ def clean_reproduction(evidence):
 
 
 def full(evidence):
+    ledger=[{"cell":list(cell),"seed":seed,"required":required_coverage(cell),
+             "outcome":"not-executed"} for cell in CELLS for seed in SEEDS]
+    evidence.receipt["mandatory_matrix"]=ledger
+    evidence.save()
     source_rules()
     leaves(evidence,compact=True,backend="icarus")
     leaves(evidence,compact=False,backend="verilator")
+    units(evidence)
     smoke=compact_campaign()
     executable,_=compile_stream(evidence,smoke.cell,"icarus")
     execute_campaign(evidence,smoke,executable,"icarus-smoke")
@@ -502,14 +626,31 @@ def full(evidence):
     execute_campaign(evidence,smoke,executable,"icarus-perspective-smoke")
     matrix=[]
     for cell in CELLS:
-        executable,obj=compile_stream(evidence,cell,"verilator")
+        try:
+            executable,obj=compile_stream(evidence,cell,"verilator")
+        except ToolFailure:
+            for row in ledger:
+                if row["cell"]==list(cell):
+                    row["outcome"]="compile-failed"
+            evidence.save()
+            raise
         try:
             for seed in SEEDS:
+                row=next(r for r in ledger if r["cell"]==list(cell) and r["seed"]==seed)
+                row["outcome"]="running"
+                evidence.save()
                 campaign=matrix_campaign(cell,seed)
                 if seed==17:
                     directed(campaign)
-                coverage=execute_campaign(evidence,campaign,executable,
-                    "matrix-"+"-".join(map(str,cell))+f"-seed{seed}",thresholds=True)
+                try:
+                    coverage=execute_campaign(evidence,campaign,executable,
+                        "matrix-"+"-".join(map(str,cell))+f"-seed{seed}",thresholds=True)
+                except (ToolFailure,AssertionError) as error:
+                    row.update(outcome="failed",error=str(error))
+                    evidence.save()
+                    raise
+                row.update(outcome="passed",actual=coverage)
+                evidence.save()
                 matrix.append(coverage)
         finally:
             clean_intermediates(obj)
@@ -527,7 +668,8 @@ def full(evidence):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compact",action="store_true",help="partial clean-directory reproduction only")
-    parser.add_argument("--probe",choices=("smoke","matrix","synthesis","mutations"),
+    parser.add_argument("--probe",choices=("smoke","matrix","synthesis","mutations",
+                                          "portability","reproduction"),
                         help="bounded advisory preparation, not admitted L1")
     parser.add_argument("--repair-of",action="append",default=[],help="project-relative earlier failed receipt")
     parser.add_argument("--cell",nargs=3,type=int,metavar=("WIDTH","HEIGHT","TILE_LOG2"),
@@ -543,6 +685,7 @@ def main():
         evidence.tools()
         if args.probe=="smoke":
             leaves(evidence,compact=True)
+            units(evidence)
             campaign=compact_campaign()
             executable,_=compile_stream(evidence,campaign.cell,"icarus")
             execute_campaign(evidence,campaign,executable,"probe-compact")
@@ -561,6 +704,15 @@ def main():
             synthesis(evidence)
         elif args.probe=="mutations":
             mutations(evidence)
+        elif args.probe=="portability":
+            illegal_parameters(evidence)
+            legacy_regression(evidence)
+            leaves(evidence,compact=False,backend="verilator")
+            campaign=compact_campaign((7,5,1))
+            executable,_=compile_stream(evidence,campaign.cell,"icarus")
+            execute_campaign(evidence,campaign,executable,"icarus-perspective")
+        elif args.probe=="reproduction":
+            clean_reproduction(evidence)
         elif args.compact:
             source_rules()
             compact(evidence)
@@ -573,6 +725,10 @@ def main():
     except (AssertionError,RuntimeError,OSError,ValueError) as error:
         evidence.receipt["outcome"]="failed"
         evidence.receipt["error"]=str(error)
+        for ledger in ("mandatory_matrix","mutation_matrix"):
+            for row in evidence.receipt.get(ledger,[]):
+                if row["outcome"]=="running":
+                    row.update(outcome="failed",error=str(error))
         print(f"L1 FAILED: {error}",file=sys.stderr)
     finally:
         evidence.receipt.update(end_utc=utc(),exit_code=exit_code)
