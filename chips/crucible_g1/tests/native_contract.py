@@ -58,6 +58,8 @@ Compilation also rejects scope-invalid statements such as module-level return;
 an AST alone does not establish that an inline command can execute.
 An unapplied allocation repair is diagnosed separately from unrelated inline
 body changes; the former alone must not falsely imply that the latter occurred.
+An exclusive mkdir on the historical directory is likewise distinguished from
+missing exclusive creation: it still fails the required UUID-allocation check.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -211,7 +213,7 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
                 mkdir_indices = [
                     index for index, node in enumerate(tree.body)
                     if isinstance(node, ast.Expr) and ast.dump(node.value) == mkdir]
-                if (len(mkdir_indices) != 1 or not allocation_valid
+                if (len(mkdir_indices) != 1 or len(allocations) != 1
                         or mkdir_indices[0] != allocations[0][0] + 1):
                     issues.append(discovery_id + ": exclusive output allocation is absent")
                 if original_discovery_source is not None:
@@ -442,6 +444,13 @@ def execution_contract_self_test():
            for issue in allocation_only["issues"]):
         raise AssertionError(
             "Unapplied allocation repair was mislabeled as an unrelated body change")
+    if any("exclusive output allocation is absent" in issue
+           for issue in allocation_only["issues"]):
+        raise AssertionError(
+            "Historical exclusive mkdir was mislabeled as missing exclusive creation")
+    if not any("admitted UUID child allocation is absent" in issue
+               for issue in allocation_only["issues"]):
+        raise AssertionError("Historical exclusive mkdir hid the occupied-path defect")
     unrelated_body = execution_contract_diagnostics(
         [{**unrepaired[0], "argv": [
             "python3", "-c", original.replace("3600", "1")]}], original)
