@@ -251,11 +251,44 @@ timing now passes. Independent behavioral/synthesis regression, fresh mapping
 linked to the retained failure, and all mandatory native timing/hardware gates
 remain required. Existing failed receipts must not be overwritten.
 
+The subsequent source-matched AUTO FIT mapping probe also exited2 with the
+same DSP clock-enable assertion before producing a netlist:
+`evidence/preparation/verifier-coordinator-map-repair-20261029T163132Z-3912aedf/receipt.json`.
+It retains the original failure link. This is a mapping failure, not measured
+negative slack; neither a stale cache nor the earlier fitter warning alone
+explains it. The diagnostic still does not localize a triggering module.
+
+The follow-on repair applies the same common-enable discipline to the
+deliverable `g1_edge` products/difference and `g2_engine` fragment-depth
+products/pair/final shifted sum. They refresh on every released edge; no DSP
+inference is disabled. The prior dot/interpolator repairs are retained.
+All arithmetic widths, signs, expressions, asynchronous resets, pipeline
+boundaries, hierarchy and state transitions are preserved.
+
+For `g1_edge`, accepted differences at E0 still produce products at E1 and
+the public result at E2. Differences cannot change again during HOLD, so
+recomputing the same products and difference holds the stalled result stable.
+For fragment depth, let F0 be raster-sample acceptance. Captured lambdas and
+the fan's quantized depths produce products at F1, the pair at F2 and
+sample_depth at F3, exactly the existing DEPTH_PRODUCT/PAIR/SUM schedule.
+The third product is stable while the pair propagates. Lambdas and fan payload
+remain unchanged through the depth transaction, interpolation and pixel
+retirement, so repeated sample_depth updates preserve fragment-request and
+pixel-output stability. Internal intermediate values during unrelated engine
+states are not transactions. There is no additional arithmetic stage or
+changed public latency contract.
+
+Independent Verifier must now diagnose mapping against these changed sources
+and rerun the unchanged mandatory regression, including edge E2/backpressure
+and fragment-depth visibility. Actual mapped DSP/RAM resources, 10 ns STA,
+HIL and independent acceptance remain unresolved.
+
 ## Parent preservation and timing-oriented memory changes
 
-All eight parent-named modules are present. Five are exact copies:
-g1_divider, g1_edge, g1_project, g1_raster and g1_transform.
-The deliverable g1_dot4 has the arithmetic-enable repair described above.
+All eight parent-named modules are present. Four are exact copies:
+g1_divider, g1_project, g1_raster and g1_transform.
+The deliverable g1_dot4 and g1_edge have the arithmetic-enable repairs
+described above.
 The deliverable g1_clipper and crucible_g1_top make only numerically neutral
 synchronous-memory scheduling changes:
 

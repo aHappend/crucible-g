@@ -169,6 +169,11 @@ module g2_engine #(
             tiles_tested<=0; tiles_rejected<=0; fragments_tested<=0;
             fragments_passed<=0; fragments_failed<=0; record<=0; record_index<=0;
         end else begin
+            // Keep the depth multiply/add stages on a common arithmetic enable.
+            depth_product0<=lambda0*z0; depth_product1<=lambda1*z1;
+            depth_product2<=lambda2*z2;
+            depth_pair<={1'b0,depth_product0}+{1'b0,depth_product1};
+            sample_depth<=depth_sum[39:16];
             case (state)
                 IDLE: if (s_valid) begin
                     header<=s_header; attributes<=s_attributes;
@@ -244,15 +249,9 @@ module g2_engine #(
                         state<=DEPTH_PRODUCT;
                     end else if (raster_done) state<=NEXT_TILE;
                 end
-                DEPTH_PRODUCT: begin
-                    depth_product0<=lambda0*z0; depth_product1<=lambda1*z1;
-                    depth_product2<=lambda2*z2; state<=DEPTH_PAIR;
-                end
-                DEPTH_PAIR: begin
-                    depth_pair<={1'b0,depth_product0}+{1'b0,depth_product1};
-                    state<=DEPTH_SUM;
-                end
-                DEPTH_SUM: begin sample_depth<=depth_sum[39:16]; state<=FRAG_SEND; end
+                DEPTH_PRODUCT: state<=DEPTH_PAIR;
+                DEPTH_PAIR: state<=DEPTH_SUM;
+                DEPTH_SUM: state<=FRAG_SEND;
                 FRAG_SEND: if (frag_ready) state<=FRAG_WAIT;
                 FRAG_WAIT: if (frag_result_valid) begin
                     fragments_tested<=fragments_tested+32'd1;

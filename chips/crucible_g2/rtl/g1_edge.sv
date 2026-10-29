@@ -24,6 +24,11 @@ module g1_edge (
             state<=IDLE; dx<=0; dy<=0; px<=0; py<=0;
             product0<=0; product1<=0; result<=0;
         end else begin
+            // Common arithmetic enables avoid incompatible Quartus DSP chains.
+            product0<=dx*py;
+            product1<=dy*px;
+            result<=$signed({product0[35],product0})-
+                    $signed({product1[35],product1});
             case (state)
                 IDLE: if (s_valid) begin
                     dx<=$signed({1'b0,s_b[16:0]})-$signed({1'b0,s_a[16:0]});
@@ -32,16 +37,8 @@ module g1_edge (
                     py<=$signed({1'b0,s_p[33:17]})-$signed({1'b0,s_a[33:17]});
                     state<=PRODUCT;
                 end
-                PRODUCT: begin
-                    product0<=dx*py;
-                    product1<=dy*px;
-                    state<=DIFFERENCE;
-                end
-                DIFFERENCE: begin
-                    result<=$signed({product0[35],product0})-
-                            $signed({product1[35],product1});
-                    state<=HOLD;
-                end
+                PRODUCT: state<=DIFFERENCE;
+                DIFFERENCE: state<=HOLD;
                 HOLD: if (m_ready) state<=IDLE;
             endcase
         end
