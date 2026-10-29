@@ -45,6 +45,8 @@ cannot be mistaken for confirmation of a different or subsequently edited
 export. This binding does not establish that an export is current runtime state.
 Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
+Non-finite numeric constants are rejected too: Python's permissive JSON decoder
+must not certify an export containing NaN or infinite execution limits.
 Original and effective lists also reject malformed check objects and ambiguous
 identifiers before comparing preservation; invalid exports are diagnostic errors.
 Preservation compares JSON value types as well as values: Python's equivalence
@@ -78,6 +80,7 @@ import ast
 import base64
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -778,9 +781,26 @@ def unique_json_object(pairs):
     return result
 
 
+def reject_nonfinite_json_constant(value):
+    raise ValueError("Contract export contains non-finite JSON constant: " + value)
+
+
+def finite_json_float(value):
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("Contract export contains non-finite JSON constant: " + value)
+    return number
+
+
+def parse_contract_export(source):
+    return json.loads(
+        source, object_pairs_hook=unique_json_object,
+        parse_constant=reject_nonfinite_json_constant, parse_float=finite_json_float)
+
+
 def export_json_self_test():
     control = '{"config_checks":[{"id":"one","outputs":[]}],"execution_checks":[]}'
-    if json.loads(control, object_pairs_hook=unique_json_object) != json.loads(control):
+    if parse_contract_export(control) != json.loads(control):
         raise AssertionError("Unambiguous contract JSON control was changed")
     for text in (
         '{"config_checks":[],"config_checks":null}',
@@ -789,18 +809,27 @@ def export_json_self_test():
         '{"config_checks":[{"extra":{"timeout_s":3600,"timeout_s":1}}]}',
     ):
         try:
-            json.loads(text, object_pairs_hook=unique_json_object)
+            parse_contract_export(text)
         except ValueError as error:
             if "duplicate JSON key" not in str(error):
                 raise
         else:
             raise AssertionError("Ambiguous contract JSON was accepted: " + text)
+    for token in ("NaN", "Infinity", "-Infinity", "1e999", "-1e999"):
+        for text in (token, '{"config_checks":[{"timeout_s":' + token + '}]}'):
+            try:
+                parse_contract_export(text)
+            except ValueError as error:
+                if "non-finite JSON constant" not in str(error):
+                    raise
+            else:
+                raise AssertionError("Non-finite contract JSON was accepted: " + text)
 
 
 def check_contract_export(path):
     """Inspect an explicit export, never discover or modify runtime state."""
     source = path.read_bytes()
-    data = json.loads(source, object_pairs_hook=unique_json_object)
+    data = parse_contract_export(source)
     if not isinstance(data, dict):
         raise ValueError("Contract export must be a JSON object")
     for key in ("original_checks", "config_checks", "execution_checks"):
