@@ -54,6 +54,8 @@ list, even when discovery is missing. It cannot certify body preservation or
 escape the diagnostic CLI as an unhandled parser exception.
 Compilation also rejects scope-invalid statements such as module-level return;
 an AST alone does not establish that an inline command can execute.
+An unapplied allocation repair is diagnosed separately from unrelated inline
+body changes; the former alone must not falsely imply that the latter occurred.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -199,9 +201,13 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
                         or mkdir_indices[0] != allocations[0][0] + 1):
                     issues.append(discovery_id + ": exclusive output allocation is absent")
                 if original_discovery_source is not None:
-                    original_allocations[0].value = ast.parse(
-                        "root / 'evidence/native-contract-discovery-0291' / "
-                        "('run-' + uuid.uuid4().hex)", mode="eval").body
+                    # Allocation is checked above; compare the remaining body independently.
+                    original_allocations[0].value = ast.Constant(value=None)
+                    for node in tree.body:
+                        if (isinstance(node, ast.Assign)
+                                and any(isinstance(target, ast.Name) and target.id == "out"
+                                        for target in node.targets)):
+                            node.value = ast.Constant(value=None)
                     # The admitted uuid import has no mandated position.
                     for module in (tree, original):
                         for node in module.body:
@@ -408,6 +414,17 @@ def execution_contract_self_test():
     unrepaired = [
         {**control, "argv": ["python3", "-c", original],
          "outputs": ["evidence/native-contract-discovery-0291/"]}]
+    allocation_only = execution_contract_diagnostics(unrepaired, original)
+    if any("remaining inline command was changed" in issue
+           for issue in allocation_only["issues"]):
+        raise AssertionError(
+            "Unapplied allocation repair was mislabeled as an unrelated body change")
+    unrelated_body = execution_contract_diagnostics(
+        [{**unrepaired[0], "argv": [
+            "python3", "-c", original.replace("3600", "1")]}], original)
+    if not any("remaining inline command was changed" in issue
+               for issue in unrelated_body["issues"]):
+        raise AssertionError("Unapplied allocation hid an unrelated body change")
     paired_rejections = {}
     for name, (config_checks, execution_checks) in {
         "both_unrepaired": (unrepaired, unrepaired),
@@ -560,6 +577,8 @@ def execution_contract_self_test():
             "accepted_control": True, "preserved_body_control": True,
             "rejections": rejected, "paired_control": paired_control,
             "paired_rejections": paired_rejections,
+            "unapplied_allocation_diagnostic": allocation_only,
+            "unapplied_allocation_changed_body_diagnostic": unrelated_body,
             "preservation_control": preservation_control,
             "appended_supplement_control": appended_control,
             "inferred_body_control": inferred_control,
