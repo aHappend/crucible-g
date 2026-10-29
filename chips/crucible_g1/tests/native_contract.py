@@ -47,6 +47,8 @@ Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
 Original and effective lists also reject malformed check objects and ambiguous
 identifiers before comparing preservation; invalid exports are diagnostic errors.
+Preservation compares JSON value types as well as values: Python's equivalence
+of booleans, integers and floats must not hide a changed executable contract.
 The single-list API rejects malformed containers and entries explicitly too,
 without leaking attribute errors from check selection.
 Malformed original inline Python is rejected before inspecting either effective
@@ -103,6 +105,18 @@ def validate_check_list(checks, label, allow_unavailable=False):
         if identifier in identifiers:
             raise ValueError(label + " contains duplicate check id: " + identifier)
         identifiers.add(identifier)
+
+
+def same_contract_values(left, right):
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(
+            same_contract_values(left[key], right[key]) for key in left)
+    if isinstance(left, list):
+        return len(left) == len(right) and all(
+            same_contract_values(a, b) for a, b in zip(left, right))
+    return left == right
 
 
 def execution_contract_diagnostics(checks, original_discovery_source=None):
@@ -274,7 +288,7 @@ def effective_contract_diagnostics(config_checks, execution_checks,
     issues = [
         name + ": " + issue
         for name, result in diagnostics.items() for issue in result["issues"]]
-    if config_checks != execution_checks:
+    if not same_contract_values(config_checks, execution_checks):
         issues.append("Config and execution effective check lists differ")
     if original_checks is not None:
         discovery_id = "native-invocation-contract-discovery-0291"
@@ -303,7 +317,7 @@ def effective_contract_diagnostics(config_checks, execution_checks,
                                 if key not in ("argv", "outputs")}
                     current = {key: value for key, value in current.items()
                                if key not in ("argv", "outputs")}
-                if current != original:
+                if not same_contract_values(current, original):
                     issues.append(f"{name}: original check {identifier} was changed")
     return {
         "kind": "read_only_paired_execution_contract_diagnostic",
@@ -318,6 +332,15 @@ def effective_contract_diagnostics(config_checks, execution_checks,
 
 def execution_contract_self_test():
     export_json_self_test()
+    for left, right in (
+        (True, 1), (False, 0), (1, 1.0),
+        ({"nested": [True]}, {"nested": [1]}),
+    ):
+        if same_contract_values(left, right):
+            raise AssertionError("Contract equality erased a JSON value type")
+    if not same_contract_values(
+            {"a": [1, True], "b": None}, {"b": None, "a": [1, True]}):
+        raise AssertionError("Contract equality changed JSON object-order semantics")
     discovery = {
         "id": "native-invocation-contract-discovery-0291",
         "argv": ["python3", "-c",
@@ -436,6 +459,9 @@ def execution_contract_self_test():
         "both_lists_unavailable": (None, None),
         "divergent_effective_lists": (
             effective, [*effective, {"id": "unexpected-check", "argv": ["python3"]}]),
+        "divergent_numeric_types": (
+            [{**control, "timeout_s": 86400}, prerequisite],
+            [{**control, "timeout_s": 86400.0}, prerequisite]),
     }.items():
         result = effective_contract_diagnostics(
             config_checks, execution_checks, original)
@@ -487,6 +513,8 @@ def execution_contract_self_test():
             {**portable, "requires": ["python3"]}, *effective],
         "shortened_portable_timeout": [
             {**portable, "timeout_s": 1}, *effective],
+        "changed_portable_timeout_type": [
+            {**portable, "timeout_s": 86400.0}, *effective],
         "altered_discovery_inputs": [
             portable, {**control, "inputs": []}, prerequisite],
         "altered_inline_body_without_explicit_source": [
