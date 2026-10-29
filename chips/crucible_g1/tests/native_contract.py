@@ -64,6 +64,9 @@ An unapplied allocation repair is diagnosed separately from unrelated inline
 body changes; the former alone must not falsely imply that the latter occurred.
 An exclusive mkdir on the historical directory is likewise distinguished from
 missing exclusive creation: it still fails the required UUID-allocation check.
+Failed paired confirmations include structured repair requirements for the
+shared-runtime contract owner. These are instructions, not replacement checks
+or evidence that any runtime update occurred.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -334,6 +337,35 @@ def effective_contract_diagnostics(config_checks, execution_checks,
         "remaining_command_checked": original_discovery_source is not None,
         "original_checks_preservation_checked": original_checks is not None,
         "contracts": diagnostics, "issues": issues,
+        "repair_handoff": None if not issues else {
+            "owner": "shared_runtime_contract_owner",
+            "verification_ready": False,
+            "preserve_all_other_checks_and_historical_evidence": True,
+            "required_in_place_repairs": [
+                {
+                    "id": "native-invocation-contract-discovery-0291",
+                    "import": "uuid",
+                    "allocation": (
+                        "root / 'evidence/native-contract-discovery-0291' / "
+                        "('run-' + uuid.uuid4().hex)"),
+                    "mkdir": "out.mkdir(parents=True, exist_ok=False)",
+                    "outputs": ["evidence/native-contract-discovery-0291/run-*/"],
+                    "preserve_remaining_inline_command": True,
+                },
+                {
+                    "id": "native-prerequisites-discovery-0331",
+                    "argv": [
+                        "python3", "tests/native_prerequisites.py", "--fit-dir",
+                        ".vulcan/engineering/run-0001/quartus_sta_work",
+                        "--revision", "top"],
+                    "outputs": ["evidence/native-prerequisites/run-*/"],
+                    "restore_missing_check": True,
+                },
+            ],
+            "before_execution": (
+                "Require a successful paired --check-contracts confirmation "
+                "of newly exported effective lists; do not execute this handoff."),
+        },
     }
 
 
@@ -441,6 +473,17 @@ def execution_contract_self_test():
     paired_control = effective_contract_diagnostics(effective, effective, original)
     if not paired_control["required_repair_fields_present"]:
         raise AssertionError("Paired effective-contract control was rejected")
+    if paired_control["repair_handoff"] is not None:
+        raise AssertionError("Confirmed contract unexpectedly requests repairs")
+    missing_result = effective_contract_diagnostics([], [], original)
+    handoff = missing_result["repair_handoff"]
+    if (handoff["owner"] != "shared_runtime_contract_owner"
+            or handoff["verification_ready"] is not False
+            or [row["id"] for row in handoff["required_in_place_repairs"]]
+            != [discovery["id"], prerequisite["id"]]
+            or handoff["required_in_place_repairs"][1]["argv"] != prerequisite["argv"]
+            or handoff["required_in_place_repairs"][0]["outputs"] != discovery["outputs"]):
+        raise AssertionError("Failed confirmation lost its actionable repair handoff")
     unrepaired = [
         {**control, "argv": ["python3", "-c", original],
          "outputs": ["evidence/native-contract-discovery-0291/"]}]
@@ -618,6 +661,7 @@ def execution_contract_self_test():
             "acceptance_evidence": False, "commands_executed": False,
             "accepted_control": True, "preserved_body_control": True,
             "rejections": rejected, "paired_control": paired_control,
+            "missing_contract_repair_handoff": handoff,
             "paired_rejections": paired_rejections,
             "unapplied_allocation_diagnostic": allocation_only,
             "unapplied_allocation_changed_body_diagnostic": unrelated_body,
