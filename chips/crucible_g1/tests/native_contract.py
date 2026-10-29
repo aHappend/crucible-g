@@ -32,6 +32,8 @@ The original check list supplies the authoritative inline body automatically;
 a conflicting separately supplied original body is an invalid diagnostic input.
 An absent effective list is reported as unavailable evidence, never inferred
 from the other list or treated as an empty, confirmed runtime contract.
+Every effective check needs a unique, nonempty string identifier, including
+appended checks; ambiguous identifiers cannot confirm an executable contract.
 For a bounded, nonexecuting confirmation, supply an explicitly exported JSON
 object with original_checks, config_checks and execution_checks using
 ``python3 tests/native_contract.py --check-contracts <export.json>``.
@@ -84,6 +86,15 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
     if checks is None:
         issues.append("Effective check list is unavailable; contract confirmation is incomplete")
         checks = []
+    seen = set()
+    for index, check in enumerate(checks):
+        identifier = check.get("id")
+        if not isinstance(identifier, str) or not identifier.strip():
+            issues.append(f"Check at index {index} lacks a nonempty string identifier")
+        elif identifier in seen:
+            issues.append(f"Duplicate effective check identifier: {identifier}")
+        else:
+            seen.add(identifier)
     selected = {}
     for identifier in (discovery_id, prerequisite_id):
         matches = [check for check in checks if check.get("id") == identifier]
@@ -379,6 +390,10 @@ def execution_contract_self_test():
         raise AssertionError("Original inline-body inference control was rejected")
     preservation_rejections = {}
     for name, checks in {
+        "duplicate_supplement": [*supplemented, supplemented[-1]],
+        "unnamed_supplement": [*preserved, {"argv": ["python3", "--version"]}],
+        "blank_supplement_id": [*preserved, {"id": " ", "argv": ["python3"]}],
+        "nonstring_supplement_id": [*preserved, {"id": 12, "argv": ["python3"]}],
         "removed_portable_l1": effective,
         "reordered_original_checks": [control, portable, prerequisite],
         "prepended_prerequisite": [prerequisite, portable, control],
