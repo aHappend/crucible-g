@@ -10,6 +10,13 @@ Quartus, a fit database or a board; they do not execute any native gate.
 The native-coverage probe also executes the old and repaired output-allocation
 snippets in a disposable tree, retaining the expected collision and two fresh
 runs. This does not apply or confirm the effective shared-runtime contract.
+
+Behavior jobs retain the original command order and overlap the preceding
+command at each partition boundary. Only primary membership contributes to
+functional coverage. Per-job public transfers prove every adjacent command's
+earliest-legal handshake, including boundaries. Scheduling estimates include
+reset recovery, input gaps and output stalls; actual Icarus cycles and elapsed
+execution must independently satisfy <=500,000 cycles and <60 seconds.
 """
 
 import argparse
@@ -42,6 +49,9 @@ from workload import coverage, workload  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ("rtl/*.sv", "design/SPEC.md", "design/ARCHITECTURE.md", "tests/*.py")
 TIMEOUT = 3600
+ICARUS_CYCLE_LIMIT = 500000
+ICARUS_SECONDS_LIMIT = 60
+STREAM_BATCH_BUDGET = 450000
 
 
 class VerificationFailure(RuntimeError):
@@ -152,6 +162,7 @@ class Execution:
         self.save()
         with (directory / "stdout.log").open("wb") as stdout, (
                 directory / "stderr.log").open("wb") as stderr:
+            started = time.monotonic()
             try:
                 result = subprocess.run(row["argv"], cwd=cwd, stdout=stdout,
                                         stderr=stderr, timeout=timeout, check=False)
@@ -162,6 +173,7 @@ class Execution:
                 row["error"] = f"{type(error).__name__}: {error}"
                 raise
             finally:
+                row["duration_s"] = time.monotonic() - started
                 row["end"] = time.time()
                 self.save()
         return row
@@ -209,6 +221,95 @@ class Execution:
         return 0
 
 
+def icarus_tier(execution, directory, row, cycles):
+    measured = {
+        "command": row["name"], "actual_cycles": cycles,
+        "duration_s": row["duration_s"],
+        "cycle_limit_inclusive": ICARUS_CYCLE_LIMIT,
+        "seconds_limit_exclusive": ICARUS_SECONDS_LIMIT,
+        "within_tier": (0 < cycles <= ICARUS_CYCLE_LIMIT
+                        and row["duration_s"] < ICARUS_SECONDS_LIMIT),
+    }
+    write_json(directory / "tier.json", measured)
+    require(measured["within_tier"],
+            f"Icarus tier violation: {row['name']}: {cycles} actual cycles, "
+            f"{row['duration_s']:.6f}s; see {execution.rel(directory / 'tier.json')}")
+
+
+def stream_cycle_estimate(result):
+    # The reference budgets 100 idle cycles per output word. For packing only,
+    # use 32 per word for the nonzero 32-bit LFSR's short random stall bursts.
+    # Directed 70-cycle stalls are separate below. This is not a timing proof
+    # or a replacement for the unchanged per-command functional watchdog.
+    return result.cycle_bound - len(result.words()) * (100 - 32) + 31
+
+
+def stream_job_estimate(results, reset_tests):
+    # At most one input gap per word, six 70-cycle directed stalls, startup
+    # and final idle checks. Reset tests add three fully compared recoveries,
+    # a prefix, an arithmetic abort, and an output-stalled abort of command 0.
+    estimate = sum(stream_cycle_estimate(r) for r in results) + 6 * 70 + 256
+    if reset_tests:
+        estimate += 4 * stream_cycle_estimate(results[0]) + 13 + 31 + 20 + 70 + 16
+    return estimate
+
+
+def stream_batches(results, budget=STREAM_BATCH_BUDGET):
+    require(bool(results), "Cannot partition an empty workload")
+    batches = []
+    start = 0
+    while start < len(results):
+        first = max(0, start - 1)
+        stop = start + 1
+        reset_tests = start == 0
+        require(stream_job_estimate(results[first:stop], reset_tests) <= budget,
+                f"Command/boundary {first}..{start} cannot fit compact Icarus budget")
+        while stop < len(results) and stream_job_estimate(
+                results[first:stop + 1], reset_tests) <= budget:
+            stop += 1
+        batches.append({
+            "first": first, "primary_start": start, "stop": stop,
+            "reset_tests": reset_tests,
+            "estimated_cycles": stream_job_estimate(results[first:stop], reset_tests),
+        })
+        start = stop
+    require([i for b in batches for i in range(b["primary_start"], b["stop"])]
+            == list(range(len(results))), "Partition lost or duplicated primary commands")
+    require({i for b in batches for i in range(b["first"], b["stop"] - 1)}
+            == set(range(len(results) - 1)), "Partition lost an adjacent-command witness")
+    return batches
+
+
+def tiering_sensitivity(execution):
+    fixtures = execution.output / "tiering-fixtures"
+    fixtures.mkdir()
+    cases = (
+        ("at-cycle-limit", ICARUS_CYCLE_LIMIT, 1.0, True),
+        ("over-cycle-limit", ICARUS_CYCLE_LIMIT + 1, 1.0, False),
+        ("below-time-limit", 1, ICARUS_SECONDS_LIMIT - 0.001, True),
+        ("at-time-limit", 1, ICARUS_SECONDS_LIMIT, False),
+        ("zero-cycles", 0, 1.0, False),
+    )
+    ledger = []
+    for name, cycles, duration, expected in cases:
+        directory = fixtures / name
+        directory.mkdir()
+        try:
+            icarus_tier(execution, directory,
+                        {"name": name, "duration_s": duration}, cycles)
+        except VerificationFailure:
+            accepted = False
+        else:
+            accepted = True
+        require(accepted == expected, f"Tier-limit checker sensitivity failed: {name}")
+        ledger.append({"fixture": name, "cycles": cycles, "duration_s": duration,
+                       "accepted": accepted, "expected": expected})
+    write_json(fixtures / "sensitivity.json", {
+        "kind": "synthetic_tier_limit_sensitivity", "simulation_executed": False,
+        "cases": ledger,
+    })
+
+
 STREAM_TB = r"""
 `timescale 1ns/1ps
 module tb;
@@ -227,8 +328,12 @@ module tb;
   integer stall_left[0:5], stalls[0:5], position=0;
   integer gap_count=0, random_stalls=0, resets[0:2];
   integer comparisons=0, completion_count=0, cycle_count=0;
+  integer actual_cycles=0;
+  always @(posedge clk) actual_cycles=actual_cycles+1;
   integer last_completion_cycle=-100, back_to_back=0;
   integer cmd_cycles=0, first_after_reset=1;
+  integer first_input[0:@COMMAND_MAX@], completion_cycle[0:@COMMAND_MAX@];
+  integer command_trace;
   reg [31:0] lfsr=32'h1a2b3c4d;
   reg old_sr,old_mv,old_ml;
   reg [31:0] old_md;
@@ -238,8 +343,8 @@ module tb;
 
   task automatic fail(input [255:0] why);
     begin
-      $display("CHECKER_REJECT %0s command=%0d phase=%0d offset=%0d cycle=%0d",
-                why,command_index,phase,offset,cycle_count);
+      $display("CHECKER_REJECT %0s command=%0d phase=%0d offset=%0d cycle=%0d actual_cycles=%0d",
+                why,command_index,phase,offset,cycle_count,actual_cycles);
       $fatal(1,"public protocol/numerical mismatch");
     end
   endtask
@@ -280,6 +385,7 @@ module tb;
       if (m_valid && (!in_command || accepted!=31)) fail("EARLY_OUTPUT");
       if (took_input) begin
         if (!in_command || accepted>=31) fail("UNEXPECTED_INPUT");
+        if (phase==0 && accepted==0) first_input[command_index]=cycle_count;
         if (accepted==0 && cycle_count==last_completion_cycle+1)
           back_to_back=back_to_back+1;
         accepted=accepted+1;
@@ -297,6 +403,7 @@ module tb;
         offset=offset+1;
         if (position==5) position=0; else position=position+1;
         if (m_last) begin
+          if (phase==0) completion_cycle[command_index]=cycle_count;
           completed=1; completion_count=completion_count+1;
           last_completion_cycle=cycle_count;
           in_command=0;
@@ -384,10 +491,15 @@ module tb;
     $readmemh("@LENGTH_FILE@",lengths);
     $readmemh("@BOUND_FILE@",bounds);
     trace=$fopen("@TRACE_FILE@","w");
+    command_trace=$fopen("@COMMAND_TRACE_FILE@","w");
+    for(i=0;i<@COMMAND_COUNT@;i=i+1) begin
+      first_input[i]=-1; completion_cycle[i]=-1;
+    end
     for(i=0;i<6;i=i+1) begin stall_left[i]=70; stalls[i]=0; end
     for(i=0;i<3;i=i+1) resets[i]=0;
     #1; pins();
     reset_now();
+    if (@RESET_TESTS@) begin
     // Reset while a real prefix is outstanding.
     begin_command(0,0,-1); send_words(0,13,0);
     if(accepted!=13) fail("PARTIAL_RESET_PRECONDITION");
@@ -403,24 +515,30 @@ module tb;
     repeat(70) tick(0,0,0);
     if(!m_valid || offset!=0) fail("STALL_RESET_PRECONDITION");
     resets[2]=1; reset_now(); recover(-3);
+    end
     base=0;
     for(n=0;n<@COMMAND_COUNT@;n=n+1) begin
       begin_command(n,base,0);
       send_words(n,31,1);
       drain(1);
+      if(first_input[n]<0 || completion_cycle[n]<=first_input[n])
+        fail("MISSING_COMMAND_BOUNDARY");
+      if(n>0 && first_input[n]!=completion_cycle[n-1]+1)
+        fail("COMMAND_BOUNDARY_NOT_EARLIEST");
+      $fdisplay(command_trace,"%0d %0d %0d",n,first_input[n],completion_cycle[n]);
       base=base+lengths[n];
     end
     // No extra output after completion, including a held-valid extra record.
     repeat(128) tick(0,0,1);
     for(i=0;i<6;i=i+1) if(stalls[i]<64) fail("MISSING_STALL_COVERAGE");
-    if(gap_count==0 || random_stalls==0) fail("MISSING_GAP_COVERAGE");
+    if(gap_count==0 || (@RESET_TESTS@ && random_stalls==0)) fail("MISSING_GAP_COVERAGE");
     if(back_to_back<@COMMAND_COUNT@-1) fail("MISSING_BACK_TO_BACK");
     summary=$fopen("@SUMMARY_FILE@","w");
-    $fdisplay(summary,"{\"comparisons\":%0d,\"completions\":%0d,\"cycles\":%0d,\"input_gaps\":%0d,\"random_stalls\":%0d,\"back_to_back\":%0d,\"reset_recoveries\":3,\"stalls\":[%0d,%0d,%0d,%0d,%0d,%0d]}",
-      comparisons,completion_count,cycle_count,gap_count,random_stalls,
-      back_to_back,
+    $fdisplay(summary,"{\"comparisons\":%0d,\"completions\":%0d,\"cycles\":%0d,\"actual_cycles\":%0d,\"input_gaps\":%0d,\"random_stalls\":%0d,\"back_to_back\":%0d,\"reset_recoveries\":%0d,\"stalls\":[%0d,%0d,%0d,%0d,%0d,%0d]}",
+      comparisons,completion_count,cycle_count,actual_cycles,gap_count,random_stalls,
+      back_to_back,resets[0]+resets[1]+resets[2],
       stalls[0],stalls[1],stalls[2],stalls[3],stalls[4],stalls[5]);
-    $fclose(summary); $fclose(trace);
+    $fclose(summary); $fclose(trace); $fclose(command_trace);
     $display("CHECKER_COMPLETE %0d",comparisons);
     $finish;
   end
@@ -428,7 +546,8 @@ endmodule
 """
 
 
-def simulate(execution, name, commands, results, rtl=None, mutation=False):
+def simulate(execution, name, commands, results, rtl=None, mutation=False,
+             reset_tests=True):
     directory = execution.output / name
     directory.mkdir()
     inputs = [word for command in commands for word in command.words()]
@@ -450,7 +569,9 @@ def simulate(execution, name, commands, results, rtl=None, mutation=False):
         "LENGTH_FILE": execution.rel(directory / "length.hex"),
         "BOUND_FILE": execution.rel(directory / "bound.hex"),
         "TRACE_FILE": execution.rel(directory / "observed.txt"),
+        "COMMAND_TRACE_FILE": execution.rel(directory / "commands.txt"),
         "SUMMARY_FILE": execution.rel(directory / "protocol.json"),
+        "RESET_TESTS": int(reset_tests),
     }
     tb = STREAM_TB
     for key, value in substitutions.items():
@@ -468,29 +589,37 @@ def simulate(execution, name, commands, results, rtl=None, mutation=False):
         valid_rejection = (row["exit_code"] not in (0, None) and not row["timed_out"]
                            and "CHECKER_REJECT" in stdout
                            and "FINITE_CYCLE_BOUND" not in stdout)
+        rejection_cycles = re.findall(r"CHECKER_REJECT .* actual_cycles=(\d+)", stdout)
+        if rejection_cycles:
+            icarus_tier(execution, directory, row, int(rejection_cycles[-1]))
         write_json(directory / "rejection.json", {
             "rejected_numerically_or_procedurally": valid_rejection,
             "exit_code": row["exit_code"], "timed_out": row["timed_out"],
             "reason": [line for line in stdout.splitlines()
                        if "CHECKER_REJECT" in line or "EXPECTED " in line],
         })
-        require(valid_rejection, f"Mutation not sensitized: {name}; {row['stdout']}")
+        require(valid_rejection and len(rejection_cycles) == 1,
+                f"Mutation not sensitized: {name}; {row['stdout']}")
         return None
     require(row["exit_code"] == 0 and not row["timed_out"],
             f"Simulation/checker failure: {name}; {row['stdout']}")
     require("CHECKER_COMPLETE " in stdout, f"Missing checker completion: {name}")
     protocol = json.loads((directory / "protocol.json").read_text())
-    require(protocol["completions"] == len(commands) + 3, "Completion conservation failed")
-    require(min(protocol["stalls"]) >= 64 and protocol["reset_recoveries"] == 3,
+    icarus_tier(execution, directory, row, protocol["actual_cycles"])
+    recoveries = 3 if reset_tests else 0
+    require(protocol["completions"] == len(commands) + recoveries,
+            "Completion conservation failed")
+    require(min(protocol["stalls"]) >= 64 and protocol["reset_recoveries"] == recoveries,
             "Missing protocol coverage")
     require(protocol["back_to_back"] >= len(commands) - 1,
             "No observed earliest-legal input after completion")
     expected_transfers = {}
-    for phase in (-1, -2, -3):
+    for phase in ((-1, -2, -3) if reset_tests else ()):
         expected_transfers[(phase, 0)] = results[0].words()
     for i, result in enumerate(results):
         expected_transfers[(0, i)] = result.words()
     observed = {key: [] for key in expected_transfers}
+    completion_transfers = {}
     transfer_checker = TransferChecker(commands, results)
     last_cycle = -1
     for line in (directory / "observed.txt").read_text().splitlines():
@@ -505,11 +634,29 @@ def simulate(execution, name, commands, results, rtl=None, mutation=False):
         require(last == int(offset == len(expected_transfers[key]) - 1),
                 "Independent last mismatch")
         observed[key].append(word)
+        if last:
+            completion_transfers[key] = cycle
         if key[0] == 0:
             transfer_checker.accept(word, last)
         last_cycle = cycle
     require(observed == expected_transfers, "Missing/extra trace transfers")
     transfer_summary = transfer_checker.finish()
+    require(protocol["comparisons"] == sum(map(len, observed.values())),
+            "Protocol/trace comparison count mismatch")
+    command_cycles = []
+    for line in (directory / "commands.txt").read_text().splitlines():
+        ci, first, final = map(int, line.split())
+        require(ci == len(command_cycles) and 0 < first < final,
+                "Missing/unordered command cycle witness")
+        require(not command_cycles or first == command_cycles[-1]["completion_cycle"] + 1,
+                "Adjacent commands did not transfer at the earliest legal edge")
+        require(completion_transfers[(0, ci)] == final,
+                "Command cycle witness differs from the compared completion transfer")
+        command_cycles.append({
+            "command_index": ci, "tag": commands[ci].tag,
+            "first_input_cycle": first, "completion_cycle": final,
+        })
+    require(len(command_cycles) == len(commands), "Missing command cycle witnesses")
     pixels = {}
     for i, (c, result) in enumerate(zip(commands, results)):
         words = observed[(0, i)]
@@ -522,10 +669,122 @@ def simulate(execution, name, commands, results, rtl=None, mutation=False):
         pixels[c.tag] = len(records) - 1
     write_json(directory / "comparison.json", {
         "exact_words": sum(map(len, observed.values())),
-        "commands": len(commands), "reset_recoveries": 3,
+        "commands": len(commands), "reset_recoveries": recoveries,
         "pixel_records": sum(pixels.values()), "per_tag_pixels": pixels,
         "all_words_ordered_exact": True,
         "transport_independent_comparison": transfer_summary,
+        "command_cycles": command_cycles,
+    })
+    return pixels
+
+
+def simulate_batched(execution, name, commands, results, budget=STREAM_BATCH_BUDGET):
+    """Compare every original command once for coverage; retain boundary replays."""
+    directory = execution.output / name
+    directory.mkdir()
+    plan = stream_batches(results, budget)
+    ledger = {
+        "packing_budget_cycles": budget, "estimates_are_not_acceptance": True,
+        "cycle_limit_inclusive": ICARUS_CYCLE_LIMIT,
+        "seconds_limit_exclusive": ICARUS_SECONDS_LIMIT,
+        "coverage_policy": "primary commands only; boundary/reset replays excluded",
+        "batches": [],
+    }
+    for index, batch in enumerate(plan):
+        members = [
+            {"local_index": i - batch["first"], "original_index": i,
+             "tag": commands[i].tag, "seed": commands[i].seed,
+             "coverage_primary": i >= batch["primary_start"]}
+            for i in range(batch["first"], batch["stop"])
+        ]
+        ledger["batches"].append({
+            **batch, "job": f"{name}-batch-{index:03d}", "members": members,
+            "status": "pending",
+        })
+    write_json(directory / "batches.json", ledger)
+    pixels, completed, witnesses = {}, [], {}
+    replay_pixels = replay_words = reset_words = all_words = 0
+    total_cycles = total_duration = total_gaps = total_random_stalls = 0
+    for batch in ledger["batches"]:
+        first, stop = batch["first"], batch["stop"]
+        job = batch["job"]
+        simulate(execution, job, commands[first:stop], results[first:stop],
+                 reset_tests=batch["reset_tests"])
+        output = execution.output / job
+        comparison = json.loads((output / "comparison.json").read_text())
+        protocol = json.loads((output / "protocol.json").read_text())
+        tier = json.loads((output / "tier.json").read_text())
+        observed_commands = comparison["transport_independent_comparison"]["completed_commands"]
+        cycles = comparison["command_cycles"]
+        for member, observed, timing in zip(batch["members"], observed_commands, cycles):
+            require(member["tag"] == observed["tag"] == timing["tag"],
+                    "Batch membership/compared tag mismatch")
+            original = member["original_index"]
+            if member["coverage_primary"]:
+                require(original == len(completed) and member["tag"] not in pixels,
+                        "Primary comparison missing, duplicated or out of order")
+                pixels[member["tag"]] = observed["pixel_records"]
+                completed.append({**observed, "command_index": original,
+                                  "job": job, "local_index": member["local_index"]})
+            else:
+                previous = completed[original]
+                require(all(previous[key] == observed[key] for key in
+                            ("tag", "input_words_sha256", "compared_transfers_sha256",
+                             "exact_words", "pixel_records", "status", "nondegenerate_fans")),
+                        "Boundary replay differs from the original compared command")
+                replay_pixels += observed["pixel_records"]
+                replay_words += observed["exact_words"]
+        for local in range(1, len(cycles)):
+            original = first + local
+            require(cycles[local]["first_input_cycle"]
+                    == cycles[local - 1]["completion_cycle"] + 1,
+                    "Missing earliest-legal boundary transfer")
+            witnesses[original] = {
+                "previous_index": original - 1, "next_index": original,
+                "previous_tag": commands[original - 1].tag,
+                "next_tag": commands[original].tag, "job": job,
+                "completion_cycle": cycles[local - 1]["completion_cycle"],
+                "next_input_cycle": cycles[local]["first_input_cycle"],
+                "partition_boundary": (original == batch["primary_start"]
+                                       and batch["primary_start"] > 0),
+            }
+        all_words += comparison["exact_words"]
+        reset_words += (comparison["exact_words"]
+                        - comparison["transport_independent_comparison"]["exact_words"])
+        total_cycles += protocol["actual_cycles"]
+        total_duration += tier["duration_s"]
+        total_gaps += protocol["input_gaps"]
+        total_random_stalls += protocol["random_stalls"]
+        batch.update({
+            "status": "passed", "actual_cycles": protocol["actual_cycles"],
+            "duration_s": tier["duration_s"],
+            "protocol": execution.rel(output / "protocol.json"),
+            "comparison": execution.rel(output / "comparison.json"),
+            "tier": execution.rel(output / "tier.json"),
+            "source_snapshot": execution.rel(execution.output / "source"),
+        })
+        write_json(directory / "batches.json", ledger)
+    require(len(completed) == len(commands) and set(pixels) == {c.tag for c in commands},
+            "Aggregate lost/duplicated original commands")
+    require(set(witnesses) == set(range(1, len(commands))),
+            "Missing adjacent-command evidence across partitions")
+    require(sum(b["reset_tests"] for b in plan) == 1 and total_random_stalls > 0,
+            "Missing reset/random backpressure coverage")
+    primary_words = sum(row["exact_words"] for row in completed)
+    require(all_words == primary_words + replay_words + reset_words,
+            "Aggregate transfer conservation failed")
+    write_json(directory / "comparison.json", {
+        "commands": len(completed), "pixel_records": sum(pixels.values()),
+        "exact_words": primary_words, "per_tag_pixels": pixels,
+        "all_words_ordered_exact": True, "completed_commands": completed,
+        "excluded_boundary_replay_words": replay_words,
+        "excluded_boundary_replay_pixels": replay_pixels,
+        "excluded_reset_recovery_words": reset_words,
+        "all_compared_words_including_replays": all_words,
+        "adjacent_command_witnesses": [witnesses[i] for i in sorted(witnesses)],
+        "reset_recoveries": 3, "input_gaps": total_gaps,
+        "random_stalls": total_random_stalls, "total_actual_cycles": total_cycles,
+        "total_simulation_duration_s": total_duration,
     })
     return pixels
 
@@ -618,7 +877,8 @@ module tb;
   wire s_ready,m_valid;
   {declarations}
   {instance}
-  integer k;
+  integer k,actual_cycles=0;
+  always @(posedge clk) actual_cycles=actual_cycles+1;
   always #5 clk=~clk;
   always @(posedge clk or negedge clk) if($time>0) begin
     if((^{{s_ready,m_valid}})===1'bx) $fatal(1,"UNIT_XZ");
@@ -631,7 +891,7 @@ module tb;
     repeat(3) @(negedge clk);
     #2; rst_n=1;
     {''.join(body)}
-    $display("UNIT_COMPLETE {len(cases)} {latency}");
+    $display("UNIT_COMPLETE {len(cases)} {latency} cycles=%0d",actual_cycles);
     $finish;
   end
 endmodule
@@ -646,6 +906,10 @@ endmodule
         require(f"UNIT_COMPLETE {len(cases)} {latency}" in
                 (execution.root / row["stdout"]).read_text(),
                 f"Missing primitive comparisons: {name}")
+        actual = re.findall(r"UNIT_COMPLETE \d+ \d+ cycles=(\d+)",
+                            (execution.root / row["stdout"]).read_text())
+        require(len(actual) == 1, f"Missing actual primitive cycle count: {name}")
+        icarus_tier(execution, directory, row, int(actual[0]))
         ledger.append({"primitive": name, "compared_cases": len(cases),
                        "required_latency_cycles": latency, "hold_cycles_each": 70,
                        "receipt_command": row["name"]})
@@ -773,7 +1037,7 @@ def main():
     parser.add_argument("--probe", action="store_true",
                         help="Advisory bounded preparation, not full L1 acceptance")
     parser.add_argument("--probe-stage", choices=("stream", "structure", "sensitivity", "stimulus",
-                                                 "transfer-checker", "native-coverage"),
+                                                 "transfer-checker", "native-coverage", "tiering"),
                         default="stream", help="Select a bounded preparation diagnostic")
     parser.add_argument("--repair-of", help="Project-relative earlier preparation receipt")
     args = parser.parse_args()
@@ -798,6 +1062,7 @@ def main():
             target = output / "source" / path
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / path, target)
+        tiering_sensitivity(execution)
         write_json(output / "transfer-checker-sensitivity.json", transfer_self_test())
         write_json(output / "coverage-marker-sensitivity.json", coverage_marker_self_test())
         write_json(output / "execution-contract-sensitivity.json", execution_contract_self_test())
@@ -819,7 +1084,7 @@ def main():
                 "stage": "transfer-checker", "physical_board_runs": 0})
         commands, subset_count = workload()
         subset = commands[:subset_count]
-        if (args.probe and args.probe_stage != "stimulus") or args.clean_child:
+        if (args.probe and args.probe_stage not in ("stimulus", "tiering")) or args.clean_child:
             commands = subset
         results = [model(c) for c in commands]
         write_json(output / "reference.json", [
@@ -844,6 +1109,24 @@ def main():
             result = {"status": "preparation_passed", "full_l1": False,
                       "stage": "structure"}
             return execution.complete(result)
+        if args.probe and args.probe_stage == "tiering":
+            planned = stream_batches(results)
+            write_json(output / "full-workload-partition-prediction.json", {
+                "kind": "scheduling_prediction_not_hardware_coverage",
+                "commands": len(commands), "batches": planned,
+                "hardware_comparisons": 0,
+            })
+            # Force a real partition just beyond the unchanged clean subset.
+            budget = stream_job_estimate(results[:subset_count], True)
+            probe_commands = commands[:subset_count + 2]
+            pixels = simulate_batched(execution, "tiering", probe_commands,
+                                      results[:subset_count + 2], budget)
+            batches = json.loads((output / "tiering/batches.json").read_text())["batches"]
+            require(len(batches) >= 2, "Tiering probe did not exercise a boundary replay")
+            return execution.complete({
+                "status": "preparation_passed", "full_l1": False,
+                "stage": "tiering", "compared_commands": len(probe_commands),
+                "pixels": sum(pixels.values()), "batches": len(batches)})
         if args.probe and args.probe_stage == "sensitivity":
             simulate(execution, "sensitivity-baseline", commands, results)
             mutations(execution, commands, results)
@@ -853,7 +1136,7 @@ def main():
         bridge = bridge_commands()
         simulate(execution, "bridge-workload", bridge, [model(c) for c in bridge])
         primitives(execution)
-        pixels = simulate(execution, "behavior", commands, results)
+        pixels = simulate_batched(execution, "behavior", commands, results)
         if args.probe:
             result = {"status": "preparation_passed", "full_l1": False,
                       "compared_commands": len(commands), "pixels": sum(pixels.values())}
