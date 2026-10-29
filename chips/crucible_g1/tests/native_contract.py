@@ -67,6 +67,9 @@ missing exclusive creation: it still fails the required UUID-allocation check.
 Failed paired confirmations include structured repair requirements for the
 shared-runtime contract owner. These are instructions, not replacement checks
 or evidence that any runtime update occurred.
+Restoring the prerequisite check also requires its admitted source selectors,
+tool dependencies and execution timeout. These fields are checked even when
+that check is absent from the supplied pre-repair baseline.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -252,6 +255,13 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
             issues.append(prerequisite_id + ": admitted prerequisite argv is absent")
         if prerequisite.get("outputs") != ["evidence/native-prerequisites/run-*/"]:
             issues.append(prerequisite_id + ": prerequisite output selector is absent")
+        for field, expected in (
+                ("inputs", list(SOURCES)),
+                ("requires", ["python3", "vulcan", "quartus_sta"]),
+                ("timeout_s", 86400)):
+            if not same_contract_values(prerequisite.get(field), expected):
+                issues.append(
+                    prerequisite_id + ": admitted prerequisite " + field + " is absent or changed")
     return {
         "kind": "read_only_execution_contract_diagnostic",
         "acceptance_evidence": False, "commands_executed": False,
@@ -359,6 +369,9 @@ def effective_contract_diagnostics(config_checks, execution_checks,
                         ".vulcan/engineering/run-0001/quartus_sta_work",
                         "--revision", "top"],
                     "outputs": ["evidence/native-prerequisites/run-*/"],
+                    "inputs": list(SOURCES),
+                    "requires": ["python3", "vulcan", "quartus_sta"],
+                    "timeout_s": 86400,
                     "restore_missing_check": True,
                 },
             ],
@@ -394,6 +407,9 @@ def execution_contract_self_test():
         "argv": ["python3", "tests/native_prerequisites.py", "--fit-dir",
                  ".vulcan/engineering/run-0001/quartus_sta_work", "--revision", "top"],
         "outputs": ["evidence/native-prerequisites/run-*/"],
+        "inputs": list(SOURCES),
+        "requires": ["python3", "vulcan", "quartus_sta"],
+        "timeout_s": 86400,
     }
     if not execution_contract_diagnostics([discovery, prerequisite])[
             "required_repair_fields_present"]:
@@ -422,6 +438,17 @@ def execution_contract_self_test():
         "wrong_prerequisite": [discovery, {**prerequisite, "argv": ["python3", "--version"]}],
         "missing_prerequisite_outputs": [discovery, {**prerequisite, "outputs": []}],
     }
+    for field in ("inputs", "requires", "timeout_s"):
+        variants["missing_prerequisite_" + field] = [
+            discovery, {key: value for key, value in prerequisite.items()
+                        if key != field}]
+    for name, changes in (
+        ("unbound_prerequisite_sources", {"inputs": []}),
+        ("missing_quartus_dependency", {"requires": ["python3", "vulcan"]}),
+        ("shortened_prerequisite_timeout", {"timeout_s": 1}),
+        ("changed_prerequisite_timeout_type", {"timeout_s": 86400.0}),
+    ):
+        variants[name] = [discovery, {**prerequisite, **changes}]
     script = discovery["argv"][2]
     allocation, mkdir = script.splitlines()[1:]
     for name, source in {
