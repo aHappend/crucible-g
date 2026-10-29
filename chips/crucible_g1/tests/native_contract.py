@@ -44,6 +44,9 @@ Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
 Original and effective lists also reject malformed check objects and ambiguous
 identifiers before comparing preservation; invalid exports are diagnostic errors.
+Malformed original inline Python is rejected before inspecting either effective
+list, even when discovery is missing. It cannot certify body preservation or
+escape the diagnostic CLI as an unhandled parser exception.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -103,6 +106,24 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
     """
     discovery_id = "native-invocation-contract-discovery-0291"
     prerequisite_id = "native-prerequisites-discovery-0331"
+    original = None
+    if original_discovery_source is not None:
+        if not isinstance(original_discovery_source, str):
+            raise ValueError("Original discovery source must be inline Python text")
+        try:
+            original = ast.parse(original_discovery_source)
+        except SyntaxError as error:
+            raise ValueError(
+                f"Original discovery source has invalid Python at line "
+                f"{error.lineno}: {error.msg}") from error
+        imports = [node for node in original.body if isinstance(node, ast.Import)]
+        original_allocations = [
+            node for node in original.body
+            if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == "out"
+                    for target in node.targets)]
+        if not imports or len(original_allocations) != 1:
+            raise ValueError("Original discovery source lacks its import or allocation")
     issues = []
     if checks is None:
         issues.append("Effective check list is unavailable; contract confirmation is incomplete")
@@ -165,16 +186,6 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
                         or mkdir_indices[0] != allocations[0][0] + 1):
                     issues.append(discovery_id + ": exclusive output allocation is absent")
                 if original_discovery_source is not None:
-                    original = ast.parse(original_discovery_source)
-                    imports = [node for node in original.body
-                               if isinstance(node, ast.Import)]
-                    original_allocations = [
-                        node for node in original.body
-                        if isinstance(node, ast.Assign)
-                        and any(isinstance(target, ast.Name) and target.id == "out"
-                                for target in node.targets)]
-                    if not imports or len(original_allocations) != 1:
-                        raise ValueError("Original discovery source lacks its import or allocation")
                     original_allocations[0].value = ast.parse(
                         "root / 'evidence/native-contract-discovery-0291' / "
                         "('run-' + uuid.uuid4().hex)", mode="eval").body
@@ -476,6 +487,19 @@ def execution_contract_self_test():
             baseline_rejections[name] = str(error)
         else:
             raise AssertionError("Invalid original-check baseline accepted: " + name)
+    for name, source in (
+        ("invalid_original_python", "("),
+        ("missing_original_import", "out = root / 'evidence'\n"),
+        ("missing_original_allocation", "import time\n"),
+        ("nontext_original_python", 42),
+    ):
+        for suffix, checks in (("present", effective), ("absent", [])):
+            try:
+                execution_contract_diagnostics(checks, source)
+            except ValueError as error:
+                baseline_rejections[name + "_" + suffix] = str(error)
+            else:
+                raise AssertionError("Invalid original inline source accepted: " + name)
     for name, field, value in (
         ("original_not_list", "original_checks", {}),
         ("original_nonobject", "original_checks", [None]),
