@@ -50,6 +50,8 @@ identifiers before comparing preservation; invalid exports are diagnostic errors
 Malformed original inline Python is rejected before inspecting either effective
 list, even when discovery is missing. It cannot certify body preservation or
 escape the diagnostic CLI as an unhandled parser exception.
+Compilation also rejects scope-invalid statements such as module-level return;
+an AST alone does not establish that an inline command can execute.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -115,6 +117,7 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
             raise ValueError("Original discovery source must be inline Python text")
         try:
             original = ast.parse(original_discovery_source)
+            compile(original, "<original-discovery-command>", "exec")
         except SyntaxError as error:
             raise ValueError(
                 f"Original discovery source has invalid Python at line "
@@ -158,6 +161,7 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
         else:
             try:
                 tree = ast.parse(argv[2])
+                compile(tree, "<effective-discovery-command>", "exec")
             except SyntaxError:
                 issues.append(discovery_id + ": inline Python is not syntactically valid")
             else:
@@ -334,6 +338,12 @@ def execution_contract_self_test():
                                   discovery["argv"][2].replace("exist_ok=False", "exist_ok=True")]},
             prerequisite],
         "syntax_failure": [{**discovery, "argv": ["python3", "-c", "("]}, prerequisite],
+        "module_return": [
+            {**discovery, "argv": ["python3", "-c", discovery["argv"][2] + "return\n"]},
+            prerequisite],
+        "module_continue": [
+            {**discovery, "argv": ["python3", "-c", discovery["argv"][2] + "continue\n"]},
+            prerequisite],
         "substitute": [{**discovery, "argv": ["python3", "tests/native_contract.py"]}, prerequisite],
         "wrong_prerequisite": [discovery, {**prerequisite, "argv": ["python3", "--version"]}],
         "missing_prerequisite_outputs": [discovery, {**prerequisite, "outputs": []}],
@@ -495,6 +505,8 @@ def execution_contract_self_test():
         ("missing_original_import", "out = root / 'evidence'\n"),
         ("missing_original_allocation", "import time\n"),
         ("nontext_original_python", 42),
+        ("module_return_original_python", original + "return\n"),
+        ("module_continue_original_python", original + "continue\n"),
     ):
         for suffix, checks in (("present", effective), ("absent", [])):
             try:
