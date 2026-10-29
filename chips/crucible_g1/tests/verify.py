@@ -7,6 +7,9 @@ L1 results report only portable checks; the shared runtime records native gate
 outcomes independently. A portable pass does not establish delivery acceptance.
 Synthetic native-diagnostic regressions check evidence parsing without accessing
 Quartus, a fit database or a board; they do not execute any native gate.
+The native-coverage probe also executes the old and repaired output-allocation
+snippets in a disposable tree, retaining the expected collision and two fresh
+runs. This does not apply or confirm the effective shared-runtime contract.
 """
 
 import argparse
@@ -43,6 +46,57 @@ TIMEOUT = 3600
 
 class VerificationFailure(RuntimeError):
     pass
+
+
+def allocation_repair_regression(execution):
+    """Exercise namespace reuse in a disposable product tree, not runtime state."""
+    root = execution.output / "allocation-fixture"
+    historical = root / "evidence/native-contract-discovery-0291"
+    historical.mkdir(parents=True, exist_ok=False)
+    sentinel = historical / "receipt.json"
+    original_bytes = b'{"fixture": "historical receipt; preserve unchanged"}\n'
+    sentinel.write_bytes(original_bytes)
+    prefix = "import pathlib, uuid\nroot = pathlib.Path.cwd()\n"
+    old = (
+        prefix + "out = root / 'evidence/native-contract-discovery-0291'\n"
+        "out.mkdir(parents=True, exist_ok=False)\n")
+    repaired = (
+        prefix + "out = root / 'evidence/native-contract-discovery-0291' / "
+        "('run-' + uuid.uuid4().hex)\n"
+        "out.mkdir(parents=True, exist_ok=False)\n"
+        "print(out.relative_to(root).as_posix())\n")
+    row = execution.run(
+        "allocation-original-collision", ["python3", "-c", old], cwd=root)
+    require(row["exit_code"] == 1 and not row["timed_out"],
+            "Original occupied allocation did not fail as expected")
+    error = (execution.root / row["stderr"]).read_text()
+    require("FileExistsError" in error,
+            "Original allocation failed for a reason other than the occupied namespace")
+    paths = []
+    for index in range(2):
+        row = execution.checked(
+            f"allocation-repaired-{index}", ["python3", "-c", repaired], cwd=root)
+        name = (execution.root / row["stdout"]).read_text().strip()
+        require(re.fullmatch(
+            r"evidence/native-contract-discovery-0291/run-[0-9a-f]{32}", name)
+                is not None, "Repaired allocation emitted an unexpected output path")
+        require((root / name).is_dir(), "Repaired allocation did not create its directory")
+        paths.append(name)
+    require(len(set(paths)) == 2, "Repaired invocations reused an output directory")
+    require(sentinel.read_bytes() == original_bytes,
+            "Allocation regression changed the historical fixture receipt")
+    require({path.name for path in historical.iterdir()}
+            == {"receipt.json", *(Path(name).name for name in paths)},
+            "Allocation regression created unexpected historical-namespace contents")
+    write_json(execution.output / "allocation-repair-regression.json", {
+        "kind": "isolated_allocation_execution_regression",
+        "acceptance_evidence": False, "native_gate_executed": False,
+        "runtime_state_modified": False,
+        "scope": "Known allocation snippets only; not effective contract application",
+        "original_rejection": "FileExistsError", "fresh_directories": paths,
+        "historical_fixture_sha256": hashlib.sha256(original_bytes).hexdigest(),
+        "historical_fixture_preserved": True,
+    })
 
 
 def require(condition, message):
@@ -747,6 +801,7 @@ def main():
         write_json(output / "transfer-checker-sensitivity.json", transfer_self_test())
         write_json(output / "coverage-marker-sensitivity.json", coverage_marker_self_test())
         write_json(output / "execution-contract-sensitivity.json", execution_contract_self_test())
+        allocation_repair_regression(execution)
         write_json(output / "diagnostic-sensitivity.json", diagnostic_self_test())
         write_json(output / "timing-observation-sensitivity.json",
                    timing_observation_self_test())
