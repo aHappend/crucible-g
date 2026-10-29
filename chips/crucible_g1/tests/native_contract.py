@@ -43,6 +43,8 @@ the caller must retain its input, stdout, stderr and execution receipt.
 The diagnostic hashes the exact exported bytes it inspected, so its result
 cannot be mistaken for confirmation of a different or subsequently edited
 export. This binding does not establish that an export is current runtime state.
+It also hashes its own checker source: a retained confirmation cannot silently
+stand in for execution of a subsequently repaired checker.
 Duplicate JSON keys are rejected at every nesting level: a shadowed check
 field cannot serve as unambiguous evidence of an effective contract.
 Non-finite numeric constants are rejected too: Python's permissive JSON decoder
@@ -842,6 +844,7 @@ def check_contract_export(path):
         original_checks=data["original_checks"])
     result["export_sha256"] = hashlib.sha256(source).hexdigest()
     result["export_bytes"] = len(source)
+    result["checker_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     return result
 
 
