@@ -32,6 +32,12 @@ The original check list supplies the authoritative inline body automatically;
 a conflicting separately supplied original body is an invalid diagnostic input.
 An absent effective list is reported as unavailable evidence, never inferred
 from the other list or treated as an empty, confirmed runtime contract.
+For a bounded, nonexecuting confirmation, supply an explicitly exported JSON
+object with original_checks, config_checks and execution_checks using
+``python3 tests/native_contract.py --check-contracts <export.json>``.
+This mode prints the paired diagnostic and exits nonzero for an unapplied
+repair. It does not open runtime metadata, allocate evidence or invoke tools;
+the caller must retain its input, stdout, stderr and execution receipt.
 
 The optional ``--invocation-discovery`` mode only allocates fresh children of
 the historical directory. It is not the admitted inline-command repair and
@@ -137,12 +143,19 @@ def execution_contract_diagnostics(checks, original_discovery_source=None):
                                 for target in node.targets)]
                     if not imports or len(original_allocations) != 1:
                         raise ValueError("Original discovery source lacks its import or allocation")
-                    if not any(alias.name == "uuid" and alias.asname is None
-                               for node in imports for alias in node.names):
-                        imports[0].names.append(ast.alias(name="uuid"))
                     original_allocations[0].value = ast.parse(
                         "root / 'evidence/native-contract-discovery-0291' / "
                         "('run-' + uuid.uuid4().hex)", mode="eval").body
+                    # The admitted uuid import has no mandated position.
+                    for module in (tree, original):
+                        for node in module.body:
+                            if isinstance(node, ast.Import):
+                                node.names = [
+                                    alias for alias in node.names
+                                    if not (alias.name == "uuid" and alias.asname is None)]
+                        module.body = [
+                            node for node in module.body
+                            if not isinstance(node, ast.Import) or node.names]
                     if ast.dump(tree) != ast.dump(original):
                         issues.append(discovery_id + ": remaining inline command was changed")
     prerequisite = selected.get(prerequisite_id)
@@ -300,6 +313,14 @@ def execution_contract_self_test():
     if not execution_contract_diagnostics(
             [control, prerequisite], original)["required_repair_fields_present"]:
         raise AssertionError("Preserved inline-body control was rejected")
+    for source in (
+        repaired.replace("import time, uuid", "import uuid, time"),
+        repaired.replace("import time, uuid", "import uuid\nimport time"),
+    ):
+        if not execution_contract_diagnostics(
+                [{**control, "argv": ["python3", "-c", source]}, prerequisite],
+                original)["required_repair_fields_present"]:
+            raise AssertionError("Equivalent admitted UUID import was rejected")
     for name, source in {
         "removed_receipt": repaired.rsplit("receipt =", 1)[0],
         "changed_timeout": repaired.replace("3600", "1"),
@@ -569,14 +590,47 @@ def emit_capsule(root, output, receipt):
     }, sort_keys=True), flush=True)
 
 
+def check_contract_export(path):
+    """Inspect an explicit export, never discover or modify runtime state."""
+    data = json.loads(path.read_text())
+    if not isinstance(data, dict):
+        raise ValueError("Contract export must be a JSON object")
+    for key in ("original_checks", "config_checks", "execution_checks"):
+        if key not in data:
+            raise ValueError("Contract export is missing " + key)
+        checks = data[key]
+        if checks is None and key != "original_checks":
+            continue
+        if (not isinstance(checks, list)
+                or not all(isinstance(check, dict) for check in checks)):
+            raise ValueError(key + " must be a list of check objects")
+        if not all(isinstance(check.get("id"), str) for check in checks):
+            raise ValueError(key + " contains a check without a string id")
+    return effective_contract_diagnostics(
+        data["config_checks"], data["execution_checks"],
+        original_checks=data["original_checks"])
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Retain native invocation help, not acceptance.")
-    parser.add_argument(
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument(
         "--invocation-discovery", action="store_true",
         help=("Use fresh children of the historical invocation-discovery directory; "
               "not a replacement for the admitted inline-command repair."))
+    modes.add_argument(
+        "--check-contracts", type=Path, metavar="EXPORT_JSON",
+        help="Inspect explicitly supplied original and effective checks without executing tools.")
     arguments = list(sys.argv[1:] if argv is None else argv)
     options = parser.parse_args(arguments)
+    if options.check_contracts is not None:
+        try:
+            result = check_contract_export(options.check_contracts)
+        except (OSError, ValueError) as error:
+            print(type(error).__name__ + ": " + str(error), file=sys.stderr)
+            return 2
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return int(not result["required_repair_fields_present"])
     namespace = ("native-contract-discovery-0291" if options.invocation_discovery
                  else "native-contract")
     output = ROOT / "evidence" / namespace / ("run-" + uuid.uuid4().hex)
