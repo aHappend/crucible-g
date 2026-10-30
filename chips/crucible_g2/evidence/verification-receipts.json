@@ -5,8 +5,866 @@
       "attempt_id": 42,
       "duration_s": 1896.3331321480218,
       "stdout_preview": "L1 receipt: evidence/l1-20261030T124916Z-c3f66f09/receipt.json\n",
-      "receipt_count": 0,
-      "receipts": []
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/l1-20261030T143514Z-b13592e6/receipt.json",
+          "data": {
+            "acceptance_evidence": "shared-runtime-admission-required",
+            "argv": [
+              "python3",
+              "tests/verify.py"
+            ],
+            "arithmetic": [
+              {
+                "backend": "icarus",
+                "command": 8,
+                "compared": 76,
+                "cycles": 23690,
+                "latencies": {
+                  "g1_divider": 98,
+                  "g1_dot4": 4,
+                  "g1_edge": 2,
+                  "g2_divider": 588,
+                  "g2_interpolator": 596
+                },
+                "outcome": "passed"
+              }
+            ],
+            "commands": [
+              {
+                "argv": [
+                  "python3",
+                  "--version"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.00427251192741096,
+                "end_utc": "2026-10-30T14:35:14.593806+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.589327+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/000-version-python3.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/000-version-python3.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "iverilog",
+                  "-V"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.016235691960901022,
+                "end_utc": "2026-10-30T14:35:14.610956+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.594495+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/001-version-iverilog.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/001-version-iverilog.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "vvp",
+                  "-V"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.0082144970074296,
+                "end_utc": "2026-10-30T14:35:14.620025+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.611601+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/002-version-vvp.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/002-version-vvp.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--version"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.11444442998617887,
+                "end_utc": "2026-10-30T14:35:14.735355+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.620698+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/003-version-verilator.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/003-version-verilator.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-V"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.008323741145431995,
+                "end_utc": "2026-10-30T14:35:14.744669+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.736132+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/004-version-yosys.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/004-version-yosys.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "g++",
+                  "--version"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.004184467019513249,
+                "end_utc": "2026-10-30T14:35:14.749942+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.745479+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/005-version-gpp.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/005-version-gpp.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "make",
+                  "--version"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.004142839927226305,
+                "end_utc": "2026-10-30T14:35:14.755178+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.750782+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/006-version-make.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/006-version-make.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "iverilog",
+                  "-g2012",
+                  "-Wall",
+                  "-s",
+                  "leaf_tb",
+                  "-o",
+                  "evidence/l1-20261030T143514Z-b13592e6/leaves-4baebc99.vvp",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.06465641595423222,
+                "end_utc": "2026-10-30T14:35:14.834601+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.769706+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/007-leaf-compile.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/007-leaf-compile.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "vvp",
+                  "evidence/l1-20261030T143514Z-b13592e6/leaves-4baebc99.vvp",
+                  "+vectors=evidence/l1-20261030T143514Z-b13592e6/leaves-62be87c3.txt"
+                ],
+                "cwd": ".",
+                "duration_seconds": 2.8196978711057454,
+                "end_utc": "2026-10-30T14:35:17.656788+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T14:35:14.836862+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/008-leaf-behavior.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/008-leaf-behavior.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "vvp",
+                  "evidence/l1-20261030T143514Z-b13592e6/leaves-4baebc99.vvp",
+                  "+zero_denominator=1"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.06491117086261511,
+                "end_utc": "2026-10-30T14:35:17.726198+00:00",
+                "exit_code": 1,
+                "start_utc": "2026-10-30T14:35:17.661042+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/009-zero-denominator.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/009-zero-denominator.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "--assert",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "leaf_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/l1-20261030T143514Z-b13592e6/compile-obj-0d7d6f2c",
+                  "-o",
+                  "sim",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "duration_seconds": 11.040458363015205,
+                "end_utc": "2026-10-30T14:35:28.783748+00:00",
+                "exit_code": 2,
+                "start_utc": "2026-10-30T14:35:17.743047+00:00",
+                "stderr": "evidence/l1-20261030T143514Z-b13592e6/010-leaf-compile.stderr.txt",
+                "stdout": "evidence/l1-20261030T143514Z-b13592e6/010-leaf-compile.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              }
+            ],
+            "coverage": [],
+            "cwd": ".",
+            "end_utc": "2026-10-30T14:35:28.785650+00:00",
+            "error": "TOOL_FAILURE ['verilator', '--binary', '--timing', '--assert', '-Wno-fatal', '--top-module', 'leaf_tb', '-j', '2', '--Mdir', 'evidence/l1-20261030T143514Z-b13592e6/compile-obj-0d7d6f2c', '-o', 'sim', 'rtl/crucible_g1_top.sv', 'rtl/crucible_g2_top.sv', 'rtl/g1_clipper.sv', 'rtl/g1_divider.sv', 'rtl/g1_dot4.sv', 'rtl/g1_edge.sv', 'rtl/g1_project.sv', 'rtl/g1_raster.sv', 'rtl/g1_transform.sv', 'rtl/g2_clipper.sv', 'rtl/g2_divider.sv', 'rtl/g2_engine.sv', 'rtl/g2_interpolator.sv', 'rtl/g2_project.sv', 'rtl/g2_raster.sv', 'rtl/g2_setup.sv', 'rtl/g2_zbuffer.sv', 'tests/leaf_tb.sv'] exit=2 timeout=False; stderr=evidence/l1-20261030T143514Z-b13592e6/010-leaf-compile.stderr.txt",
+            "exit_code": 1,
+            "kind": "l1",
+            "mandatory_matrix": [
+              {
+                "cell": [
+                  1,
+                  1,
+                  0
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  1,
+                  1,
+                  0
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  1,
+                  1,
+                  0
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  1,
+                  1,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  1,
+                  1,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  1,
+                  1,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 16,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 16,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  7,
+                  5,
+                  1
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  7,
+                  5,
+                  1
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  7,
+                  5,
+                  1
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  9,
+                  9,
+                  2
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  9,
+                  9,
+                  2
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  9,
+                  9,
+                  2
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  16,
+                  16,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  16,
+                  16,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  16,
+                  16,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  17,
+                  9,
+                  4
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  17,
+                  9,
+                  4
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  17,
+                  9,
+                  4
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              },
+              {
+                "cell": [
+                  256,
+                  256,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 17
+              },
+              {
+                "cell": [
+                  256,
+                  256,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 89
+              },
+              {
+                "cell": [
+                  256,
+                  256,
+                  3
+                ],
+                "outcome": "not-executed",
+                "required": {
+                  "base_modes": [
+                    2,
+                    3,
+                    6,
+                    7
+                  ],
+                  "both_windings": true,
+                  "depth_decisions": 128,
+                  "disabled_strict_failures": 2,
+                  "draws": 32,
+                  "draws_per_precision": 16,
+                  "passing_and_failing_both_precisions": true,
+                  "rejected_tiles": 2,
+                  "six_attribute_outputs": 64,
+                  "surviving_tiles": 2
+                },
+                "seed": 2026
+              }
+            ],
+            "outcome": "failed",
+            "repair_of": [],
+            "schema": 1,
+            "scope": "full",
+            "source_sha256": {
+              "crucible_g1_reference/rtl/crucible_g1_top.sv": "f797e4e9f1f2efafac52d61a25d51473a676735a2262167224cf0c60da7a2231",
+              "crucible_g1_reference/rtl/g1_clipper.sv": "ceec5889645725ca56da9e31e1266ce019b1998b70c0f032b79253336fa1c652",
+              "crucible_g1_reference/rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "crucible_g1_reference/rtl/g1_dot4.sv": "2c1bf3b27cbb9cbf30ea127052b1b78a05ca491d2b9b5b22fbd031e6aebe92f6",
+              "crucible_g1_reference/rtl/g1_edge.sv": "6dd27341a45cea6e9cce1132652d337856fa4f46aee881a9786e96962cc2f79c",
+              "crucible_g1_reference/rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "crucible_g1_reference/rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "crucible_g1_reference/rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "design/ARCHITECTURE.md": "3fdcbc66d742e28de224711e9183974097fc022335e3d36a2cf03b83a6675656",
+              "design/SPEC.md": "2015f6e7aa16c0a69749ca65bfe045c71e27fe2f360d0fb521c1ad9e7e501dfa",
+              "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "rtl/g2_interpolator.sv": "cb16bb1e946d1adcd17a92661f946258ab435197b466afcce17faecc6d3cbf5f",
+              "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "tests/leaf_tb.sv": "494da4ca5c73e1c9f575637b110accce4fa3d37f08aa98027dde418ed7d95f1f",
+              "tests/model.py": "21749c346d3216d5e64914a87630bb8c5da837fbb4c8bfc4e0e2e2f7c70338b0",
+              "tests/scenarios.py": "52afc30a60a69d1efb22b2cbe35fba25263c0a470d85f426aa2cc42bbc20f055",
+              "tests/stream_tb.sv": "40955f7abc888ebc79f0700f8dc348893d65b036298e6d91a9189ec203d6177c",
+              "tests/unit_tb.sv": "dc5c33a827cb356135f3a090110690a004e3ac349d0f378d9e0b0bf8313ec2aa",
+              "tests/verify.py": "3c5513555f339813bbb9d9351dbde9c1b395f21dc8f4cbd676c78f7633bb5e8f"
+            },
+            "source_snapshot": "evidence/l1-20261030T143514Z-b13592e6/sources-cce31eff",
+            "start_utc": "2026-10-30T14:35:14.569572+00:00",
+            "timed_out": false,
+            "timeout_seconds": null,
+            "tool_versions": {
+              "g++": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+              "iverilog": "Icarus Verilog version 12.0 (stable) ()",
+              "make": "GNU Make 4.3",
+              "python3": "Python 3.12.3",
+              "verilator": "Verilator 5.020 2024-01-01 rev (Debian 5.020-1)",
+              "vvp": "Icarus Verilog runtime version 12.0 (stable) ()",
+              "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+            },
+            "zero_denominator_assertion": {
+              "command": 9,
+              "outcome": "explicitly-rejected"
+            }
+          }
+        }
+      ]
     }
   }
 }

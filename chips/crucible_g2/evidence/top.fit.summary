@@ -8,7 +8,7 @@ Reasons candidate registers could not be packed: :
   Vcc         - Input tied to Vcc : 2 / 161 ( 1 % )
   NoOuptutFF  - Output connected to something other than a register : 21 / 161 ( 13 % )
   MultFanout  - Output has multiple fan-outs : 5 / 161 ( 3 % )
-Fitter Status : Successful - Fri Oct 30 05:44:37 2026
+Fitter Status : Successful - Fri Oct 30 07:29:45 2026
 Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Standard Edition
 Revision Name : top
 Top-level Entity Name : crucible_g2_top
