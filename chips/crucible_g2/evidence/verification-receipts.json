@@ -2,9 +2,9 @@
   "chip": "Crucible-G2",
   "passed_checks": {
     "check:l1-verification": {
-      "attempt_id": 33,
-      "duration_s": 1928.8947002969217,
-      "stdout_preview": "L1 receipt: evidence/l1-20261030T105327Z-5e6666d3/receipt.json\n",
+      "attempt_id": 36,
+      "duration_s": 1889.3772810751107,
+      "stdout_preview": "L1 receipt: evidence/l1-20261030T112825Z-63b93cdd/receipt.json\n",
       "receipt_count": 3,
       "receipts": [
         {
@@ -324,6 +324,23 @@
                 "stdout": "evidence/l1-20261030T114734Z-0be2dc95/013-compact-stream.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-Q",
+                  "-s",
+                  "evidence/l1-20261030T114734Z-0be2dc95/compact-e0f4afcc.ys"
+                ],
+                "cwd": ".",
+                "duration_seconds": 670.7346958590206,
+                "end_utc": "2026-10-30T11:59:11.186433+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T11:48:00.451366+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/014-yosys-compact.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/014-yosys-compact.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
               }
             ],
             "coverage": [
@@ -403,9 +420,10 @@
               }
             ],
             "cwd": ".",
-            "end_utc": null,
-            "exit_code": null,
+            "end_utc": "2026-10-30T11:59:34.174127+00:00",
+            "exit_code": 0,
             "kind": "l1",
+            "outcome": "passed",
             "public_unit_channels": {
               "command": 11,
               "comparisons": 62,
@@ -460,6 +478,19 @@
             },
             "source_snapshot": "evidence/l1-20261030T114734Z-0be2dc95/sources-0ff93802",
             "start_utc": "2026-10-30T11:47:34.500826+00:00",
+            "synthesis": [
+              {
+                "command": 14,
+                "configuration": "compact",
+                "hierarchical_instances": 34,
+                "memory_bits": 0,
+                "netlist": "evidence/l1-20261030T114734Z-0be2dc95/compact-34b8a75c.json",
+                "outcome": "passed",
+                "state_bits": 501226,
+                "zero_divmod": true,
+                "zero_latches": true
+              }
+            ],
             "timed_out": false,
             "timeout_seconds": null,
             "tool_versions": {
