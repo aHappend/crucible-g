@@ -1,6 +1,6 @@
 {
   "gate": "quartus-sta",
-  "timestamp_utc": "2026-10-30T14:31:16.450759+00:00",
+  "timestamp_utc": "2026-10-30T16:18:04.597942+00:00",
   "project_dir": "/data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
   "revision": "top",
   "clock_filter": "clk_main",
@@ -18,8 +18,8 @@
     "warning_10268": [],
     "uninferred_ram_count": 2,
     "uninferred_rams": [
-      "Info (276007): RAM logic \"g2_engine:engine|projected\" is uninferred due to asynchronous read logic File: /data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/rtl_staged/g2_engine.sv Line: 35",
-      "Info (276007): RAM logic \"crucible_g1_top:legacy|projected\" is uninferred due to asynchronous read logic File: /data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/rtl_staged/crucible_g1_top.sv Line: 25"
+      "Info (276007): RAM logic \"g2_engine:engine|projected\" is uninferred due to asynchronous read logic File: /tmp/iso_quartus_crucible-g2/rtl_staged/g2_engine.sv Line: 35",
+      "Info (276007): RAM logic \"crucible_g1_top:legacy|projected\" is uninferred due to asynchronous read logic File: /tmp/iso_quartus_crucible-g2/rtl_staged/crucible_g1_top.sv Line: 25"
     ]
   },
   "sta_summary": {
