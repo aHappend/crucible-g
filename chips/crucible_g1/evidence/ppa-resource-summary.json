@@ -1,16 +1,6 @@
 {
   "chip": "Crucible-G1",
-  "fitter_resources": {
-    "alms_used": 78477,
-    "alms_total": 427200,
-    "alms_pct": "18 %",
-    "total_registers": 104141,
-    "block_memory_bits": 26112,
-    "m20k_ram_blocks": 2,
-    "m20k_ram_blocks_total": 2713,
-    "dsp_blocks": 20,
-    "virtual_pins": 71
-  },
+  "fitter_resources": {},
   "timing": {
     "device": "10AX115N2F45E1SG",
     "netlist_mode": "post_fit",
