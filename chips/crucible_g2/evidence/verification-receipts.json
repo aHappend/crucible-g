@@ -1,0 +1,12 @@
+{
+  "chip": "Crucible-G2",
+  "passed_checks": {
+    "check:l1-verification": {
+      "attempt_id": 24,
+      "duration_s": 1890.2961461548693,
+      "stdout_preview": "L1 receipt: evidence/l1-20261030T063622Z-7ee563b0/receipt.json\n",
+      "receipt_count": 0,
+      "receipts": []
+    }
+  }
+}

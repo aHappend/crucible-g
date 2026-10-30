@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Fri Oct 30 00:14:46 2026
+Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Standard Edition
+Revision Name : top
+Top-level Entity Name : crucible_g2_top
+Family : Arria 10
+Logic utilization (in ALMs) : N/A
+Total registers : 154347
+Total pins : 0
+Total virtual pins : 71
+Total block memory bits : 2,041,728
+Total DSP Blocks : 161
+Total HSSI RX channels : 0
+Total HSSI TX channels : 0
+Total PLLs : 0
