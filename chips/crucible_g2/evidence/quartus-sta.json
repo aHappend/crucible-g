@@ -1,6 +1,6 @@
 {
   "gate": "quartus-sta",
-  "timestamp_utc": "2026-10-30T16:18:04.597942+00:00",
+  "timestamp_utc": "2026-10-30T17:03:17.599936+00:00",
   "project_dir": "/data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
   "revision": "top",
   "clock_filter": "clk_main",
@@ -16,329 +16,325 @@
     "lpm_divide_errors": [],
     "warning_10268_count": 0,
     "warning_10268": [],
-    "uninferred_ram_count": 2,
-    "uninferred_rams": [
-      "Info (276007): RAM logic \"g2_engine:engine|projected\" is uninferred due to asynchronous read logic File: /tmp/iso_quartus_crucible-g2/rtl_staged/g2_engine.sv Line: 35",
-      "Info (276007): RAM logic \"crucible_g1_top:legacy|projected\" is uninferred due to asynchronous read logic File: /tmp/iso_quartus_crucible-g2/rtl_staged/crucible_g1_top.sv Line: 25"
-    ]
+    "uninferred_ram_count": 0,
+    "uninferred_rams": []
   },
   "sta_summary": {
     "exit_code": 0,
-    "netlist_mode": "post_map",
+    "netlist_mode": "post_fit",
     "clocks": [
       {
         "name": "clk_main",
         "period_ns": 10.0
       }
     ],
-    "wns_setup_ns": 5.162,
-    "wns_hold_ns": -0.179,
+    "wns_setup_ns": 1.341,
+    "wns_hold_ns": 0.036,
     "unconstrained_setup_paths": 0,
     "unconstrained_functional_endpoints": 0,
     "unapproved_timing_exceptions": 0,
     "failing_setup_count": 0,
-    "failing_hold_count": 20,
+    "failing_hold_count": 0,
     "setup_paths": [
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.341,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[4][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.345,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[4][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.347,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[10][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.348,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[10][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.374,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[3][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.375,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[3][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.378,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[9][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.379,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[9][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.38,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[2][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.381,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[2][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.381,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[8][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.382,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[8][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.393,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[1][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][89]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.408,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[1][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.412,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[7][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.413,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[7][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.414,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[0][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.415,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[0][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.417,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[6][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
       },
       {
-        "slack_ns": 5.162,
+        "slack_ns": 1.419,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_setup:setup|g2_clipper:clipper|Mult0~mult_ll_pl[0][31]|g2_engine:engine|g2_interpolator:interpolator|product[6][92]"
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
       }
     ],
     "hold_paths": [
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.036,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a94~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[257]|crucible_g1_top:legacy|vertices[257]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.036,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a22~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[128]|crucible_g1_top:legacy|vertices[128]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.036,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a47~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[19]|crucible_g1_top:legacy|matrix[19]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.036,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a63~reg0"
+        "from_node": "header[874]",
+        "to_node": "header[874]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.037,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a89~reg0"
+        "from_node": "header[810]",
+        "to_node": "header[810]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a17~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[23]|crucible_g1_top:legacy|matrix[23]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a42~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[123]|crucible_g1_top:legacy|matrix[123]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a64~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[214]|crucible_g1_top:legacy|matrix[214]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a84~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[83]|crucible_g1_top:legacy|matrix[83]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a12~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_transform:transform|result[272]|crucible_g1_top:legacy|g1_transform:transform|result[272]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a26~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_transform:transform|result[373]|crucible_g1_top:legacy|g1_transform:transform|result[373]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
         "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a46~reg0"
+        "to_node": "g2_interpolator:interpolator|attributes[323]~_Duplicate_4|g2_engine:engine|g2_interpolator:interpolator|attributes[323]~_Duplicate_4"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a95~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_clipper:clipper|component[1]|crucible_g1_top:legacy|g1_clipper:clipper|component[1]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a70~reg0"
+        "from_node": "header[116]",
+        "to_node": "header[116]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a62~reg0"
+        "from_node": "header[84]",
+        "to_node": "header[84]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.038,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a72~reg0"
+        "from_node": "header[69]",
+        "to_node": "header[69]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.039,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a65~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[256]|crucible_g1_top:legacy|matrix[256]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.039,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a24~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[17]|crucible_g1_top:legacy|vertices[17]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.039,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a49~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[273]|crucible_g1_top:legacy|vertices[273]"
       },
       {
-        "slack_ns": -0.179,
+        "slack_ns": 0.039,
         "from_clock": "clk_main",
         "to_clock": "clk_main",
-        "from_node": "g2_engine:engine",
-        "to_node": "g2_zbuffer:zbuffer|x[4]|g2_engine:engine|g2_zbuffer:zbuffer|altsyncram:depth_mem_rtl_0|altsyncram_r2s1:auto_generated|ram_block1a88~reg0"
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[22]|crucible_g1_top:legacy|matrix[22]"
       }
     ],
     "stderr_tail": []
   },
-  "detail": "Timing closed: Setup WNS = 5.162 ns",
-  "fit_mode": "plan_plus_post_map_sta",
+  "detail": "Timing closed: Setup WNS = 1.341 ns",
   "top_module": "crucible_g2_top",
   "clock_port": "clk",
   "clock_period_ns": 10.0,
   "target_frequency_mhz": 100.0,
-  "fmax_mhz": 206.7,
-  "critical_path_delay_ns": 4.838,
+  "fmax_mhz": 115.49,
+  "critical_path_delay_ns": 8.659,
   "fitter_resource_summary": {
-    "alms_used": 102192,
+    "alms_used": 14114,
     "alms_total": 427200,
-    "alms_pct": "24 %",
-    "total_registers": 151871,
+    "alms_pct": "3 %",
+    "total_registers": 27268,
     "block_memory_bits": 2041728,
-    "m20k_ram_blocks": 0,
+    "m20k_ram_blocks": 129,
     "m20k_ram_blocks_total": 2713,
     "dsp_blocks": 161,
     "virtual_pins": 71

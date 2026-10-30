@@ -1,24 +1,24 @@
 {
   "chip": "Crucible-G2",
   "fitter_resources": {
-    "alms_used": 102192,
+    "alms_used": 14114,
     "alms_total": 427200,
-    "alms_pct": "24 %",
-    "total_registers": 151871,
+    "alms_pct": "3 %",
+    "total_registers": 27268,
     "block_memory_bits": 2041728,
-    "m20k_ram_blocks": 0,
+    "m20k_ram_blocks": 129,
     "m20k_ram_blocks_total": 2713,
     "dsp_blocks": 161,
     "virtual_pins": 71
   },
   "timing": {
     "device": "10AX115N2F45E1SG",
-    "netlist_mode": "post_map",
+    "netlist_mode": "post_fit",
     "target_frequency_mhz": 100.0,
-    "fmax_mhz": 206.7,
-    "critical_path_delay_ns": 4.838,
-    "wns_setup_ns": 5.162,
-    "wns_hold_ns": -0.179
+    "fmax_mhz": 115.49,
+    "critical_path_delay_ns": 8.659,
+    "wns_setup_ns": 1.341,
+    "wns_hold_ns": 0.036
   },
   "verification_tiers": {
     "L3_board_hil": "L3_BRIDGE_CONNECTIVITY_PROBE_ONLY",

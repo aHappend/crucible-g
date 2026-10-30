@@ -246,3 +246,29 @@ versions, times, exit/timeout, logs and coverage without overwriting failures.
 Portable copies include only RTL, design docs, tests and immutable parent RTL;
 never runtime metadata, private paths, credentials, device IDs or binaries.
 Tools must already exist; do not install dependencies.
+
+### Current evidence status and limits
+
+Passing L1 simulation, independent-reference comparisons, behavioral mutation
+sensitivity, Yosys synthesis and clean-directory reproduction evidence is retained
+at `evidence/l1-20261030T162101Z-f8fd97a9/`. These results establish the checked
+functional and structural behavior, not physical-board graphics execution.
+
+L2 completed placement/routing and post-fit internal timing analysis at 10 ns
+reports setup slack +1.341 ns and hold slack +0.036 ns, with 14,114 ALMs,
+27,268 registers, 129 M20Ks and 161 DSPs. All non-clock inputs and all outputs
+are excluded from timing analysis. Thus these results establish internal
+virtual-pin timing only; external-interface and asynchronous-reset timing
+closure are not established.
+
+Current L3 evidence is exactly `L3_BRIDGE_CONNECTIVITY_PROBE_ONLY`: three
+deterministic register-57 reads, with no CRUCIBLE bitstream flash and no depth,
+early-Z or perspective workload execution. Graphics workloads were checked in
+simulation, not demonstrated on the board. Connectivity does not establish
+graphics-workload acceptance or satisfy the mandatory graphics-workload HIL
+requirement. All mandatory acceptance requirements above remain unchanged.
+
+The later runtime-authored product report must retain these evidence boundaries
+and limitations, with no OS-boot claim. Report creation and independent PDF
+approval remain subsequent to engineering acceptance, not prerequisites for
+design verification.
