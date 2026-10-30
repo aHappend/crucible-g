@@ -8,12 +8,13 @@
       "receipt_count": 3,
       "receipts": [
         {
-          "path": "evidence/l1-20261030T112825Z-63b93cdd/receipt.json",
+          "path": "evidence/l1-20261030T112825Z-63b93cdd/clean-e6fbd663/evidence/l1-20261030T114734Z-0be2dc95/receipt.json",
           "data": {
             "acceptance_evidence": "shared-runtime-admission-required",
             "argv": [
               "python3",
-              "tests/verify.py"
+              "tests/verify.py",
+              "--compact"
             ],
             "arithmetic": [
               {
@@ -21,20 +22,6 @@
                 "command": 8,
                 "compared": 76,
                 "cycles": 23690,
-                "latencies": {
-                  "g1_divider": 98,
-                  "g1_dot4": 4,
-                  "g1_edge": 2,
-                  "g2_divider": 588,
-                  "g2_interpolator": 596
-                },
-                "outcome": "passed"
-              },
-              {
-                "backend": "verilator",
-                "command": 11,
-                "compared": 364,
-                "cycles": 119962,
                 "latencies": {
                   "g1_divider": 98,
                   "g1_dot4": 4,
@@ -52,12 +39,12 @@
                   "--version"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.004835580009967089,
-                "end_utc": "2026-10-30T11:28:25.456779+00:00",
+                "duration_seconds": 0.004481529118493199,
+                "end_utc": "2026-10-30T11:47:34.525398+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.451734+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/000-version-python3.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/000-version-python3.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.520673+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/000-version-python3.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/000-version-python3.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -67,12 +54,12 @@
                   "-V"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.016282219905406237,
-                "end_utc": "2026-10-30T11:28:25.473999+00:00",
+                "duration_seconds": 0.016341540031135082,
+                "end_utc": "2026-10-30T11:47:34.542749+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.457481+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/001-version-iverilog.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/001-version-iverilog.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.526156+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/001-version-iverilog.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/001-version-iverilog.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -82,12 +69,12 @@
                   "-V"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.008145964005962014,
-                "end_utc": "2026-10-30T11:28:25.483008+00:00",
+                "duration_seconds": 0.00827159802429378,
+                "end_utc": "2026-10-30T11:47:34.551923+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.474646+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/002-version-vvp.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/002-version-vvp.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.543377+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/002-version-vvp.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/002-version-vvp.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -97,12 +84,12 @@
                   "--version"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.11442352109588683,
-                "end_utc": "2026-10-30T11:28:25.598349+00:00",
+                "duration_seconds": 0.11453071003779769,
+                "end_utc": "2026-10-30T11:47:34.667355+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.483714+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/003-version-verilator.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/003-version-verilator.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.552572+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/003-version-verilator.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/003-version-verilator.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -112,12 +99,12 @@
                   "-V"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.008551680948585272,
-                "end_utc": "2026-10-30T11:28:25.608076+00:00",
+                "duration_seconds": 0.016543366014957428,
+                "end_utc": "2026-10-30T11:47:34.684984+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.599263+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/004-version-yosys.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/004-version-yosys.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.668135+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/004-version-yosys.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/004-version-yosys.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -127,12 +114,12 @@
                   "--version"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.004233465995639563,
-                "end_utc": "2026-10-30T11:28:25.613413+00:00",
+                "duration_seconds": 0.004226812859997153,
+                "end_utc": "2026-10-30T11:47:34.690335+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.608925+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/005-version-gpp.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/005-version-gpp.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.685804+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/005-version-gpp.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/005-version-gpp.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -142,12 +129,12 @@
                   "--version"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.004227455006912351,
-                "end_utc": "2026-10-30T11:28:25.618747+00:00",
+                "duration_seconds": 0.004209971986711025,
+                "end_utc": "2026-10-30T11:47:34.695679+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.614261+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/006-version-make.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/006-version-make.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.691167+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/006-version-make.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/006-version-make.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -159,7 +146,7 @@
                   "-s",
                   "leaf_tb",
                   "-o",
-                  "evidence/l1-20261030T112825Z-63b93cdd/leaves-024097da.vvp",
+                  "evidence/l1-20261030T114734Z-0be2dc95/leaves-7ed67151.vvp",
                   "rtl/crucible_g1_top.sv",
                   "rtl/crucible_g2_top.sv",
                   "rtl/g1_clipper.sv",
@@ -180,103 +167,44 @@
                   "tests/leaf_tb.sv"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.06453798105940223,
-                "end_utc": "2026-10-30T11:28:25.698218+00:00",
+                "duration_seconds": 0.06457579508423805,
+                "end_utc": "2026-10-30T11:47:34.773524+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.633409+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/007-leaf-compile.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/007-leaf-compile.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.708657+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/007-leaf-compile.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/007-leaf-compile.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
               {
                 "argv": [
                   "vvp",
-                  "evidence/l1-20261030T112825Z-63b93cdd/leaves-024097da.vvp",
-                  "+vectors=evidence/l1-20261030T112825Z-63b93cdd/leaves-3d45a8b3.txt"
+                  "evidence/l1-20261030T114734Z-0be2dc95/leaves-7ed67151.vvp",
+                  "+vectors=evidence/l1-20261030T114734Z-0be2dc95/leaves-292ee5d0.txt"
                 ],
                 "cwd": ".",
-                "duration_seconds": 2.5701372080948204,
-                "end_utc": "2026-10-30T11:28:28.270699+00:00",
+                "duration_seconds": 2.870736066950485,
+                "end_utc": "2026-10-30T11:47:37.645791+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:25.700323+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/008-leaf-behavior.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/008-leaf-behavior.stdout.txt",
+                "start_utc": "2026-10-30T11:47:34.774771+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/008-leaf-behavior.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/008-leaf-behavior.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
               {
                 "argv": [
                   "vvp",
-                  "evidence/l1-20261030T112825Z-63b93cdd/leaves-024097da.vvp",
+                  "evidence/l1-20261030T114734Z-0be2dc95/leaves-7ed67151.vvp",
                   "+zero_denominator=1"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.03272561193443835,
-                "end_utc": "2026-10-30T11:28:28.308131+00:00",
+                "duration_seconds": 0.06466850801371038,
+                "end_utc": "2026-10-30T11:47:37.712726+00:00",
                 "exit_code": 1,
-                "start_utc": "2026-10-30T11:28:28.275319+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/009-zero-denominator.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/009-zero-denominator.stdout.txt",
-                "timed_out": false,
-                "timeout_seconds": 3600
-              },
-              {
-                "argv": [
-                  "verilator",
-                  "--binary",
-                  "--timing",
-                  "--assert",
-                  "-Wno-fatal",
-                  "--top-module",
-                  "leaf_tb",
-                  "-j",
-                  "2",
-                  "--Mdir",
-                  "evidence/l1-20261030T112825Z-63b93cdd/compile-obj-0e043aa2",
-                  "-o",
-                  "sim",
-                  "rtl/crucible_g1_top.sv",
-                  "rtl/crucible_g2_top.sv",
-                  "rtl/g1_clipper.sv",
-                  "rtl/g1_divider.sv",
-                  "rtl/g1_dot4.sv",
-                  "rtl/g1_edge.sv",
-                  "rtl/g1_project.sv",
-                  "rtl/g1_raster.sv",
-                  "rtl/g1_transform.sv",
-                  "rtl/g2_clipper.sv",
-                  "rtl/g2_divider.sv",
-                  "rtl/g2_engine.sv",
-                  "rtl/g2_interpolator.sv",
-                  "rtl/g2_project.sv",
-                  "rtl/g2_raster.sv",
-                  "rtl/g2_setup.sv",
-                  "rtl/g2_zbuffer.sv",
-                  "tests/leaf_tb.sv"
-                ],
-                "cwd": ".",
-                "duration_seconds": 11.64208695688285,
-                "end_utc": "2026-10-30T11:28:39.968829+00:00",
-                "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:28.326460+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/010-leaf-compile.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/010-leaf-compile.stdout.txt",
-                "timed_out": false,
-                "timeout_seconds": 3600
-              },
-              {
-                "argv": [
-                  "evidence/l1-20261030T112825Z-63b93cdd/compile-obj-0e043aa2/sim",
-                  "+vectors=evidence/l1-20261030T112825Z-63b93cdd/leaves-4fb34090.txt"
-                ],
-                "cwd": ".",
-                "duration_seconds": 0.5661886951420456,
-                "end_utc": "2026-10-30T11:28:40.538134+00:00",
-                "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:39.971703+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/011-leaf-behavior.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/011-leaf-behavior.stdout.txt",
+                "start_utc": "2026-10-30T11:47:37.647760+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/009-zero-denominator.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/009-zero-denominator.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               },
@@ -288,7 +216,7 @@
                   "-s",
                   "unit_tb",
                   "-o",
-                  "evidence/l1-20261030T112825Z-63b93cdd/units-d89d21a4.vvp",
+                  "evidence/l1-20261030T114734Z-0be2dc95/units-27ca5577.vvp",
                   "rtl/crucible_g1_top.sv",
                   "rtl/crucible_g2_top.sv",
                   "rtl/g1_clipper.sv",
@@ -309,572 +237,192 @@
                   "tests/unit_tb.sv"
                 ],
                 "cwd": ".",
-                "duration_seconds": 0.11512952717021108,
-                "end_utc": "2026-10-30T11:28:40.754164+00:00",
+                "duration_seconds": 0.11471828911453485,
+                "end_utc": "2026-10-30T11:47:37.833795+00:00",
                 "exit_code": 0,
-                "start_utc": "2026-10-30T11:28:40.638791+00:00",
-                "stderr": "evidence/l1-20261030T112825Z-63b93cdd/012-unit-compile.stderr.txt",
-                "stdout": "evidence/l1-20261030T112825Z-63b93cdd/012-unit-compile.stdout.txt",
+                "start_utc": "2026-10-30T11:47:37.718787+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/010-unit-compile.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/010-unit-compile.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "vvp",
+                  "evidence/l1-20261030T114734Z-0be2dc95/units-27ca5577.vvp",
+                  "+vectors=evidence/l1-20261030T114734Z-0be2dc95/units-59227da3.txt"
+                ],
+                "cwd": ".",
+                "duration_seconds": 8.03519672411494,
+                "end_utc": "2026-10-30T11:47:45.870757+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T11:47:37.835280+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/011-unit-behavior.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/011-unit-behavior.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "--assert",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "stream_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/l1-20261030T114734Z-0be2dc95/compile-obj-a6173bd5",
+                  "-o",
+                  "sim",
+                  "-GMW=1",
+                  "-GMH=1",
+                  "-GTL=3",
+                  "-GPARENT=0",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "tests/stream_tb.sv"
+                ],
+                "cwd": ".",
+                "duration_seconds": 13.953421853948385,
+                "end_utc": "2026-10-30T11:47:59.832358+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T11:47:45.878660+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/012-compile-verilator.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/012-compile-verilator.stdout.txt",
+                "timed_out": false,
+                "timeout_seconds": 3600
+              },
+              {
+                "argv": [
+                  "evidence/l1-20261030T114734Z-0be2dc95/compile-obj-a6173bd5/sim",
+                  "+vectors=evidence/l1-20261030T114734Z-0be2dc95/compact-stream-4fca4da7.txt"
+                ],
+                "cwd": ".",
+                "duration_seconds": 0.5160001399926841,
+                "end_utc": "2026-10-30T11:48:00.351677+00:00",
+                "exit_code": 0,
+                "start_utc": "2026-10-30T11:47:59.835372+00:00",
+                "stderr": "evidence/l1-20261030T114734Z-0be2dc95/013-compact-stream.stderr.txt",
+                "stdout": "evidence/l1-20261030T114734Z-0be2dc95/013-compact-stream.stdout.txt",
                 "timed_out": false,
                 "timeout_seconds": 3600
               }
             ],
-            "coverage": [],
+            "coverage": [
+              {
+                "audits": 2,
+                "cell": [
+                  1,
+                  1,
+                  3
+                ],
+                "commands": 11,
+                "compared_words": 168,
+                "coordinates": [
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "crossings": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "directed_cases": [
+                  "legacy-compact",
+                  "clear",
+                  "compact-unequal-w",
+                  "compact-equality-disabled",
+                  "clear",
+                  "compact-early-reject",
+                  "clear",
+                  "compact-unequal-w",
+                  "compact-equality-disabled",
+                  "clear",
+                  "compact-early-reject"
+                ],
+                "disabled_failures": 2,
+                "draws": 6,
+                "failed": 2,
+                "modes": [
+                  2,
+                  3
+                ],
+                "nonaffine": 2,
+                "observed_stall_cycles": 66,
+                "outcome": "passed",
+                "passed": 2,
+                "precisions": {
+                  "16": {
+                    "draws": 3,
+                    "failed": 1,
+                    "passed": 1
+                  },
+                  "24": {
+                    "draws": 3,
+                    "failed": 1,
+                    "passed": 1
+                  }
+                },
+                "receipt_command": 13,
+                "rejected": 2,
+                "run": "compact-stream",
+                "seed": 17,
+                "six_attribute_outputs": 2,
+                "surviving_tiles": 4,
+                "tested": 4,
+                "tiles": 6,
+                "vectors": "evidence/l1-20261030T114734Z-0be2dc95/compact-stream-4fca4da7.txt",
+                "windings": [
+                  0,
+                  6
+                ]
+              }
+            ],
             "cwd": ".",
             "end_utc": null,
             "exit_code": null,
             "kind": "l1",
-            "mandatory_matrix": [
-              {
-                "cell": [
-                  1,
-                  1,
-                  0
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  1,
-                  1,
-                  0
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  1,
-                  1,
-                  0
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  1,
-                  1,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  1,
-                  1,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  1,
-                  1,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 16,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 16,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  7,
-                  5,
-                  1
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  7,
-                  5,
-                  1
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  7,
-                  5,
-                  1
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  9,
-                  9,
-                  2
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  9,
-                  9,
-                  2
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  9,
-                  9,
-                  2
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  16,
-                  16,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  16,
-                  16,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  16,
-                  16,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  17,
-                  9,
-                  4
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  17,
-                  9,
-                  4
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  17,
-                  9,
-                  4
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              },
-              {
-                "cell": [
-                  256,
-                  256,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 17
-              },
-              {
-                "cell": [
-                  256,
-                  256,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 89
-              },
-              {
-                "cell": [
-                  256,
-                  256,
-                  3
-                ],
-                "outcome": "not-executed",
-                "required": {
-                  "base_modes": [
-                    2,
-                    3,
-                    6,
-                    7
-                  ],
-                  "both_windings": true,
-                  "depth_decisions": 128,
-                  "disabled_strict_failures": 2,
-                  "draws": 32,
-                  "draws_per_precision": 16,
-                  "passing_and_failing_both_precisions": true,
-                  "rejected_tiles": 2,
-                  "six_attribute_outputs": 64,
-                  "surviving_tiles": 2
-                },
-                "seed": 2026
-              }
-            ],
+            "public_unit_channels": {
+              "command": 11,
+              "comparisons": 62,
+              "cycles": 80741,
+              "modules": [
+                "g2_clipper",
+                "g2_project",
+                "g2_setup",
+                "g2_raster",
+                "g2_zbuffer"
+              ],
+              "outcome": "passed",
+              "transactions": 45
+            },
             "repair_of": [],
             "schema": 1,
-            "scope": "full",
+            "scope": "partial-compact",
             "source_sha256": {
               "crucible_g1_reference/rtl/crucible_g1_top.sv": "f797e4e9f1f2efafac52d61a25d51473a676735a2262167224cf0c60da7a2231",
               "crucible_g1_reference/rtl/g1_clipper.sv": "ceec5889645725ca56da9e31e1266ce019b1998b70c0f032b79253336fa1c652",
@@ -910,8 +458,8 @@
               "tests/unit_tb.sv": "dc5c33a827cb356135f3a090110690a004e3ac349d0f378d9e0b0bf8313ec2aa",
               "tests/verify.py": "3c5513555f339813bbb9d9351dbde9c1b395f21dc8f4cbd676c78f7633bb5e8f"
             },
-            "source_snapshot": "evidence/l1-20261030T112825Z-63b93cdd/sources-6bc1c7ff",
-            "start_utc": "2026-10-30T11:28:25.431787+00:00",
+            "source_snapshot": "evidence/l1-20261030T114734Z-0be2dc95/sources-0ff93802",
+            "start_utc": "2026-10-30T11:47:34.500826+00:00",
             "timed_out": false,
             "timeout_seconds": null,
             "tool_versions": {
