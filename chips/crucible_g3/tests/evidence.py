@@ -29,7 +29,9 @@ class Evidence:
         self.path.mkdir(parents=True, exist_ok=False)
         self.data = {"schema": 1, "suite": suite, "argv": argv, "cwd": ".",
                      "started_at": utc(), "acceptance_evidence": not preparation,
-                     "commands": [], "status": "running", "source_sha256": {}}
+                     "commands": [], "status": "running", "source_sha256": {},
+                     "timeout_s": None, "timeout_owner": "shared runtime",
+                     "exit_code": None, "timed_out": None}
         if repair_of:
             self.data["repair_of"] = repair_of
         for pattern in ("rtl/*.sv", "design/*.md", "tests/*",
@@ -98,5 +100,6 @@ class Evidence:
             self.run([tool, arg], "version-"+tool, expect=None)
 
     def finish(self, status, **fields):
-        self.data.update(status=status, ended_at=utc(), **fields)
+        self.data.update(status=status, ended_at=utc(), exit_code=0 if status == "passed" else 1,
+                         timed_out=False, **fields)
         self.save()

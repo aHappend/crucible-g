@@ -111,7 +111,7 @@ def transform(vertices, matrix, mode2d):
     return out
 
 
-def clip(vertices):
+def clip(vertices, intersections=None):
     planes = (lambda v: v[3]-1, lambda v: v[0]+v[3],
               lambda v: v[3]-v[0], lambda v: v[1]+v[3],
               lambda v: v[3]-v[1], lambda v: v[2],
@@ -126,6 +126,8 @@ def clip(vertices):
         for b in polygon:
             fb = distance(b)
             if (fa >= 0) != (fb >= 0):
+                if intersections is not None:
+                    intersections[plane] += 1
                 p = [signed(av + signed((bv-av)*fa//(fa-fb), 33))
                      for av, bv in zip(a, b)]
                 if plane == 0:
@@ -190,9 +192,11 @@ class Renderer:
         self.program = None
         self.cache = None
         self.depth, self.color = {}, {}
+        self.events = {}
 
     def execute(self, words, texture_fail_at=None, dma_fail_at=None):
         tag, dims, opcode = words[:3]
+        self.events = {}
         width, height = dims & 65535, dims >> 16
         g3 = opcode in G3_DRAWS or opcode in range(1024, 1028)
         n = 16 if g3 else 13 if opcode in PARENT_DRAWS+(4, 5) else 6
@@ -254,8 +258,10 @@ class Renderer:
         vertices = [[signed(x) for x in words[19+i*4:23+i*4]] +
                     ([] if legacy else [signed(x) for x in words[31+i*6:37+i*6]])
                     for i in range(3)]
+        self.events["clip_intersections"] = [0]*7
         vertices = clip(transform(vertices, words[3:19],
-                                  bool(opcode == 1 if legacy else opcode & 4)))
+                                  bool(opcode == 1 if legacy else opcode & 4)),
+                        self.events["clip_intersections"])
         if len(vertices) < 3:
             return finish(2)
         projected = [project(v, width, height, bool(opcode & 1)) for v in vertices]
