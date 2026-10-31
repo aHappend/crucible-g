@@ -1,0 +1,345 @@
+{
+  "gate": "quartus-sta",
+  "timestamp_utc": "2026-10-31T15:52:31.356138+00:00",
+  "project_dir": "/data/sufeng/crucible-g3-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
+  "revision": "top",
+  "clock_filter": "clk_main",
+  "min_setup_slack_ns": 0.0,
+  "min_hold_slack_ns": 0.0,
+  "status": "passed",
+  "map_summary": {
+    "exists": true,
+    "path": "/data/sufeng/crucible-g3-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
+    "error_count": 0,
+    "errors": [],
+    "lpm_divide_error_count": 0,
+    "lpm_divide_errors": [],
+    "warning_10268_count": 0,
+    "warning_10268": [],
+    "uninferred_ram_count": 0,
+    "uninferred_rams": []
+  },
+  "sta_summary": {
+    "exit_code": 0,
+    "netlist_mode": "post_fit",
+    "clocks": [
+      {
+        "name": "clk_main",
+        "period_ns": 10.0
+      }
+    ],
+    "wns_setup_ns": 1.362,
+    "wns_hold_ns": 0.044,
+    "unconstrained_setup_paths": 0,
+    "unconstrained_functional_endpoints": 0,
+    "unapproved_timing_exceptions": 0,
+    "failing_setup_count": 0,
+    "failing_hold_count": 0,
+    "setup_paths": [
+      {
+        "slack_ns": 1.362,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][93]"
+      },
+      {
+        "slack_ns": 1.366,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][91]"
+      },
+      {
+        "slack_ns": 1.372,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][95]"
+      },
+      {
+        "slack_ns": 1.373,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][89]"
+      },
+      {
+        "slack_ns": 1.376,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][94]"
+      },
+      {
+        "slack_ns": 1.385,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][90]"
+      },
+      {
+        "slack_ns": 1.411,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][93]"
+      },
+      {
+        "slack_ns": 1.414,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][93]"
+      },
+      {
+        "slack_ns": 1.415,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][91]"
+      },
+      {
+        "slack_ns": 1.418,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][91]"
+      },
+      {
+        "slack_ns": 1.421,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][95]"
+      },
+      {
+        "slack_ns": 1.422,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][89]"
+      },
+      {
+        "slack_ns": 1.424,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][95]"
+      },
+      {
+        "slack_ns": 1.425,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][89]"
+      },
+      {
+        "slack_ns": 1.425,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][94]"
+      },
+      {
+        "slack_ns": 1.428,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][94]"
+      },
+      {
+        "slack_ns": 1.434,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][90]"
+      },
+      {
+        "slack_ns": 1.437,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][90]"
+      },
+      {
+        "slack_ns": 1.463,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][93]"
+      },
+      {
+        "slack_ns": 1.467,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|Mult18~mult_hl_pl[0][14]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|product[4][91]"
+      }
+    ],
+    "hold_paths": [
+      {
+        "slack_ns": 0.044,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_raster:raster|g1_edge:edge_1|state.PRODUCT|crucible_g2_top:compatibility|g2_engine:engine|g2_raster:raster|g1_edge:edge_1|state.DIFFERENCE"
+      },
+      {
+        "slack_ns": 0.052,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g3_texture_cache:texture_cache",
+        "to_node": "g3_bilinear:filter|state.V_SUM|g3_texture_cache:texture_cache|g3_bilinear:filter|state.ROUND"
+      },
+      {
+        "slack_ns": 0.055,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_setup:setup|g1_transform:transform|g1_dot4:dot|state.SUM|crucible_g2_top:compatibility|g2_engine:engine|g2_setup:setup|g1_transform:transform|g1_dot4:dot|state.SATURATE"
+      },
+      {
+        "slack_ns": 0.061,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g3_shader_pipeline:shader",
+        "to_node": "state.MODULATE|g3_shader_pipeline:shader|state.COMBINE"
+      },
+      {
+        "slack_ns": 0.061,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|g1_raster:raster|g1_edge:edge_1|state.PRODUCT|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_raster:raster|g1_edge:edge_1|state.DIFFERENCE"
+      },
+      {
+        "slack_ns": 0.061,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g3_shader_pipeline:shader",
+        "to_node": "state.PRODUCTS|g3_shader_pipeline:shader|state.SUMS"
+      },
+      {
+        "slack_ns": 0.073,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|g1_transform:transform|g1_dot4:dot|state.SUM|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_transform:transform|g1_dot4:dot|state.SATURATE"
+      },
+      {
+        "slack_ns": 0.085,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g3_texture_cache:texture_cache",
+        "to_node": "g3_bilinear:filter|state.H_SUM|g3_texture_cache:texture_cache|g3_bilinear:filter|state.V_PRODUCT"
+      },
+      {
+        "slack_ns": 0.103,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[37]|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_transform:transform|matrix[37]"
+      },
+      {
+        "slack_ns": 0.105,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_setup:setup|attributes[174]|crucible_g2_top:compatibility|g2_engine:engine|g2_setup:setup|g2_clipper:clipper|initial_vertices[302]"
+      },
+      {
+        "slack_ns": 0.106,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|word_index[1]~DUPLICATE|crucible_g2_top:compatibility|crucible_g1_top:legacy|word_index[2]"
+      },
+      {
+        "slack_ns": 0.11,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "header[862]|crucible_g2_top:compatibility|g2_engine:engine|header[862]"
+      },
+      {
+        "slack_ns": 0.113,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|numerator[4][17]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|g2_divider:attribute_lane[4].divider|raw_n[17]"
+      },
+      {
+        "slack_ns": 0.113,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|numerator[3][57]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|g2_divider:attribute_lane[3].divider|raw_n[57]"
+      },
+      {
+        "slack_ns": 0.113,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[184]|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_transform:transform|matrix[184]"
+      },
+      {
+        "slack_ns": 0.118,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "g2_engine:engine|g2_interpolator:interpolator|g2_divider:attribute_lane[3].divider|trial[60]|crucible_g2_top:compatibility|g2_engine:engine|g2_interpolator:interpolator|g2_divider:attribute_lane[3].divider|remainder[60]"
+      },
+      {
+        "slack_ns": 0.12,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[187]|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_transform:transform|matrix[187]"
+      },
+      {
+        "slack_ns": 0.12,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[184]|crucible_g2_top:compatibility|crucible_g1_top:legacy|matrix[184]"
+      },
+      {
+        "slack_ns": 0.12,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[195]|crucible_g2_top:compatibility|crucible_g1_top:legacy|matrix[195]"
+      },
+      {
+        "slack_ns": 0.121,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g2_top:compatibility",
+        "to_node": "crucible_g1_top:legacy|matrix[425]|crucible_g2_top:compatibility|crucible_g1_top:legacy|g1_transform:transform|matrix[425]"
+      }
+    ],
+    "stderr_tail": []
+  },
+  "detail": "Timing closed: Setup WNS = 1.362 ns",
+  "top_module": "crucible_g3_top",
+  "clock_port": "clk",
+  "clock_period_ns": 10.0,
+  "target_frequency_mhz": 100.0,
+  "fmax_mhz": 115.77,
+  "critical_path_delay_ns": 8.638,
+  "fitter_resource_summary": {
+    "alms_used": 17635,
+    "alms_total": 427200,
+    "alms_pct": "4 %",
+    "total_registers": 31518,
+    "block_memory_bits": 4140928,
+    "m20k_ram_blocks": 258,
+    "m20k_ram_blocks_total": 2713,
+    "dsp_blocks": 191,
+    "virtual_pins": 214
+  },
+  "parameters": {},
+  "source_sha256": "8ff10d2395edee1111eb7316b55740776a00c367b49713ef0512972260f60c20",
+  "applicable": true
+}
