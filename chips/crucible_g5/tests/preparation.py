@@ -14,12 +14,30 @@ import uuid
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from oracle import (Primitive, Q, Sample, completion, lbvh, packet, query, record,
                     svgf, triangle, triangle_command, triangle_record, words64)
+from scenarios import Campaign, CELLS
 
 
-def cases(name):
+def cases(name, cell="nonpower", seed=17):
     vertices = ((0, 0, 1), (Q, 0, 1), (0, Q, 1))
     origin, direction = (16384, 16384, 0), (0, 0, 3)
-    if name == "triangle":
+    if name in ("g5-campaign", "state-errors", "query-boundaries", "svgf-campaign",
+                "reset-campaign"):
+        campaign = Campaign(cell, seed)
+        if name in ("g5-campaign", "state-errors"):
+            campaign.state_errors()
+        if name == "g5-campaign":
+            campaign.triangles()
+            campaign.scenes()
+        if name in ("g5-campaign", "query-boundaries"):
+            campaign.witnesses()
+            campaign.queries()
+        if name in ("g5-campaign", "svgf-campaign"):
+            campaign.frames()
+        if name == "reset-campaign":
+            campaign.resets()
+        for case in campaign.cases:
+            yield case.command, case.expected, case.latency
+    elif name == "triangle":
         result = triangle(origin, direction, vertices, 0, Q)
         assert result == (0, 1, 21845, 16384, 16384)
         yield triangle_command(1, origin, direction, vertices), [triangle_record(1, result)], 16384
@@ -154,10 +172,10 @@ def run(args):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(root / name, target)
     fixture = directory / "fixture.txt"
-    transactions = list(cases(args.case))
+    transactions = list(cases(args.case, args.cell, args.seed))
     with fixture.open("w") as f:
         for command, expected, latency in transactions:
-            f.write(f"{len(command)} {len(expected)} {latency}\n")
+            f.write(f"{len(command) if expected else -len(command)} {len(expected)} {latency}\n")
             f.write(" ".join(f"{w:08x}" for w in command) + "\n")
             for response in expected:
                 f.write(" ".join(f"{w:08x}" for w in response) + "\n")
@@ -193,9 +211,17 @@ def run(args):
                 "stdout": str(directory / ("version-" + tool + ".stdout.txt")),
                 "stderr": str(directory / ("version-" + tool + ".stderr.txt"))}
         rtl = sorted(str(p.relative_to(root)) for p in root.glob("rtl/*.sv"))
+        parameters = Campaign(args.cell, args.seed).parameters if args.case in (
+            "g5-campaign", "state-errors", "query-boundaries", "svgf-campaign",
+            "reset-campaign") else dict(
+                MAX_WIDTH=7, MAX_HEIGHT=5, TILE_LOG2=1, MAX_NODES=7, MAX_SPLATS=5,
+                STACK_DEPTH=3, MAX_PRIMITIVES=3, SVGF_MAX_WIDTH=3, SVGF_MAX_HEIGHT=3)
+        receipt["parameters"] = parameters
+        receipt["seed"] = args.seed
         if args.simulator == "icarus":
             binary = str(directory / "simulation.vvp")
             execute(["iverilog", "-g2012", "-Wall", "-s", "stream_tb", "-o", binary,
+                     *[f"-Pstream_tb.{key}={value}" for key, value in parameters.items()],
                      "tests/stream_tb.sv", *rtl], "compile", 600)
             stdout = execute(["vvp", binary, "+fixture=" + str(fixture)], "simulation", 600)
         else:
@@ -204,9 +230,7 @@ def run(args):
             shutil.copyfile(root / "tests/stream_driver.cpp", obj / "stream_driver.cpp")
             execute(["verilator", "--cc", "--exe", "--build", "-j", "2", "-Wno-fatal",
                      "--top-module", "crucible_g5_top", "--Mdir", str(obj),
-                     "-GMAX_WIDTH=7", "-GMAX_HEIGHT=5", "-GTILE_LOG2=1",
-                     "-GMAX_NODES=7", "-GMAX_SPLATS=5", "-GSTACK_DEPTH=3",
-                     "-GMAX_PRIMITIVES=3", "-GSVGF_MAX_WIDTH=3", "-GSVGF_MAX_HEIGHT=3",
+                     *[f"-G{key}={value}" for key, value in parameters.items()],
                      *rtl, "stream_driver.cpp"], "compile", 1200)
             binary = directory / "simulation"
             shutil.copy2(obj / "Vcrucible_g5_top", binary)
@@ -217,8 +241,10 @@ def run(args):
             raise RuntimeError("simulation missing completed assertions/coverage")
         measured = {key: int(value) for key, value in
                     (field.split("=") for field in summaries[0].split()[1:])}
-        if measured["commands"] != len(transactions):
+        if measured["commands"] != sum(bool(expected) for _, expected, _ in transactions):
             raise RuntimeError("simulation did not compare every requested transaction")
+        if args.case == "reset-campaign" and measured.get("aborts") != 7:
+            raise RuntimeError("simulation did not exercise every reset phase")
         receipt["measured_coverage"] = measured
         receipt["exit_code"] = 0
     except (RuntimeError, OSError, ValueError) as error:
@@ -235,7 +261,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case", choices=["triangle", "triangle-extrema", "witness", "equal-bin",
                                           "lbvh", "svgf-singleton", "svgf-line", "svgf-square",
-                                          "svgf-guides"], required=True)
+                                          "svgf-guides", "g5-campaign", "state-errors",
+                                          "query-boundaries", "svgf-campaign",
+                                          "reset-campaign"], required=True)
+    parser.add_argument("--cell", choices=CELLS, default="nonpower")
+    parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--simulator", choices=["icarus", "verilator"], default="icarus")
     parser.add_argument("--output-root", default="evidence/preparation")
     parser.add_argument("--repair-of")
