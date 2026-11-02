@@ -1498,6 +1498,589 @@
           }
         }
       ]
+    },
+    "check:synthesis": {
+      "attempt_id": 5,
+      "duration_s": 307.17787224799395,
+      "stdout_preview": "PROGRESS synthesis-0: tool execution remains active\nPROGRESS synthesis-1: tool execution remains active\nPROGRESS synthesis-2: tool execution remains active\nPROGRESS synthesis-3: tool execution remains active\nPASS synthesis: receipt=evidence/synthesis-20261102T181310Z-41457984/receipt.json\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/synthesis-20261102T181310Z-41457984/receipt.json",
+          "data": {
+            "argv": [
+              "python3",
+              "tests/verify.py",
+              "--suite",
+              "synthesis"
+            ],
+            "commands": [
+              {
+                "argv": [
+                  "python3",
+                  "--version"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:13:10.353604+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:13:10.347984+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/version-python3.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/version-python3.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-V"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:13:10.363463+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:13:10.354386+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/version-yosys.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/version-yosys.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-Q",
+                  "-T",
+                  "-p",
+                  "help synth"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:13:10.381737+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:13:10.364523+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/synth-help.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/synth-help.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-s",
+                  "evidence/synthesis-20261102T181310Z-41457984/synthesis-0.ys"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:14:05.158958+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:13:10.388924+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/synthesis-0.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/synthesis-0.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-s",
+                  "evidence/synthesis-20261102T181310Z-41457984/synthesis-1.ys"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:15:21.602053+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:14:25.017964+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/synthesis-1.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/synthesis-1.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-s",
+                  "evidence/synthesis-20261102T181310Z-41457984/synthesis-2.ys"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:16:39.998153+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:15:43.283247+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/synthesis-2.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/synthesis-2.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-s",
+                  "evidence/synthesis-20261102T181310Z-41457984/synthesis-3.ys"
+                ],
+                "cwd": ".",
+                "end": "2026-11-02T18:17:55.743769+00:00",
+                "exit": 0,
+                "settled": true,
+                "start": "2026-11-02T18:16:59.772304+00:00",
+                "stderr": "evidence/synthesis-20261102T181310Z-41457984/synthesis-3.stderr.txt",
+                "stdout": "evidence/synthesis-20261102T181310Z-41457984/synthesis-3.stdout.txt",
+                "timed_out": false,
+                "timeout_s": null
+              }
+            ],
+            "comparisons": {
+              "synthesis-0": {
+                "cell_types": {
+                  "$adff": 110,
+                  "$adffe": 522,
+                  "$alu": 424,
+                  "$and": 53,
+                  "$dffe": 4,
+                  "$eq": 493,
+                  "$logic_and": 306,
+                  "$logic_not": 123,
+                  "$logic_or": 90,
+                  "$macc": 121,
+                  "$mem_v2": 16,
+                  "$mux": 1097,
+                  "$ne": 343,
+                  "$not": 205,
+                  "$or": 109,
+                  "$paramod$2d795472c57d02db51e023802b8fc9d74218a435\\g4_splat": 1,
+                  "$paramod$af3932fafea49cdae7167ecfbbd91d88b8e8b1ff\\g4_bvh": 1,
+                  "$paramod$f8cc058c991eb145e80380ccacd215246ffdd674\\crucible_g2_top": 1,
+                  "$paramod$f8cc058c991eb145e80380ccacd215246ffdd674\\crucible_g3_top": 1,
+                  "$paramod$f8cc058c991eb145e80380ccacd215246ffdd674\\g2_engine": 1,
+                  "$paramod$f8cc058c991eb145e80380ccacd215246ffdd674\\g2_zbuffer": 1,
+                  "$paramod$f8cc058c991eb145e80380ccacd215246ffdd674\\g3_framebuffer_dma": 1,
+                  "$paramod\\g2_raster\\TILE_LOG2=s32'00000000000000000000000000000011": 1,
+                  "$paramod\\g4_radix_sort\\MAX_SPLATS=s32'00000000000000000000000001000000": 1,
+                  "$pmux": 208,
+                  "$reduce_and": 355,
+                  "$reduce_bool": 125,
+                  "$reduce_or": 107,
+                  "$shift": 52,
+                  "$shiftx": 57,
+                  "$xor": 122,
+                  "crucible_g1_top": 1,
+                  "g1_clipper": 1,
+                  "g1_divider": 3,
+                  "g1_dot4": 1,
+                  "g1_edge": 7,
+                  "g1_project": 1,
+                  "g1_raster": 1,
+                  "g1_transform": 2,
+                  "g2_clipper": 1,
+                  "g2_divider": 10,
+                  "g2_interpolator": 1,
+                  "g2_project": 1,
+                  "g2_setup": 1,
+                  "g3_bilinear": 1,
+                  "g3_shader_pipeline": 1,
+                  "g3_texture_cache": 1,
+                  "g4_compositor": 1,
+                  "g4_conic": 1,
+                  "g4_divider": 1,
+                  "g4_exp_rom": 1,
+                  "g4_slab": 1
+                },
+                "division_cells": 0,
+                "hierarchy": {
+                  "crucible_g4_top": {
+                    "bvh": "g4_bvh",
+                    "compatibility": "crucible_g3_top",
+                    "splat": "g4_splat"
+                  },
+                  "g4_bvh": {
+                    "slab": "g4_slab"
+                  },
+                  "g4_conic": {
+                    "exp_rom": "g4_exp_rom"
+                  },
+                  "g4_slab": {
+                    "divider": "g4_divider"
+                  },
+                  "g4_splat": {
+                    "compositor": "g4_compositor",
+                    "conic": "g4_conic",
+                    "sorter": "g4_radix_sort"
+                  }
+                },
+                "latch_cells": 0,
+                "parameters": {
+                  "MAX_HEIGHT": 256,
+                  "MAX_NODES": 64,
+                  "MAX_SPLATS": 64,
+                  "MAX_WIDTH": 256,
+                  "STACK_DEPTH": 16,
+                  "TILE_LOG2": 3
+                },
+                "preoptimization_connections": [
+                  "bvh/slab/divider",
+                  "splat/sorter/conic/ROM/compositor"
+                ],
+                "reachable_modules": 31
+              },
+              "synthesis-1": {
+                "cell_types": {
+                  "$adff": 110,
+                  "$adffe": 518,
+                  "$alu": 422,
+                  "$and": 53,
+                  "$dffe": 4,
+                  "$eq": 493,
+                  "$logic_and": 308,
+                  "$logic_not": 124,
+                  "$logic_or": 91,
+                  "$macc": 121,
+                  "$mem_v2": 15,
+                  "$mux": 1069,
+                  "$ne": 340,
+                  "$not": 209,
+                  "$or": 109,
+                  "$paramod$1ef1a07d166aa914b0c8a32842d589672900eb7b\\crucible_g2_top": 1,
+                  "$paramod$1ef1a07d166aa914b0c8a32842d589672900eb7b\\crucible_g3_top": 1,
+                  "$paramod$1ef1a07d166aa914b0c8a32842d589672900eb7b\\g2_engine": 1,
+                  "$paramod$1ef1a07d166aa914b0c8a32842d589672900eb7b\\g2_zbuffer": 1,
+                  "$paramod$1ef1a07d166aa914b0c8a32842d589672900eb7b\\g3_framebuffer_dma": 1,
+                  "$paramod$3447216095a34a55212e3ce6471a5b3129468a97\\g4_splat": 1,
+                  "$paramod$81cc8f94c4592be1c6e2bf75a948f4e39b8cee88\\g4_bvh": 1,
+                  "$paramod\\g2_raster\\TILE_LOG2=s32'00000000000000000000000000000000": 1,
+                  "$paramod\\g4_radix_sort\\MAX_SPLATS=s32'00000000000000000000000000000001": 1,
+                  "$pmux": 204,
+                  "$reduce_and": 352,
+                  "$reduce_bool": 122,
+                  "$reduce_or": 108,
+                  "$shift": 52,
+                  "$shiftx": 56,
+                  "$xor": 122,
+                  "crucible_g1_top": 1,
+                  "g1_clipper": 1,
+                  "g1_divider": 3,
+                  "g1_dot4": 1,
+                  "g1_edge": 7,
+                  "g1_project": 1,
+                  "g1_raster": 1,
+                  "g1_transform": 2,
+                  "g2_clipper": 1,
+                  "g2_divider": 10,
+                  "g2_interpolator": 1,
+                  "g2_project": 1,
+                  "g2_setup": 1,
+                  "g3_bilinear": 1,
+                  "g3_shader_pipeline": 1,
+                  "g3_texture_cache": 1,
+                  "g4_compositor": 1,
+                  "g4_conic": 1,
+                  "g4_divider": 1,
+                  "g4_exp_rom": 1,
+                  "g4_slab": 1
+                },
+                "division_cells": 0,
+                "hierarchy": {
+                  "crucible_g4_top": {
+                    "bvh": "g4_bvh",
+                    "compatibility": "crucible_g3_top",
+                    "splat": "g4_splat"
+                  },
+                  "g4_bvh": {
+                    "slab": "g4_slab"
+                  },
+                  "g4_conic": {
+                    "exp_rom": "g4_exp_rom"
+                  },
+                  "g4_slab": {
+                    "divider": "g4_divider"
+                  },
+                  "g4_splat": {
+                    "compositor": "g4_compositor",
+                    "conic": "g4_conic",
+                    "sorter": "g4_radix_sort"
+                  }
+                },
+                "latch_cells": 0,
+                "parameters": {
+                  "MAX_HEIGHT": 1,
+                  "MAX_NODES": 1,
+                  "MAX_SPLATS": 1,
+                  "MAX_WIDTH": 1,
+                  "STACK_DEPTH": 1,
+                  "TILE_LOG2": 0
+                },
+                "preoptimization_connections": [
+                  "bvh/slab/divider",
+                  "splat/sorter/conic/ROM/compositor"
+                ],
+                "reachable_modules": 31
+              },
+              "synthesis-2": {
+                "cell_types": {
+                  "$adff": 110,
+                  "$adffe": 522,
+                  "$alu": 426,
+                  "$and": 53,
+                  "$dffe": 4,
+                  "$eq": 493,
+                  "$logic_and": 309,
+                  "$logic_not": 124,
+                  "$logic_or": 91,
+                  "$macc": 121,
+                  "$mem_v2": 16,
+                  "$mux": 1100,
+                  "$ne": 344,
+                  "$not": 209,
+                  "$or": 111,
+                  "$paramod$0d2764b7ddfdd47fdfef40ed5e2406a0b8b69c1c\\g4_bvh": 1,
+                  "$paramod$d79d45ec0977154fca1ac25406142c576ce51055\\g4_splat": 1,
+                  "$paramod$e0377da78225f1679a8d1ecc13296d2b423d69ad\\crucible_g2_top": 1,
+                  "$paramod$e0377da78225f1679a8d1ecc13296d2b423d69ad\\crucible_g3_top": 1,
+                  "$paramod$e0377da78225f1679a8d1ecc13296d2b423d69ad\\g2_engine": 1,
+                  "$paramod$e0377da78225f1679a8d1ecc13296d2b423d69ad\\g2_zbuffer": 1,
+                  "$paramod$e0377da78225f1679a8d1ecc13296d2b423d69ad\\g3_framebuffer_dma": 1,
+                  "$paramod\\g2_raster\\TILE_LOG2=s32'00000000000000000000000000000001": 1,
+                  "$paramod\\g4_radix_sort\\MAX_SPLATS=s32'00000000000000000000000000000011": 1,
+                  "$pmux": 208,
+                  "$reduce_and": 357,
+                  "$reduce_bool": 125,
+                  "$reduce_or": 108,
+                  "$shift": 52,
+                  "$shiftx": 57,
+                  "$xor": 122,
+                  "crucible_g1_top": 1,
+                  "g1_clipper": 1,
+                  "g1_divider": 3,
+                  "g1_dot4": 1,
+                  "g1_edge": 7,
+                  "g1_project": 1,
+                  "g1_raster": 1,
+                  "g1_transform": 2,
+                  "g2_clipper": 1,
+                  "g2_divider": 10,
+                  "g2_interpolator": 1,
+                  "g2_project": 1,
+                  "g2_setup": 1,
+                  "g3_bilinear": 1,
+                  "g3_shader_pipeline": 1,
+                  "g3_texture_cache": 1,
+                  "g4_compositor": 1,
+                  "g4_conic": 1,
+                  "g4_divider": 1,
+                  "g4_exp_rom": 1,
+                  "g4_slab": 1
+                },
+                "division_cells": 0,
+                "hierarchy": {
+                  "crucible_g4_top": {
+                    "bvh": "g4_bvh",
+                    "compatibility": "crucible_g3_top",
+                    "splat": "g4_splat"
+                  },
+                  "g4_bvh": {
+                    "slab": "g4_slab"
+                  },
+                  "g4_conic": {
+                    "exp_rom": "g4_exp_rom"
+                  },
+                  "g4_slab": {
+                    "divider": "g4_divider"
+                  },
+                  "g4_splat": {
+                    "compositor": "g4_compositor",
+                    "conic": "g4_conic",
+                    "sorter": "g4_radix_sort"
+                  }
+                },
+                "latch_cells": 0,
+                "parameters": {
+                  "MAX_HEIGHT": 5,
+                  "MAX_NODES": 3,
+                  "MAX_SPLATS": 3,
+                  "MAX_WIDTH": 3,
+                  "STACK_DEPTH": 2,
+                  "TILE_LOG2": 1
+                },
+                "preoptimization_connections": [
+                  "bvh/slab/divider",
+                  "splat/sorter/conic/ROM/compositor"
+                ],
+                "reachable_modules": 31
+              },
+              "synthesis-3": {
+                "cell_types": {
+                  "$adff": 110,
+                  "$adffe": 522,
+                  "$alu": 424,
+                  "$and": 53,
+                  "$dffe": 4,
+                  "$eq": 493,
+                  "$logic_and": 306,
+                  "$logic_not": 123,
+                  "$logic_or": 90,
+                  "$macc": 121,
+                  "$mem_v2": 16,
+                  "$mux": 1098,
+                  "$ne": 343,
+                  "$not": 206,
+                  "$or": 110,
+                  "$paramod$44019244a38cf58cabd7bbf00ea9f22f0e388bde\\g4_splat": 1,
+                  "$paramod$62528c09929903b55856cd7f957f858721efe16e\\crucible_g2_top": 1,
+                  "$paramod$62528c09929903b55856cd7f957f858721efe16e\\crucible_g3_top": 1,
+                  "$paramod$62528c09929903b55856cd7f957f858721efe16e\\g2_engine": 1,
+                  "$paramod$62528c09929903b55856cd7f957f858721efe16e\\g2_zbuffer": 1,
+                  "$paramod$62528c09929903b55856cd7f957f858721efe16e\\g3_framebuffer_dma": 1,
+                  "$paramod$bbc95329dd2d85771c347d4fd4d37e48c1e22ce7\\g4_bvh": 1,
+                  "$paramod\\g2_raster\\TILE_LOG2=s32'00000000000000000000000000000100": 1,
+                  "$paramod\\g4_radix_sort\\MAX_SPLATS=s32'00000000000000000000000100000000": 1,
+                  "$pmux": 208,
+                  "$reduce_and": 355,
+                  "$reduce_bool": 125,
+                  "$reduce_or": 107,
+                  "$shift": 52,
+                  "$shiftx": 57,
+                  "$xor": 122,
+                  "crucible_g1_top": 1,
+                  "g1_clipper": 1,
+                  "g1_divider": 3,
+                  "g1_dot4": 1,
+                  "g1_edge": 7,
+                  "g1_project": 1,
+                  "g1_raster": 1,
+                  "g1_transform": 2,
+                  "g2_clipper": 1,
+                  "g2_divider": 10,
+                  "g2_interpolator": 1,
+                  "g2_project": 1,
+                  "g2_setup": 1,
+                  "g3_bilinear": 1,
+                  "g3_shader_pipeline": 1,
+                  "g3_texture_cache": 1,
+                  "g4_compositor": 1,
+                  "g4_conic": 1,
+                  "g4_divider": 1,
+                  "g4_exp_rom": 1,
+                  "g4_slab": 1
+                },
+                "division_cells": 0,
+                "hierarchy": {
+                  "crucible_g4_top": {
+                    "bvh": "g4_bvh",
+                    "compatibility": "crucible_g3_top",
+                    "splat": "g4_splat"
+                  },
+                  "g4_bvh": {
+                    "slab": "g4_slab"
+                  },
+                  "g4_conic": {
+                    "exp_rom": "g4_exp_rom"
+                  },
+                  "g4_slab": {
+                    "divider": "g4_divider"
+                  },
+                  "g4_splat": {
+                    "compositor": "g4_compositor",
+                    "conic": "g4_conic",
+                    "sorter": "g4_radix_sort"
+                  }
+                },
+                "latch_cells": 0,
+                "parameters": {
+                  "MAX_HEIGHT": 256,
+                  "MAX_NODES": 256,
+                  "MAX_SPLATS": 256,
+                  "MAX_WIDTH": 256,
+                  "STACK_DEPTH": 64,
+                  "TILE_LOG2": 4
+                },
+                "preoptimization_connections": [
+                  "bvh/slab/divider",
+                  "splat/sorter/conic/ROM/compositor"
+                ],
+                "reachable_modules": 31
+              }
+            },
+            "coverage": {},
+            "cwd": ".",
+            "end": "2026-11-02T18:18:16.413292+00:00",
+            "source_hashes": {
+              "crucible_g3_reference/rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "crucible_g3_reference/rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "crucible_g3_reference/rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+              "crucible_g3_reference/rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "crucible_g3_reference/rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+              "crucible_g3_reference/rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "crucible_g3_reference/rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "crucible_g3_reference/rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "crucible_g3_reference/rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "crucible_g3_reference/rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "crucible_g3_reference/rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "crucible_g3_reference/rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "crucible_g3_reference/rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "crucible_g3_reference/rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+              "crucible_g3_reference/rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "crucible_g3_reference/rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "crucible_g3_reference/rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "crucible_g3_reference/rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "crucible_g3_reference/rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+              "crucible_g3_reference/rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+              "crucible_g3_reference/rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+              "crucible_g3_reference/rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+              "design/ARCHITECTURE.md": "c2be31a64e0d03b00c6adc3c7a65b4a5fcface2d46426649a06c9505c4488a09",
+              "design/GENERATIONAL_HANDOFF.md": "ac63ec021ed1f4d4441598d6cabcaf61282548e1f649aba09508762aea61f98f",
+              "design/SPEC.md": "8969d4d521f3078a0efc01ae5b31e8816df41dad751e818b13fe9c9ae8caa883",
+              "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+              "rtl/crucible_g4_top.sv": "7d2bf844f5eec00744440148a41159bd7492bba3b9373176b792b6c814ba2536",
+              "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+              "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+              "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+              "rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+              "rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+              "rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+              "rtl/g4_bvh.sv": "a96a3df8d2c32a1f9569ffcc93d34de78e58b15e8637a6917075b570403acf88",
+              "rtl/g4_compositor.sv": "958802b6425aa0878098f9e6e9ecfa99aa54bbcadc1a1c802b616a40054767d3",
+              "rtl/g4_conic.sv": "f49ab3ff23fc491a8b8e15c1447017619fa91f53ea8e035265f2eba962dcb892",
+              "rtl/g4_divider.sv": "bb3980a197bad656377a76cea2b90a871bd9abf0c4bb8cb83f4088c7ac0152f5",
+              "rtl/g4_exp_rom.sv": "9f33e7a3ea32c8f901aef8174fbf4067dd807bb976b4a9c6dd5a2fafd600237f",
+              "rtl/g4_radix_sort.sv": "c1ff2575d0b429d3ca32b90ce8552773711b9cdabc87fa57299d3e9c596f3911",
+              "rtl/g4_slab.sv": "ab7be671dda837de34edac24fa45cd65ad293cef6d5740ba27ba0e2e9226b82b",
+              "rtl/g4_splat.sv": "ca5a2290e446c1ccaa1a1833478a7f065a566bcdcc619dde3c79a5b8d8079749",
+              "tests/defects.py": "76b608ec9c55b7e40d93817209afd7671c438a75587d44440d7f61a4d35307b7",
+              "tests/execution.py": "0f03c85ee8e2bb96c724f3733a60df4f5675d09cfde0c72ef3487d2695b8eb23",
+              "tests/leaf_tb.sv": "78524d9bf3bd5901c0e1cfe0a47ab144f43504e55d3c85827ff15c0155515447",
+              "tests/leaves.py": "66c0408e3072d187bc428a3bfdcf31e0c1d529ca81b70b0f2880c82dd1286943",
+              "tests/model.py": "c76726ce0c955a96e7701106cff26f4616ba286e6209688f5d4df15a0c2b8b6a",
+              "tests/portable.py": "d08af9a12644ad1431dda665a6bfd82fdf39f442edd71a40f02605c35f048a81",
+              "tests/probe.py": "8af6409495970bc2491fb6bb04990e8980d2d78a07f2949bff0f4401a33a1f54",
+              "tests/reproduce.py": "b837f677e3912b38f18c341bc8fd9dd4cf54ea1305ad4694c78eb32f240ef1e0",
+              "tests/scenarios.py": "cc06018469ef8c33d8c2fd9ec4a5524a1adc303287f0548464ca05f7f9823088",
+              "tests/synthesis.py": "4eb96b2970a3223f465864a61450481e07b02b8452e3b66af109d92f9d4d9f3b",
+              "tests/top_tb.sv": "bf47dc60be3d6e6049be5cdaff53e91e9a80b129374173f14786f1a1c45eea41",
+              "tests/verify.py": "8e190920fc7b35a06a316fcd66d378b48f0a8a3e16322251eea419ff783b5e31"
+            },
+            "start": "2026-11-02T18:13:10.334608+00:00",
+            "status": "passed",
+            "suite": "synthesis",
+            "tool_versions": {
+              "python3": "Python 3.12.3",
+              "yosys": "Yosys 0.33 (git sha1 2584903a060)"
+            }
+          }
+        }
+      ]
     }
   }
 }
