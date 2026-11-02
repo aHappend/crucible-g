@@ -96,10 +96,17 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
             bits = modules[top]["ports"].get(port, {}).get("bits", [])
             assert bits and any(isinstance(bit, int) for bit in bits), (
                 "constant or missing handshake: " + port)
+        flags = {"m_valid", "m_ready", "m_terminal", "m_last", "m_error", "m_hit",
+                 "m_less", "m_equal", "m_carry"}
         data_ports = [port for port in modules[top]["ports"] if port.startswith("m_") and
-                      port not in ("m_valid", "m_ready", "m_terminal")]
-        assert any(any(isinstance(bit, int) for bit in modules[top]["ports"][port]["bits"])
-                   for port in data_ports), "all functional outputs constant"
+                      port not in flags]
+        assert data_ports, "functional data ports absent"
+        for port in data_ports:
+            bits = modules[top]["ports"][port]["bits"]
+            if port == "m_record":
+                bits = bits[96:]
+            assert any(isinstance(bit, int) for bit in bits), (
+                "constant functional payload: "+port)
         if top == "crucible_g5_top":
             top_cells = modules[top]["cells"]
             for child in ("compatibility", "builder", "triangle", "ray_query", "denoiser"):

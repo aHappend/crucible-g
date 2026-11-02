@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from execution import Run, compile_stream, summary
 from legacy_oracle import Raster, Texture, bvh_query, shader, signed, splats
 from oracle import MASK, Primitive, Q, completion, lbvh, packet, record, words64
-from scenarios import Campaign, SEEDS, Z_TRIANGLE
+from scenarios import Campaign, CELLS, SEEDS, Z_TRIANGLE
 
 
 DRAW = (2, 3, 6, 7, 258, 259, 262, 263, 514, 515, 518, 519, 770, 771, 774, 775)
@@ -71,9 +71,10 @@ class Compatibility:
             vertices = [(Q, -Q, Q//4, Q), (-Q, -Q, Q//4, Q), (Q, Q, Q//4, Q)]
         return vertices
 
-    def draw(self, opcode, variant=0, texture=None, program=0, texture_error=False, uv=None):
+    def draw(self, opcode, variant=0, texture=None, program=0, texture_error=False, uv=None,
+             vertices=None):
         self.tag += 1
-        vertices = self.geometry(variant)
+        vertices = self.geometry(variant) if vertices is None else vertices
         matrix = list(IDENTITY)
         if variant == 8:
             matrix[3], matrix[7] = -Q//3, Q//5
@@ -122,7 +123,7 @@ class Compatibility:
         self.state(1026, [rgba], self.height << 16 | self.width)
         self.framebuffer = {(x, y): rgba for y in range(self.height) for x in range(self.width)}
 
-    def export(self, error=False):
+    def export(self, error=False, base=0x4000, stride=64):
         beats = []
         tile = 1 << self.parameters["TILE_LOG2"]
         pixels = [(x, y) for ty in range(0, self.height, tile)
@@ -130,11 +131,11 @@ class Compatibility:
                   for y in range(ty, min(ty+tile, self.height))
                   for x in range(tx, min(tx+tile, self.width))]
         for x, y in pixels:
-                beats.append((0x4000+y*64+x*4, self.framebuffer[x, y], 15,
+                beats.append((base+y*stride+x*4, self.framebuffer[x, y], 15,
                               int(x == self.width-1 and y == self.height-1), int(error)))
                 if error:
                     break
-        self.state(1027, [0x4000, 64], self.height << 16 | self.width,
+        self.state(1027, [base, stride], self.height << 16 | self.width,
                    5 if error else 0, beats)
 
     def raster_cases(self, sequences=16):
@@ -304,6 +305,44 @@ class Compatibility:
         self.bvh_cases(4 if compact else 16)
         self.splat_cases(4 if compact else 16)
 
+    def boundaries(self):
+        self.width, self.height = self.parameters["MAX_WIDTH"], 1
+        left = Q-4*Q//self.width
+        self.draw(0, vertices=[(left, Q, 0, Q), (Q, Q, 0, Q), (Q, -3*Q, 0, Q)])
+        assert any((r[2] & 255) == self.width-1 for r in self.cases[-1]["expected"][:-1])
+        self.cases[-1]["coverage"] = "boundary-g1-last-column"
+        self.height = self.parameters["MAX_HEIGHT"]
+        self.clear_depth()
+        self.framebuffer_clear(0x89ABCDEF)
+        self.export(base=0x10000, stride=4*self.width+16)
+        self.cases[-1]["coverage"] = "boundary-g3-complete-framebuffer-dma"
+        self.state(1026, [0], self.height << 16 | (self.width+1), status=1)
+        index = self.parameters["MAX_NODES"]-1
+        bounds = (-Q, -Q, Q, Q, Q, 2*Q)
+        self.add(0x800, [index, 1, 0, 0, 0xABCDEF, *bounds],
+                 expected=lambda tag: [record(0x40000000, tag, payload=[0x800, index])],
+                 coverage="boundary-g4-node-last-slot")
+        result, status = bvh_query({index: (1, 0, 0, 0xABCDEF, bounds)}, index,
+                                   (0, 0, 0), (0, 0, Q), 0, 2*Q)
+        self.add(0x801, [index, 0, 0, 0, 0, 0, 0, Q, *words64(0), *words64(2*Q)],
+                 expected=lambda tag: [record(0x40000001, tag, status, result)],
+                 coverage="boundary-g4-node-query")
+        slot = self.parameters["MAX_SPLATS"]-1
+        self.add(0x810, [slot, 0, 2048, 2048, 4096, 0, 4096, Q, 0xABCDEF],
+                 expected=lambda tag: [record(0x40000000, tag, payload=[0x810, slot])],
+                 coverage="boundary-g4-splat-last-slot")
+        if slot == 0:
+            pixels, evaluated, early = splats(1, 1, {0: (0, (2048, 2048), (4096, 0, 4096),
+                                                       Q, 0xABCDEF)}, 1, 0)
+            self.add(0x811, [1, 1, 0], 0x10001, expected=lambda tag: [
+                record(0x40000002, tag, payload=pixels[0]),
+                record(0x40000003, tag, payload=[1, 1, evaluated, early])],
+                coverage="boundary-g4-splat-render")
+        else:
+            self.add(0x811, [slot+1, 1, 0], 0x10001, expected=lambda tag: [
+                record(0x40000003, tag, 2, [0, slot+1, 0, 0])],
+                coverage="boundary-g4-splat-count")
+
     def write(self, path):
         with path.open("w") as out:
             for case in self.cases:
@@ -314,31 +353,49 @@ class Compatibility:
                     out.write(" ".join(f"{w & MASK:08x}" for w in values)+"\n")
 
 
-def check(run, seeds=SEEDS, compact=False):
+def compare(run, binary, campaign, stem):
+    fixture = run.directory / (stem+".txt")
+    campaign.write(fixture)
+    out, err, _ = run.execute([str(binary), str(fixture)], stem, timeout=1200)
+    measured = summary(out)
+    assert measured["commands"] == len(campaign.cases)
+    assert measured["comparisons"] == sum(len(r) for c in campaign.cases for r in c["expected"])
+    assert measured["texture"] == sum(len(c["texture"]) for c in campaign.cases)
+    assert measured["dma"] == sum(len(c["dma"]) for c in campaign.cases)
+    return {"seed": campaign.seed, "parameters": campaign.parameters, "measured_coverage": measured,
+            "completed_bins": dict(Counter(c["coverage"] for c in campaign.cases)),
+            "opcode_counts": dict(Counter(c["opcode"] for c in campaign.cases)),
+            "fixture": str(fixture), "fixture_sha256": run.hash_file(fixture),
+            "stdout": str(out), "stderr": str(err)}
+
+
+def check(run, seeds=SEEDS, compact=False, boundary_cells=CELLS, boundaries_only=False):
     parameters = Campaign("nonpower", 17).parameters
     binary = compile_stream(run, parameters, "compatibility-compile",
                             driver="compatibility_driver.cpp")
     results = []
-    for seed in seeds:
+    for seed in () if boundaries_only else seeds:
         campaign = Compatibility(seed, parameters)
         campaign.generate(compact)
-        fixture = run.directory / ("compatibility-seed"+str(seed)+".txt")
-        campaign.write(fixture)
-        out, err, _ = run.execute([str(binary), str(fixture)], "compatibility-seed"+str(seed),
-                                 timeout=1200)
-        measured = summary(out)
-        assert measured["commands"] == len(campaign.cases)
-        assert measured["comparisons"] == sum(len(r) for c in campaign.cases for r in c["expected"])
-        assert measured["texture"] == sum(len(c["texture"]) for c in campaign.cases) > 0
-        assert measured["dma"] == sum(len(c["dma"]) for c in campaign.cases) > 0
+        entry = compare(run, binary, campaign, "compatibility-seed"+str(seed))
+        measured = entry["measured_coverage"]
+        assert measured["texture"] > 0 and measured["dma"] > 0
         assert measured["bus_stalls"] > 0
         opcodes = Counter(c["opcode"] for c in campaign.cases)
         assert set(DRAW).issubset(opcodes)
         assert {0, 1, 4, 5, 1024, 1025, 1026, 1027, 0x800, 0x801, 0x810, 0x811}.issubset(opcodes)
-        entry = {"seed": seed, "parameters": parameters, "measured_coverage": measured,
-                 "completed_bins": dict(Counter(c["coverage"] for c in campaign.cases)),
-                 "opcode_counts": dict(opcodes), "fixture": str(fixture),
-                 "fixture_sha256": run.hash_file(fixture), "stdout": str(out), "stderr": str(err)}
+        results.append(entry)
+        run.receipt["compatibility"] = results
+    for cell in boundary_cells:
+        campaign = Compatibility(17, Campaign(cell, 17).parameters)
+        campaign.boundaries()
+        selected = binary if cell == "nonpower" else compile_stream(
+            run, campaign.parameters, "compatibility-boundary-"+cell,
+            driver="compatibility_driver.cpp")
+        entry = compare(run, selected, campaign, "boundary-"+cell)
+        entry["cell"] = cell
+        assert entry["measured_coverage"]["dma"] == (
+            campaign.parameters["MAX_WIDTH"]*campaign.parameters["MAX_HEIGHT"])
         results.append(entry)
         run.receipt["compatibility"] = results
     return results
@@ -350,12 +407,15 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, choices=SEEDS)
     parser.add_argument("--compact", action="store_true")
     parser.add_argument("--repair-of")
+    parser.add_argument("--boundaries-only", action="store_true")
+    parser.add_argument("--cell", choices=CELLS)
     args = parser.parse_args()
     run = Run(args.output_root, "compatibility", ["python3", "tests/compatibility.py", *sys.argv[1:]],
               repair_of=args.repair_of)
     try:
         run.snapshot()
-        results = check(run, [args.seed] if args.seed else SEEDS, args.compact)
+        results = check(run, [args.seed] if args.seed else SEEDS, args.compact,
+                        [args.cell] if args.cell else CELLS, args.boundaries_only)
         path = run.finish(0, compatibility=results)
         code = 0
     except (AssertionError, RuntimeError, OSError, ValueError, TimeoutError) as error:
