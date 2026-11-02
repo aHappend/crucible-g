@@ -12,6 +12,38 @@ from oracle import Primitive, Q, Sample
 from scenarios import Campaign, SEEDS, Z_TRIANGLE, morton_vectors
 
 
+def packed(words):
+    return sum((word & ((1 << 32)-1)) << (32*i) for i, word in enumerate(words))
+
+
+def read_port(run):
+    campaign = Campaign("nonpower", 17)
+    primitives = [Primitive(i, identity, tuple((x, y, z+i*Q) for x, y, z in Z_TRIANGLE))
+                  for i, identity in enumerate((9, 3, 3))]
+    nodes = campaign.build(primitives)
+    fixture = run.directory / "lbvh-read.txt"
+    with fixture.open("w") as out:
+        for case in campaign.cases[:4]:
+            out.write(f"{case.latency} {len(case.expected)}\n{packed(case.command):x}\n")
+            for response in case.expected:
+                out.write(f"{packed(response):x}\n")
+        out.write("0 0\n")
+        for node in nodes:
+            vertices = packed([c for v in node.primitive.vertices for c in v]) if node.primitive else 0
+            out.write(f"{node.index:x} {packed(node.response(4)):x} {vertices:x} {node.parent:x}\n")
+        out.write(f"ffffffff {1 << 64:x} 0 0\n")
+    binary = run.directory / "lbvh-read.vvp"
+    run.execute(["iverilog", "-g2012", "-Wall", "-s", "lbvh_read_tb", "-o", str(binary),
+                 "tests/lbvh_read_tb.sv", *sorted(str(p) for p in Path("rtl").glob("*.sv"))],
+                "lbvh-read-compile")
+    out, err, _ = run.execute(["vvp", str(binary), "+fixture="+str(fixture)], "lbvh-read")
+    measured = summary(out)
+    assert measured["commands"] == 4 and measured["reads"] == 7
+    assert measured["comparisons"] == 16*9+3*7 and measured["cycles"] <= 500000
+    return {"top": "g5_lbvh", "fixture": str(fixture), "fixture_sha256": run.hash_file(fixture),
+            "measured_coverage": measured, "stdout": str(out), "stderr": str(err)}
+
+
 def check(run, compact=False):
     results = []
     binary = run.directory / "morton.vvp"
@@ -49,6 +81,7 @@ def check(run, compact=False):
     results.append({"top": "crucible_g5_top", "parameters": campaign.parameters,
                     "fixture": str(fixture), "fixture_sha256": run.hash_file(fixture),
                     "measured_coverage": measured, "stdout": str(stdout), "stderr": str(stderr)})
+    results.append(read_port(run))
     return results
 
 

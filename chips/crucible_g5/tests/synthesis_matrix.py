@@ -4,7 +4,13 @@ import gzip
 import hashlib
 import json
 from pathlib import Path
+import argparse
+import sys
 
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from execution import Run
 from scenarios import CELLS, PARAMETERS
 
 
@@ -58,3 +64,21 @@ def check(run, reproduction=False):
                         "netlist_sha256": result["netlist_sha256"], "netlist_bytes": size,
                         "stdout": str(out), "stderr": str(err)})
     return results
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-root", default="evidence/preparation")
+    args = parser.parse_args()
+    run = Run(args.output_root, "synthesis-matrix",
+              ["python3", "tests/synthesis_matrix.py", *sys.argv[1:]])
+    try:
+        run.snapshot()
+        results = check(run)
+        path = run.finish(0, synthesis=results)
+        code = run.receipt["exit_code"]
+    except (AssertionError, RuntimeError, OSError, ValueError, TimeoutError, KeyError) as error:
+        path = run.finish(1, error=error)
+        code = 1
+    print(json.dumps({"receipt": str(path), "exit_code": code}), flush=True)
+    sys.exit(code)
