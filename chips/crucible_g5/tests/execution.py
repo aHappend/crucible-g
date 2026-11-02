@@ -129,15 +129,18 @@ def summary(path):
         field.split("=") for field in lines[0].split()[1:])}
 
 
-def compile_stream(run, parameters, stem="compile", sources=None):
+def compile_stream(run, parameters, stem="compile", sources=None,
+                   driver="stream_driver.cpp"):
     obj = run.directory / (stem + "-obj-" + uuid.uuid4().hex)
     obj.mkdir()
     shutil.copyfile(run.cwd / "tests/stream_driver.cpp", obj / "stream_driver.cpp")
+    if driver != "stream_driver.cpp":
+        shutil.copyfile(run.cwd / ("tests/"+driver), obj / driver)
     rtl = sources or sorted(str(p) for p in (run.cwd / "rtl").glob("*.sv"))
     run.execute(["verilator", "--cc", "--exe", "--build", "-j", "2", "-Wno-fatal",
                  "--top-module", "crucible_g5_top", "--Mdir", str(obj),
                  *[f"-G{key}={value}" for key, value in parameters.items()],
-                 *rtl, "stream_driver.cpp"], stem, timeout=1200)
+                 *rtl, driver], stem, timeout=1200)
     binary = run.directory / (stem + "-simulation")
     shutil.copy2(obj / "Vcrucible_g5_top", binary)
     shutil.rmtree(obj)
