@@ -14,8 +14,18 @@ Functional correctness, synthesis and physical acceptance remain unmeasured.
 
 The accepted parent inventory is the 31 RTL files under
 `crucible_g4_reference/rtl/`. Retain those bytes and inherited hierarchy.
-All 31 files have been copied byte-identically into `rtl/`, without modifying
-the reference directory. The inherited tops retain their original framing,
+All 31 files were initially copied byte-identically into `rtl/`, without modifying
+the reference directory. The sole inherited-source deviation is now
+`rtl/g2_interpolator.sv`: a signed 64-bit wire aliases the unsigned 64-bit
+denominator register at the divider port instead of an inline `$signed` cast.
+This preserves every operand bit, including sign bit 63, and adds no register,
+arithmetic or latency. It addresses the frontend signedness assertion reproduced
+on the read-only parent by Yosys 0.33 in
+`evidence/preparation/synthesis-g2_interpolator-468d80f04527486b97ca22dcef385d59/receipt.json`,
+following the integrated failure in
+`evidence/preparation/synthesis-crucible_g5_top-03d923839418422cbf279779e87c9532/receipt.json`.
+Independent synthesis and behavioral confirmation of this repair remain pending.
+The other 30 inherited copies remain byte-identical. The inherited tops retain their original framing,
 state commands, external memory interfaces and literal child hierarchy.
 The shipped generational handoff now uses project-relative reference paths and
 explicitly distinguishes historical connectivity-only HIL from numerical
@@ -274,7 +284,11 @@ power-of-two factors are shifts, preserving each prescribed floor.
 Per channel, registered kernel products produce w. Folded 32x32 products
 form w*L and w*w; a 64x48-to-112 product zero-pads the **unsigned** variance
 before using the signed multiplier port. Significant products fit within
-96 bits and upper discarded bits are checked explicitly. Three 128-bit
+96 bits and upper discarded bits are checked explicitly. Explicit signed
+32-bit operand wires and 64/48-bit wide-product operand wires preserve the
+original bit patterns and variance zero-padding without bare-wire `$signed`
+casts at child ports; these connections add no registers or schedule changes.
+Three 128-bit
 accumulators hold sum(w), sum(w*L) and sum(w*w*V). The largest legal variance
 numerator needs fewer than 96 bits: w <= 36*65536, V < 2^32 and at most
 25 taps imply sum(w*w*V) < 2^82. Normalization therefore uses a literal

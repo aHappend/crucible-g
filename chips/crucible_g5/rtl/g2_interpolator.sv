@@ -19,6 +19,7 @@ module g2_interpolator (
     reg [57:0] weight [0:2];
     reg [58:0] weight_pair;
     reg [63:0] denominator;
+    wire signed [63:0] signed_denominator = denominator;
     reg signed [95:0] product [0:17];
     reg signed [95:0] pair_sum [0:5];
     reg signed [95:0] numerator [0:5];
@@ -40,7 +41,7 @@ module g2_interpolator (
                 .clk(clk),.rst_n(rst_n),
                 .s_valid(state==ISSUE),.s_ready(div_ready[a]),
                 .s_numerator(numerator[a]),
-                .s_denominator($signed(denominator)),
+                .s_denominator(signed_denominator),
                 .m_valid(div_valid[a]),.m_ready(state==WAIT_RESULT),
                 .m_quotient(quotient[a]),.m_remainder()
             );

@@ -37,6 +37,8 @@ module g5_svgf_channel (
     wire signed [63:0] mul_product;
     reg mul_send;
     reg [31:0] mul_a, mul_b;
+    wire signed [31:0] mul_a_signed=mul_a;
+    wire signed [31:0] mul_b_signed=mul_b;
     wire wide_ready, wide_valid;
     wire signed [95:0] wide_product;
     wire signed [111:0] wide_product_full;
@@ -49,6 +51,8 @@ module g5_svgf_channel (
     reg div_send;
     reg [95:0] div_denominator;
     wire [31:0] scaled_difference=difference>>bandwidth;
+    wire signed [63:0] weight_square_signed=weight_square;
+    wire signed [47:0] variance_padded={16'd0,variance};
     g5_limb_alu #(.WIDTH(128)) accumulator (
         .clk(clk),.rst_n(rst_n),.s_valid(alu_send),.s_ready(alu_ready),
         .s_a(alu_a),.s_b(alu_b),.s_subtract(alu_subtract),
@@ -57,13 +61,13 @@ module g5_svgf_channel (
     );
     g5_mul #(.A_WIDTH(32),.B_WIDTH(32),.OUT_WIDTH(64)) product (
         .clk(clk),.rst_n(rst_n),.s_valid(mul_send),.s_ready(mul_ready),
-        .s_a($signed(mul_a)),.s_b($signed(mul_b)),
+        .s_a(mul_a_signed),.s_b(mul_b_signed),
         .m_valid(mul_valid),.m_ready(state==MUL_WAIT),.m_product(mul_product)
     );
     // Variance is an unsigned 32-bit moment, so its signed port needs padding.
     g5_mul #(.A_WIDTH(64),.B_WIDTH(48),.OUT_WIDTH(112)) variance_product (
         .clk(clk),.rst_n(rst_n),.s_valid(wide_send),.s_ready(wide_ready),
-        .s_a($signed(weight_square)),.s_b($signed({16'd0,variance})),
+        .s_a(weight_square_signed),.s_b(variance_padded),
         .m_valid(wide_valid),.m_ready(state==WIDE_WAIT),.m_product(wide_product_full)
     );
     assign wide_product=wide_product_full[95:0];

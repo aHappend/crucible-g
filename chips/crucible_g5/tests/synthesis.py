@@ -14,11 +14,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from preparation import inventory
 
 
-def synthesize(directory, top, parameters, defer=False, repair_of=None):
+def synthesize(directory, top, parameters, defer=False, repair_of=None,
+               source_directory="rtl"):
     directory.mkdir()
     script_path = directory / "synthesis.ys"
     netlist_path = directory / "netlist.json"
-    sources = sorted(str(p) for p in Path("rtl").glob("*.sv"))
+    if source_directory not in ("rtl", "crucible_g4_reference/rtl"):
+        raise ValueError("unsupported synthesis source directory")
+    sources = sorted(str(p) for p in Path(source_directory).glob("*.sv"))
+    if not sources:
+        raise ValueError("empty synthesis source directory")
     lines = ["read_verilog -sv " + ("-defer " if defer else "") + " ".join(sources)]
     if parameters:
         lines.append("chparam " + " ".join("-set " + key + " " + str(value)
@@ -42,7 +47,10 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None):
                "source_sha256": inventory(Path.cwd()), "start_time": time.time(),
                "timeout_s": 1200, "stdout": str(directory / "stdout.txt"),
                "stderr": str(directory / "stderr.txt"), "repair_of": repair_of,
-               "deferred_elaboration": defer}
+               "deferred_elaboration": defer, "source_directory": source_directory,
+               "selected_source_sha256": {
+                   source: hashlib.sha256(Path(source).read_bytes()).hexdigest()
+                   for source in sources}}
     try:
         with (directory / "version.stdout.txt").open("w") as out, (
                 directory / "version.stderr.txt").open("w") as err:
@@ -118,13 +126,16 @@ if __name__ == "__main__":
     parser.add_argument("--parameter", action="append", default=[])
     parser.add_argument("--defer", action="store_true")
     parser.add_argument("--repair-of")
+    parser.add_argument("--source-directory", choices=["rtl", "crucible_g4_reference/rtl"],
+                        default="rtl")
     args = parser.parse_args()
     output = Path(args.output_root)
     output.mkdir(parents=True, exist_ok=True)
     parameters = {key: int(value) for key, value in (
         entry.split("=", 1) for entry in args.parameter)}
     directory = output / ("synthesis-" + args.top + "-" + uuid.uuid4().hex)
-    result = synthesize(directory, args.top, parameters, args.defer, args.repair_of)
+    result = synthesize(directory, args.top, parameters, args.defer, args.repair_of,
+                        args.source_directory)
     print(json.dumps({"receipt": str(directory / "receipt.json"),
                       "exit_code": result["exit_code"]}), flush=True)
     sys.exit(result["exit_code"])
