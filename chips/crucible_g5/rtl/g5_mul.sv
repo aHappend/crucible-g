@@ -19,9 +19,9 @@ module g5_mul #(
         assign s_ready=0; assign m_valid=0; assign m_product=0;
     end else begin: implementation
         localparam AL=A_WIDTH>>4, BL=B_WIDTH>>4, OL=OUT_WIDTH>>4;
-        localparam IDLE=0, NORMALIZE=1, PRODUCT=2, LOW_SUM=3,
-            HIGH_SUM=4, ROW_END=5, NEGATE=6, HOLD=7;
-        reg [2:0] state;
+        localparam IDLE=0, NORMALIZE=1, PRODUCT=2, LOW_PAIR=3, LOW_SUM=4,
+            HIGH_SUM=5, ROW_END=6, NEGATE=7, HOLD=8;
+        reg [3:0] state;
         reg [4:0] limb, row, column;
         reg [A_WIDTH-1:0] a;
         reg [B_WIDTH-1:0] b;
@@ -29,14 +29,16 @@ module g5_mul #(
         reg sign_a, sign_b, negative, carry_a, carry_b, carry_neg;
         reg [15:0] row_carry;
         reg [31:0] partial;
+        reg [16:0] low_pair;
         reg [1:0] low_carry;
         wire [4:0] target=row+column;
         wire [15:0] raw_a=a[limb*16 +:16];
         wire [15:0] raw_b=b[limb*16 +:16];
         wire [16:0] norm_a={1'b0,(sign_a ? ~raw_a : raw_a)}+{16'd0,carry_a};
         wire [16:0] norm_b={1'b0,(sign_b ? ~raw_b : raw_b)}+{16'd0,carry_b};
-        wire [17:0] low_sum={2'd0,partial[15:0]}+
-            {2'd0,result[target*16 +:16]}+{2'd0,row_carry};
+        wire [16:0] pair_sum={1'b0,partial[15:0]}+
+            {1'b0,result[target*16 +:16]};
+        wire [16:0] low_sum={1'b0,low_pair[15:0]}+{1'b0,row_carry};
         wire [16:0] high_sum={1'b0,partial[31:16]}+{15'd0,low_carry};
         wire [16:0] negated={1'b0,~result[limb*16 +:16]}+{16'd0,carry_neg};
         assign s_ready=rst_n && state==IDLE;
@@ -47,7 +49,7 @@ module g5_mul #(
                 state<=IDLE; limb<=0; row<=0; column<=0; a<=0; b<=0;
                 result<=0; sign_a<=0; sign_b<=0; negative<=0;
                 carry_a<=0; carry_b<=0; carry_neg<=0; row_carry<=0;
-                partial<=0; low_carry<=0;
+                partial<=0; low_pair<=0; low_carry<=0;
             end else begin
                 case (state)
                     IDLE: if (s_valid) begin
@@ -70,11 +72,15 @@ module g5_mul #(
                     end
                     PRODUCT: begin
                         partial<=a[row*16 +:16]*b[column*16 +:16];
-                        state<=LOW_SUM;
+                        state<=LOW_PAIR;
+                    end
+                    LOW_PAIR: begin
+                        low_pair<=pair_sum; state<=LOW_SUM;
                     end
                     LOW_SUM: begin
                         result[target*16 +:16]<=low_sum[15:0];
-                        low_carry<=low_sum[17:16]; state<=HIGH_SUM;
+                        low_carry<={1'b0,low_pair[16]}+{1'b0,low_sum[16]};
+                        state<=HIGH_SUM;
                     end
                     HIGH_SUM: begin
                         row_carry<=high_sum[15:0];

@@ -22,7 +22,7 @@ module g5_svgf_channel (
     reg history, error;
     reg [31:0] center_luma, threshold;
     reg [5:0] bandwidth, scan_bit;
-    reg [16:0] normal_weight, edge;
+    reg [16:0] normal_weight, edge_weight;
     reg depth_step;
     reg [5:0] kernel;
     reg [4:0] shift_amount;
@@ -154,7 +154,7 @@ module g5_svgf_channel (
             previous_mean<=0; previous_second<=0; mean<=0; second<=0;
             result_luma<=0; result_variance<=0; new_second<=0;
             history<=0; error<=0; center_luma<=0; threshold<=0;
-            bandwidth<=0; scan_bit<=0; normal_weight<=0; edge<=0;
+            bandwidth<=0; scan_bit<=0; normal_weight<=0; edge_weight<=0;
             depth_step<=0; kernel<=0; shift_amount<=0; weight<=0; difference<=0;
             weight_square<=0; contribution_luma<=0; denominator_square<=0;
             contribution_variance<=0; sum_weight<=0; sum_luma<=0;
@@ -182,15 +182,15 @@ module g5_svgf_channel (
                     end else state<=DIV_WAIT;
                 end else if (mode==TAP) case (step)
                     2: begin
-                        edge<=normal_weight>>depth_step;
+                        edge_weight<=normal_weight>>depth_step;
                         shift_amount<=(|scaled_difference[31:4]) ?
                             5'd16 : {1'b0,scaled_difference[3:0]};
                         step<=3;
                     end
-                    3: begin edge<=edge>>shift_amount; step<=4; end
+                    3: begin edge_weight<=edge_weight>>shift_amount; step<=4; end
                     4: begin
-                        weight<=edge[16] ? {10'd0,kernel,16'd0} :
-                            edge[15:0]*{10'd0,kernel};
+                        weight<=edge_weight[16] ? {10'd0,kernel,16'd0} :
+                            edge_weight[15:0]*{10'd0,kernel};
                         step<=5;
                     end
                     default: begin end

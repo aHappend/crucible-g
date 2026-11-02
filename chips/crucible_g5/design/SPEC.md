@@ -114,6 +114,14 @@ Build completion additionally has word 5 node count, word 6 root.
 Run completion additionally has word 5 spatial passes (3), word 6 accepted
 history count.
 
+Successful begin acknowledgment word 4 is the active pixel count; sample and
+primitive-write acknowledgments use count 1; clear-history uses count 0.
+Malformed or unavailable SVGF run requests produce a terminal zero-payload
+error at E+64; valid runs use R(P). Internal arithmetic failures produce
+status 4 and do not commit pending temporal history. A successful run
+retains current initialized samples and the active begin; a new begin
+clears current initialization before accepting the next frame's samples.
+
 Node type `0x50000001`: word 3 node ID, 4 leaf flag, 5 left, 6 right,
 7 primitive ID, 8 original slot, 9 Morton code, 10..12 min.xyz,
 13..15 max.xyz. Leaf children are `0xffffffff`; internal ID/slot are

@@ -433,7 +433,7 @@ module g5_svgf #(
                             end else begin
                                 plane_source<=!plane_source; history_bank<=!history_bank;
                                 history_valid<=1; history_width<=width; history_height<=height;
-                                frame_active<=0; running<=0; terminal<=0; record<=0;
+                                running<=0; terminal<=0; record<=0;
                                 record[0 +:32]<=32'h50000020;
                                 record[32 +:32]<=command[0 +:32];
                                 record[160 +:128]<=final_plane_q;
