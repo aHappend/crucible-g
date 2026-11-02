@@ -11,6 +11,7 @@ import sys
 import time
 import uuid
 
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from oracle import (Primitive, Q, Sample, completion, lbvh, packet, query, record,
                     svgf, triangle, triangle_command, triangle_record, words64)

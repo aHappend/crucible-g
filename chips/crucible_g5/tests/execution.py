@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import signal
 import subprocess
+import sys
 import time
 import uuid
 
@@ -24,7 +25,8 @@ class Run:
         self.cwd = Path(cwd)
         self.receipt = {"schema": 1, "argv": argv, "cwd": str(self.cwd),
                         "start_time": time.time(), "source_sha256": inventory(self.cwd),
-                        "commands": [], "repair_of": repair_of}
+                        "commands": [], "repair_of": repair_of,
+                        "python_version": sys.version}
         self.deadline = time.monotonic() + 2700
         self.finished = False
 
@@ -42,7 +44,8 @@ class Run:
         stderr = self.directory / (stem + ".stderr.txt")
         timeout = min(timeout, max(0, self.deadline-time.monotonic()))
         item = {"argv": [str(a) for a in argv], "cwd": str(cwd), "start_time": time.time(),
-                "timeout_s": timeout, "stdout": str(stdout), "stderr": str(stderr)}
+                "timeout_s": timeout, "stdout": str(stdout), "stderr": str(stderr),
+                "exit_code": None}
         self.receipt["commands"].append(item)
         process = None
         timed_out = False
@@ -80,8 +83,25 @@ class Run:
                     except subprocess.TimeoutExpired:
                         os.killpg(process.pid, signal.SIGKILL)
                         process.wait()
-                item.setdefault("exit_code", process.returncode)
-            item.update(end_time=time.time(), timed_out=timed_out, settled=True)
+                if item["exit_code"] is None:
+                    item["exit_code"] = process.returncode
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                settlement_deadline = time.monotonic()+5
+                while True:
+                    try:
+                        os.killpg(process.pid, 0)
+                    except ProcessLookupError:
+                        break
+                    if time.monotonic() >= settlement_deadline:
+                        item.update(end_time=time.time(), timed_out=timed_out,
+                                    settled=False, settlement_scope="owned_process_group")
+                        raise RuntimeError("owned process group did not settle: "+stem)
+                    time.sleep(0.05)
+            item.update(end_time=time.time(), timed_out=timed_out, settled=True,
+                        settlement_scope="owned_process_group")
 
     def finish(self, exit_code, error=None, **fields):
         if self.finished:

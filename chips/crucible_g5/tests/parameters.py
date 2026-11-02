@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from execution import Run, summary
 from scenarios import CELLS, PARAMETERS

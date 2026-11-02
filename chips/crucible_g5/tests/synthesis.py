@@ -10,6 +10,7 @@ import sys
 import time
 import uuid
 
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from preparation import inventory
 
@@ -36,6 +37,7 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
         "check -assert",
         "memory -nomap",
         "opt_clean",
+        "synth -top " + top + " -run coarse:coarse",
         "check -assert",
         "select -assert-none t:$dlatch t:$adlatch t:$dlatchsr t:$div t:$mod",
         "stat",
@@ -51,6 +53,7 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
                "selected_source_sha256": {
                    source: hashlib.sha256(Path(source).read_bytes()).hexdigest()
                    for source in sources}}
+    receipt["synthesis_stage"] = "coarse"
     try:
         with (directory / "version.stdout.txt").open("w") as out, (
                 directory / "version.stderr.txt").open("w") as err:
@@ -98,6 +101,13 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
                 assert len(matches) == 1, "literal integrated child absent: " + child
                 assert matches[0]["type"] in modules, "unresolved child: " + child
                 assert modules[matches[0]["type"]]["cells"], "empty child: " + child
+                child_module = modules[matches[0]["type"]]
+                assert any("dff" in cell["type"] or cell["type"] == "$mem_v2"
+                           for cell in child_module["cells"].values()), (
+                    "integrated child has no retained control state: " + child)
+                assert any(any(isinstance(bit, int) for bit in connection)
+                           for connection in matches[0]["connections"].values()), (
+                    "integrated child has no signal connectivity: " + child)
         compressed_path = directory / "netlist.json.gz"
         with gzip.open(compressed_path, "wb") as compressed:
             compressed.write(netlist_bytes)
