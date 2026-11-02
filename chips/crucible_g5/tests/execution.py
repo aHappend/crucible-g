@@ -106,8 +106,11 @@ class Run:
     def finish(self, exit_code, error=None, **fields):
         if self.finished:
             raise RuntimeError("receipt already finalized")
+        unchanged = self.receipt["source_sha256"] == inventory(self.cwd)
+        if exit_code == 0 and not unchanged:
+            exit_code, error = 1, RuntimeError("verification inputs changed during execution")
         self.receipt.update(fields, end_time=time.time(), exit_code=exit_code,
-                            source_unchanged=self.receipt["source_sha256"] == inventory(self.cwd))
+                            source_unchanged=unchanged)
         if error is not None:
             self.receipt["error"] = str(error)
         path = self.directory / "receipt.json"

@@ -16,7 +16,7 @@ from preparation import inventory
 
 
 def synthesize(directory, top, parameters, defer=False, repair_of=None,
-               source_directory="rtl"):
+               source_directory="rtl", structural_only=False):
     directory.mkdir()
     script_path = directory / "synthesis.ys"
     netlist_path = directory / "netlist.json"
@@ -37,7 +37,10 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
         "check -assert",
         "memory -nomap",
         "opt_clean",
-        "synth -top " + top + " -run coarse:coarse",
+    ])
+    if not structural_only:
+        lines.append("synth -top " + top + " -run coarse:coarse")
+    lines.extend([
         "check -assert",
         "select -assert-none t:$dlatch t:$adlatch t:$dlatchsr t:$div t:$mod",
         "stat",
@@ -53,7 +56,7 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
                "selected_source_sha256": {
                    source: hashlib.sha256(Path(source).read_bytes()).hexdigest()
                    for source in sources}}
-    receipt["synthesis_stage"] = "coarse"
+    receipt["synthesis_stage"] = "structure" if structural_only else "coarse"
     try:
         with (directory / "version.stdout.txt").open("w") as out, (
                 directory / "version.stderr.txt").open("w") as err:
@@ -93,6 +96,10 @@ def synthesize(directory, top, parameters, defer=False, repair_of=None,
             bits = modules[top]["ports"].get(port, {}).get("bits", [])
             assert bits and any(isinstance(bit, int) for bit in bits), (
                 "constant or missing handshake: " + port)
+        data_ports = [port for port in modules[top]["ports"] if port.startswith("m_") and
+                      port not in ("m_valid", "m_ready", "m_terminal")]
+        assert any(any(isinstance(bit, int) for bit in modules[top]["ports"][port]["bits"])
+                   for port in data_ports), "all functional outputs constant"
         if top == "crucible_g5_top":
             top_cells = modules[top]["cells"]
             for child in ("compatibility", "builder", "triangle", "ray_query", "denoiser"):
@@ -138,6 +145,7 @@ if __name__ == "__main__":
     parser.add_argument("--repair-of")
     parser.add_argument("--source-directory", choices=["rtl", "crucible_g4_reference/rtl"],
                         default="rtl")
+    parser.add_argument("--structural-only", action="store_true")
     args = parser.parse_args()
     output = Path(args.output_root)
     output.mkdir(parents=True, exist_ok=True)
@@ -145,7 +153,7 @@ if __name__ == "__main__":
         entry.split("=", 1) for entry in args.parameter)}
     directory = output / ("synthesis-" + args.top + "-" + uuid.uuid4().hex)
     result = synthesize(directory, args.top, parameters, args.defer, args.repair_of,
-                        args.source_directory)
+                        args.source_directory, args.structural_only)
     print(json.dumps({"receipt": str(directory / "receipt.json"),
                       "exit_code": result["exit_code"]}), flush=True)
     sys.exit(result["exit_code"])

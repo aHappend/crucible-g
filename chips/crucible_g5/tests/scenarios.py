@@ -169,6 +169,17 @@ class Campaign:
                                 coverage="equal-bin-witness")
                 assert case.expected[0][3:12] == [
                     1, 0, 0, 16384, 16384, 3, int(identities[0] != 3), 3, 2]
+        for axes in permutations(range(3)):
+            if axes == (0, 1, 2):
+                continue
+            rotated = tuple(tuple(v[a] for a in axes) for v in Z_TRIANGLE)
+            nodes = self.build([Primitive(0, 9, rotated)], "axis-witness-build")
+            for o, d in (((16384, 16384, 0), (0, 0, 3)),
+                         ((16384, 16384, 2), (0, 0, -3))):
+                case = self.ray(nodes, tuple(o[a] for a in axes), tuple(d[a] for a in axes),
+                                coverage="axis-outward-witness")
+                assert case.expected[0][3:12] == [
+                    1, 21845, 0, 16384, 16384, 9, 0, 1, 1]
 
     def queries(self, count=128):
         capacity = self.parameters["MAX_PRIMITIVES"]
@@ -264,8 +275,9 @@ class Campaign:
             for frame in range(3):
                 w, h = (1, height) if sequence == 0 else (width, 1) if sequence == 1 else (width, height)
                 if sequence == 2 and frame == 2:
+                    if (w, h) != (1, 1):
+                        history = None
                     w, h = 1, 1
-                    history = None
                 samples = []
                 for i in range(w*h):
                     side = i % w >= (w+1)//2

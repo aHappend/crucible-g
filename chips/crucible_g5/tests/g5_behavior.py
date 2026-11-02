@@ -40,25 +40,26 @@ def check(run, cells=CELLS, seeds=SEEDS, compact=False):
             campaign = Campaign(cell, seed)
             campaign.state_errors()
             campaign.frame_errors()
-            campaign.triangles(8 if compact else 256)
-            campaign.scenes(5 if compact else 32)
+            campaign.triangles(32 if compact else 256)
+            campaign.scenes(6 if compact else 32)
             campaign.witnesses()
-            campaign.queries(8 if compact else 128)
-            campaign.frames(2 if compact else 8, 1 if compact else 4,
+            campaign.queries(24 if compact else 128)
+            campaign.frames(8, 2 if compact else 4,
                             full_image=not compact and cell == "maximum" and seed == 17)
             campaign.resets()
             entry = compare_campaign(run, binary, campaign, cell+"-seed"+str(seed))
-            if not compact:
-                bins = entry["completed_bins"]
-                assert bins["lbvh-scene"] >= 32 and bins["triangle"] >= 256
-                assert bins["query"] >= 128 and bins["outward-witness"] == 2
-                assert bins["svgf-directed"] >= 24 and bins["svgf-random"] >= 12
-                assert all(bins["reset-"+phase] >= 1 for phase in (
-                    "intake", "dispatch", "arithmetic", "response", "memory", "build", "filtering"))
-                assert campaign.quality and all(
-                    10*filtered <= 9*noisy for filtered, noisy in zip(
-                        campaign.quality[0]["filtered_squared_error"],
-                        campaign.quality[0]["noisy_squared_error"]))
+            bins = entry["completed_bins"]
+            assert bins["lbvh-scene"] >= (6 if compact else 32)
+            assert bins["triangle"] >= (32 if compact else 256)
+            assert bins["query"] >= (24 if compact else 128) and bins["outward-witness"] == 2
+            assert bins["svgf-directed"] >= 24
+            assert bins["svgf-random"] >= (6 if compact else 12)
+            assert all(bins["reset-"+phase] >= 1 for phase in (
+                "intake", "dispatch", "arithmetic", "response", "memory", "build", "filtering"))
+            assert campaign.quality and all(
+                10*filtered <= 9*noisy for filtered, noisy in zip(
+                    campaign.quality[0]["filtered_squared_error"],
+                    campaign.quality[0]["noisy_squared_error"]))
             entries.append(entry)
     return entries
 

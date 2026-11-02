@@ -106,6 +106,29 @@ def lbvh(primitives):
     assert len(nodes) == max(0, 2 * len(primitives) - 1)
     leaves = [n.primitive.slot for n in nodes if n.primitive is not None]
     assert sorted(leaves) == sorted(p.slot for p in primitives)
+    reached = set()
+
+    def validate(index, parent, depth):
+        assert index not in reached and depth <= 38
+        reached.add(index)
+        node = nodes[index]
+        assert node.parent == parent
+        if node.primitive:
+            assert node.left == node.right == SENTINEL
+            assert node.bounds == node.primitive.bounds
+            return [node.primitive]
+        assert node.index < node.left < node.right
+        children = [nodes[node.left], nodes[node.right]]
+        assert node.bounds == (
+            tuple(min(child.bounds[0][axis] for child in children) for axis in range(3)),
+            tuple(max(child.bounds[1][axis] for child in children) for axis in range(3)))
+        items = validate(node.left, index, depth+1)+validate(node.right, index, depth+1)
+        assert items == sorted(items, key=lambda p: (p.code, p.slot))
+        return items
+
+    if nodes:
+        validate(0, SENTINEL, 0)
+        assert reached == set(range(len(nodes)))
     return nodes
 
 
