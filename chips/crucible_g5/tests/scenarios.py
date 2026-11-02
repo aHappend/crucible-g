@@ -270,13 +270,19 @@ class Campaign:
                 for i in range(w*h):
                     side = i % w >= (w+1)//2
                     luma = [0, MASK >> 8, (i+frame)*12345, 4*Q if side else Q][sequence % 4]
+                    if sequence in (3, 4):
+                        luma = 4*Q if side else Q
+                    elif sequence in (5, 6):
+                        luma = (frame+1)*Q
                     normal = ((0, 32768, 0) if side and sequence == 3 else (0, 0, 32768))
                     depth = Q+4097 if (side and sequence == 4) or (frame == 2 and sequence == 5) else Q
                     if frame == 2 and sequence == 6:
                         normal = (0, 32768, 0)
                     motion = (1, 0) if sequence == 7 and frame else (0, 0)
                     samples.append(Sample(luma, (MASK >> 8)-luma, depth, normal, motion))
-                history, values = self.frame(w, h, samples, history, coverage="svgf-directed")
+                history, values = self.frame(w, h, samples, history,
+                                             reset=sequence == 7 and frame == 2,
+                                             coverage="svgf-directed")
                 if sequence in (3, 4):
                     assert all(abs(values[i][0]-samples[i].shadow) <= 1 and
                                abs(values[i][1]-samples[i].reflection) <= 1 for i in range(w*h))
@@ -291,14 +297,16 @@ class Campaign:
                                   self.rng.choice([(0, 0), (1, 0), (-1, 0), (0, 1), (32767, -32768)]))
                            for _ in range(width*height)]
                 history, _ = self.frame(width, height, samples, history, coverage="svgf-random")
-        if width*height > 1:
+        if directed:
             self.add(0x923, coverage="history-clear")
             history = None
             noisy_error = filtered_error = [0, 0]
+            noise_rng = random.Random(0x5A17)
             for frame in range(4):
-                samples = [Sample(Q+self.rng.randrange(-Q//2, Q//2),
-                                  2*Q+self.rng.randrange(-Q//2, Q//2))
-                           for _ in range(width*height)]
+                samples = [Sample(
+                    Q+(-1 if (frame+i) & 1 else 1)*noise_rng.randrange(3*Q//8, 7*Q//16),
+                    2*Q+(-1 if (frame+i) & 1 else 1)*noise_rng.randrange(3*Q//8, 7*Q//16))
+                    for i in range(width*height)]
                 history, values = self.frame(width, height, samples, history, coverage="svgf-noise")
                 if frame == 3:
                     noisy_error = [sum((getattr(s, channel)-clean)**2 for s in samples)
@@ -307,12 +315,44 @@ class Campaign:
                                       for c, clean in ((0, Q), (1, 2*Q))]
             assert all(10*f <= 9*n for f, n in zip(filtered_error, noisy_error))
             self.quality.append({"fixture": "seeded-constant-surface", "seed": self.seed,
+                                 "noise_seed": 0x5A17,
                                  "noisy_squared_error": noisy_error,
                                  "filtered_squared_error": filtered_error,
                                  "threshold": "10*filtered <= 9*noisy"})
         if full_image:
             samples = [Sample(Q, 2*Q) for _ in range(maxw*maxh)]
             self.frame(maxw, maxh, samples, reset=True, coverage="svgf-full-image")
+
+    def frame_errors(self):
+        self.add(0x921, [0, 0, Q, Q, Q, 0, 0, 32768], status=2,
+                 coverage="sample-unavailable")
+        self.add(0x920, metadata=0, status=1, coverage="frame-dimensions")
+        self.add(0x920, metadata=(1 << 16)|(self.parameters["SVGF_MAX_WIDTH"]+1),
+                 status=1, coverage="frame-dimensions")
+        self.add(0x920, metadata=(1 << 16)|1, count=1)
+        self.add(0x922, status=2, coverage="sample-initialization")
+        invalid = [
+            [1, 0, Q, Q, Q, 0, 0, 32768],
+            [0, 0, 1 << 24, Q, Q, 0, 0, 32768],
+            [0, 0, Q, Q, 1 << 31, 0, 0, 32768],
+            [0, 0, Q, Q, Q, 0, 0, 32769],
+            [0, 0, Q, Q, Q, 0, 0, 0],
+            [0, 0, Q, Q, Q, 0, 0, 32768, 32768, 0],
+        ]
+        for sample in invalid:
+            self.add(0x921, sample, status=1, coverage="sample-invalid")
+        samples = [Sample(Q, 2*Q)]
+        self.add(0x921, Sample(3*Q, 4*Q).write(0, 0, 0)[3:13], count=1,
+                 coverage="sample-rewrite")
+        self.add(0x921, samples[0].write(0, 0, 0)[3:13], count=1,
+                 coverage="sample-rewrite")
+        case = self.add(0x920, metadata=(1 << 16)|1, status=1,
+                        coverage="invalid-begin-preservation")
+        case.command[30] = 1
+        values, variance, accepted, _ = svgf(1, 1, samples)
+        self.add(0x922, latency=64+25600, expected=lambda tag: [
+            record(0x50000020, tag, payload=[0, 0, *values[0], *variance[0], accepted[0]]),
+            completion(tag, 0x922, 1, [3, 0])], coverage="invalid-begin-preservation")
 
     def write_fixture(self, path):
         with path.open("w") as output:
