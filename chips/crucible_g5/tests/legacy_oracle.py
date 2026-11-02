@@ -195,6 +195,7 @@ class Texture:
                   (x0, min(y0+1, self.height-1)),
                   (min(x0+1, self.width-1), min(y0+1, self.height-1)))
         beats, hits, misses = [], 0, 0
+        error_index = 0 if error is True else error if error is not False else None
         for x, y in points:
             line, tag = ((y >> 2) & 1, (x >> 2) & 1), (x >> 2, y >> 2)
             if self.tags.get(line) == tag:
@@ -203,8 +204,9 @@ class Texture:
                 misses += 1
                 for j in range(16):
                     xx, yy = min((x//4)*4+j%4, self.width-1), min((y//4)*4+j//4, self.height-1)
-                    beats.append((self.base+yy*self.stride+xx*4, self.texel(xx, yy), int(error)))
-                    if error:
+                    fail = error_index is not None and len(beats) == error_index
+                    beats.append((self.base+yy*self.stride+xx*4, self.texel(xx, yy), int(fail)))
+                    if fail:
                         self.tags.clear()
                         return 0, hits, misses, beats, True
                 self.tags[line] = tag

@@ -67,13 +67,17 @@ def verify(args):
             out, err, _ = run.execute([tool, flag], "version-"+tool)
             versions[tool] = {"argv": [tool, flag], "stdout": str(out), "stderr": str(err)}
         run.receipt["tool_versions"] = versions
-        run.receipt["mode"] = "reproduction" if args.reproduction else "compact-matrix"
-        run.receipt["leaf_cases"] = leaf_checks.check(run, compact=args.reproduction)
-        if args.reproduction:
+        run.receipt["mode"] = ("clean-probe" if args.probe_clean_reproduction else
+                               "reproduction" if args.reproduction else "compact-matrix")
+        if args.probe_clean_reproduction:
+            clean_reproduction(run)
+        elif args.reproduction:
+            run.receipt["leaf_cases"] = leaf_checks.check(run, compact=True)
             run.receipt["campaigns"] = g5_behavior.check(
                 run, cells=("singleton",), seeds=(17,), compact=True)
             run.receipt["synthesis"] = synthesis_matrix.check(run, reproduction=True)
         else:
+            run.receipt["leaf_cases"] = leaf_checks.check(run)
             run.receipt["parameter_cases"] = parameters.check(run)
             child_check(run, "interpolator_probe.py", "inherited-signed-rational")
             run.receipt["campaigns"] = g5_behavior.check(run, compact=True)
@@ -96,7 +100,10 @@ def verify(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-root", default="evidence/l1")
-    parser.add_argument("--reproduction", action="store_true",
-                        help="bounded delivery-path subset; disables recursive copying only")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--reproduction", action="store_true",
+                       help="bounded delivery-path subset; disables recursive copying only")
+    modes.add_argument("--probe-clean-reproduction", action="store_true",
+                       help="execute only the retained clean-directory delivery-path probe")
     parser.add_argument("--repair-of", help="project-relative receipt of an earlier failed run")
     sys.exit(verify(parser.parse_args()))

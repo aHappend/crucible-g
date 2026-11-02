@@ -1,6 +1,7 @@
 """Compact four-state leaf and integrated portability checks."""
 
 import argparse
+from decimal import Decimal, localcontext, ROUND_HALF_UP
 import json
 from pathlib import Path
 import sys
@@ -44,6 +45,23 @@ def read_port(run):
             "measured_coverage": measured, "stdout": str(out), "stderr": str(err)}
 
 
+def exponential_rom(run):
+    fixture = run.directory / "exp-rom.txt"
+    with localcontext() as context:
+        context.prec = 60
+        values = [int((Decimal(Q)*(-Decimal(i)/256).exp()).to_integral_value(
+            rounding=ROUND_HALF_UP)) for i in range(4097)]
+    fixture.write_text("".join(f"{i:x} {v:x}\n" for i, v in enumerate(values)))
+    binary = run.directory / "exp-rom.vvp"
+    run.execute(["iverilog", "-g2012", "-Wall", "-s", "exp_rom_tb", "-o", str(binary),
+                 "tests/exp_rom_tb.sv", "rtl/g4_exp_rom.sv"], "exp-rom-compile")
+    out, err, _ = run.execute(["vvp", str(binary), "+fixture="+str(fixture)], "exp-rom")
+    measured = summary(out)
+    assert measured["commands"] == measured["comparisons"] == 4097
+    return {"top": "g4_exp_rom", "fixture": str(fixture), "fixture_sha256": run.hash_file(fixture),
+            "measured_coverage": measured, "stdout": str(out), "stderr": str(err)}
+
+
 def check(run, compact=False):
     results = []
     binary = run.directory / "morton.vvp"
@@ -82,6 +100,8 @@ def check(run, compact=False):
                     "fixture": str(fixture), "fixture_sha256": run.hash_file(fixture),
                     "measured_coverage": measured, "stdout": str(stdout), "stderr": str(stderr)})
     results.append(read_port(run))
+    if not compact:
+        results.append(exponential_rom(run))
     return results
 
 

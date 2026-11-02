@@ -71,7 +71,7 @@ class Compatibility:
             vertices = [(Q, -Q, Q//4, Q), (-Q, -Q, Q//4, Q), (Q, Q, Q//4, Q)]
         return vertices
 
-    def draw(self, opcode, variant=0, texture=None, program=0, texture_error=False):
+    def draw(self, opcode, variant=0, texture=None, program=0, texture_error=False, uv=None):
         self.tag += 1
         vertices = self.geometry(variant)
         matrix = list(IDENTITY)
@@ -80,6 +80,8 @@ class Compatibility:
         attributes = [(-Q//4+i*Q//2, Q//3-i*Q//5,
                        self.rng.randrange(-Q, 2*Q), self.rng.randrange(Q+1),
                        self.rng.randrange(Q+1), self.rng.randrange(Q+1)) for i in range(3)]
+        if uv is not None:
+            attributes = [(*uv, *attrs[2:]) for attrs in attributes]
         op = opcode & ~512
         expected = self.raster.draw(self.tag, self.width, self.height, op, matrix, vertices,
                                     None if op in (0, 1) else attributes)
@@ -140,6 +142,11 @@ class Compatibility:
                  coverage="g1-invalid")
         for i in range(sequences):
             self.draw(i & 1, i % 9)
+        self.draw(0, 0)
+        first = {r[2] for r in self.cases[-1]["expected"][:-1]}
+        self.draw(0, 7)
+        second = {r[2] for r in self.cases[-1]["expected"][:-1]}
+        assert not first & second and len(first | second) == self.width*self.height
         self.add(0xDEADBEEF, metadata=self.height << 16 | self.width,
                  expected=lambda tag: [[1, tag, 1, 0, 0, 0]], coverage="unknown-opcode")
         self.add(4, metadata=0, expected=lambda tag: [[1, tag, 1, *([0]*10)]],
@@ -185,6 +192,18 @@ class Compatibility:
         self.draw(514, texture=texture, program=1, texture_error=True)
         self.export(error=True)
         self.export()
+        texture = Texture(9, 5)
+        self.state(1024, [texture.base, texture.stride], texture.height << 16 | texture.width)
+        for uv in ((0, 0), (4*Q+Q//2, 3*Q+Q//2), (8*Q, 0), (0, 0)):
+            self.clear_depth()
+            self.draw(514, texture=texture, program=1, uv=uv)
+            self.cases[-1]["coverage"] = "g3-cache-crossing-collision"
+        texture = Texture(9, 5)
+        self.state(1024, [texture.base, texture.stride], texture.height << 16 | texture.width)
+        self.clear_depth()
+        self.draw(514, texture=texture, program=1, uv=(4*Q+Q//2, 3*Q+Q//2), texture_error=18)
+        self.cases[-1]["coverage"] = "g3-partial-refill-error"
+        self.export()
 
     def bvh_cases(self, sequences=16):
         nodes = {}
@@ -220,6 +239,13 @@ class Compatibility:
             ray(0, (0, 0, 0), (0, 0, Q))
             write(0, 0, 0, 2)
             ray(0, (0, 0, 0), (0, 0, Q))
+        if self.parameters["MAX_NODES"] >= 7 and self.parameters["STACK_DEPTH"] == 3:
+            for i in range(4):
+                write(i, 0, i+1, 6)
+            write(4, 1, identity=1)
+            write(6, 1, identity=2)
+            ray(0, (0, 0, 0), (0, 0, Q))
+            self.cases[-1]["coverage"] = "g4-stack-capacity"
         thin = (-Q, -Q, 1, Q, Q, 1)
         write(0, 1, identity=7, bounds=thin)
         ray(0, (0, 0, 0), (0, 0, 3), high=Q)

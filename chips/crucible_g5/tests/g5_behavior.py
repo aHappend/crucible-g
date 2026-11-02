@@ -52,6 +52,9 @@ def check(run, cells=CELLS, seeds=SEEDS, compact=False):
             assert bins["lbvh-scene"] >= (6 if compact else 32)
             assert bins["triangle"] >= (32 if compact else 256)
             assert bins["query"] >= (24 if compact else 128) and bins["outward-witness"] == 2
+            assert bins["axis-outward-witness"] == 10
+            assert bins["svgf-axis-capacity"] == 2
+            assert bins["deep-radix-tree"] == bins["signed-odd-midpoint"] == 1
             assert bins["svgf-directed"] >= 24
             assert bins["svgf-random"] >= (6 if compact else 12)
             assert all(bins["reset-"+phase] >= 1 for phase in (
@@ -66,7 +69,7 @@ def check(run, cells=CELLS, seeds=SEEDS, compact=False):
 
 def run(args):
     run = Run(args.output_root, "g5-behavior",
-              ["python3", "tests/g5_behavior.py", *sys.argv[1:]])
+              ["python3", "tests/g5_behavior.py", *sys.argv[1:]], repair_of=args.repair_of)
     try:
         run.snapshot()
         versions = {}
@@ -90,4 +93,5 @@ if __name__ == "__main__":
     parser.add_argument("--cell", choices=CELLS)
     parser.add_argument("--seed", type=int, choices=SEEDS)
     parser.add_argument("--compact", action="store_true")
+    parser.add_argument("--repair-of")
     sys.exit(run(parser.parse_args()))

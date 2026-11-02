@@ -120,6 +120,21 @@ class Campaign:
                 record(0x50000010, tag, 1)], latency=16384, coverage="triangle-invalid-range")
             case.command = triangle_command(self.tag, (0, 0, 0), (0, 0, Q),
                                             Z_TRIANGLE, low, high)
+        for vertices in (Z_TRIANGLE, ((0, 0, 1), (1, 0, 1), (0, 1, 1))):
+            for cull in (0, 1):
+                for winding in (vertices, (vertices[0], vertices[2], vertices[1])):
+                    result = triangle((0, 0, 0), (0, 0, 1), winding, Q, Q, cull)
+                    case = self.add(0x910, expected=lambda tag, result=result: [
+                        triangle_record(tag, result)], latency=16384,
+                        coverage="triangle-unit-determinant-or-endpoint")
+                    case.command = triangle_command(
+                        self.tag, (0, 0, 0), (0, 0, 1), winding, Q, Q, cull)
+        for low, high in ((Q-1, Q-1), (Q+1, Q+1)):
+            result = triangle((16384, 16384, 0), (0, 0, 1), Z_TRIANGLE, low, high)
+            case = self.add(0x910, expected=lambda tag, result=result: [
+                triangle_record(tag, result)], latency=16384, coverage="triangle-endpoint-neighbor")
+            case.command = triangle_command(
+                self.tag, (16384, 16384, 0), (0, 0, 1), Z_TRIANGLE, low, high)
 
     def scenes(self, count=32):
         capacity = self.parameters["MAX_PRIMITIVES"]
@@ -153,6 +168,16 @@ class Campaign:
                 nodes = self.build(primitives)
             self.ray(nodes, (0, 0, -(1 << 31)), (0, 0, (1 << 31)-1),
                      tmax=(1 << 63)-1)
+        ps = []
+        for slot in range(min(31, capacity)):
+            code = 0 if slot == 0 else 1 << (slot-1)
+            quantized = [sum(((code >> (3*bit+axis)) & 1) << bit for bit in range(10))
+                         for axis in range(3)]
+            point = tuple((q << 22)-(1 << 31) for q in quantized)
+            ps.append(Primitive(slot, slot, (point, point, point)))
+        self.build(ps, "deep-radix-tree")
+        odd = ((-(1 << 31), -3, -1), ((1 << 31)-1, -2, 0), (0, -2, 0))
+        self.build([Primitive(0, MASK, odd)], "signed-odd-midpoint")
 
     def witnesses(self):
         nodes = self.build([Primitive(0, 9, Z_TRIANGLE)], "witness-build")
@@ -334,6 +359,10 @@ class Campaign:
         if full_image:
             samples = [Sample(Q, 2*Q) for _ in range(maxw*maxh)]
             self.frame(maxw, maxh, samples, reset=True, coverage="svgf-full-image")
+        for w, h in ((maxw, 1), (1, maxh)):
+            samples = [Sample((i % 5)*Q, (4-i % 5)*Q, Q+(4097 if i >= w*h//2 else 0))
+                       for i in range(w*h)]
+            self.frame(w, h, samples, reset=True, coverage="svgf-axis-capacity")
 
     def frame_errors(self):
         self.add(0x921, [0, 0, Q, Q, Q, 0, 0, 32768], status=2,
