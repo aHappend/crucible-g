@@ -1,0 +1,345 @@
+{
+  "gate": "quartus-sta",
+  "timestamp_utc": "2026-10-30T17:03:17.599936+00:00",
+  "project_dir": "/data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
+  "revision": "top",
+  "clock_filter": "clk_main",
+  "min_setup_slack_ns": 0.0,
+  "min_hold_slack_ns": 0.0,
+  "status": "passed",
+  "map_summary": {
+    "exists": true,
+    "path": "/data/sufeng/crucible-g2-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
+    "error_count": 0,
+    "errors": [],
+    "lpm_divide_error_count": 0,
+    "lpm_divide_errors": [],
+    "warning_10268_count": 0,
+    "warning_10268": [],
+    "uninferred_ram_count": 0,
+    "uninferred_rams": []
+  },
+  "sta_summary": {
+    "exit_code": 0,
+    "netlist_mode": "post_fit",
+    "clocks": [
+      {
+        "name": "clk_main",
+        "period_ns": 10.0
+      }
+    ],
+    "wns_setup_ns": 1.341,
+    "wns_hold_ns": 0.036,
+    "unconstrained_setup_paths": 0,
+    "unconstrained_functional_endpoints": 0,
+    "unapproved_timing_exceptions": 0,
+    "failing_setup_count": 0,
+    "failing_hold_count": 0,
+    "setup_paths": [
+      {
+        "slack_ns": 1.341,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
+      },
+      {
+        "slack_ns": 1.345,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
+      },
+      {
+        "slack_ns": 1.347,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
+      },
+      {
+        "slack_ns": 1.348,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
+      },
+      {
+        "slack_ns": 1.374,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
+      },
+      {
+        "slack_ns": 1.375,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
+      },
+      {
+        "slack_ns": 1.378,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
+      },
+      {
+        "slack_ns": 1.379,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
+      },
+      {
+        "slack_ns": 1.38,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
+      },
+      {
+        "slack_ns": 1.381,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
+      },
+      {
+        "slack_ns": 1.381,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][8]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
+      },
+      {
+        "slack_ns": 1.382,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][9]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
+      },
+      {
+        "slack_ns": 1.393,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][89]"
+      },
+      {
+        "slack_ns": 1.408,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
+      },
+      {
+        "slack_ns": 1.412,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
+      },
+      {
+        "slack_ns": 1.413,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][90]"
+      },
+      {
+        "slack_ns": 1.414,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
+      },
+      {
+        "slack_ns": 1.415,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][5]|g2_engine:engine|g2_interpolator:interpolator|product[6][95]"
+      },
+      {
+        "slack_ns": 1.417,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][94]"
+      },
+      {
+        "slack_ns": 1.419,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|Mult19~mult_hl_pl[0][1]|g2_engine:engine|g2_interpolator:interpolator|product[6][91]"
+      }
+    ],
+    "hold_paths": [
+      {
+        "slack_ns": 0.036,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[257]|crucible_g1_top:legacy|vertices[257]"
+      },
+      {
+        "slack_ns": 0.036,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[128]|crucible_g1_top:legacy|vertices[128]"
+      },
+      {
+        "slack_ns": 0.036,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[19]|crucible_g1_top:legacy|matrix[19]"
+      },
+      {
+        "slack_ns": 0.036,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "header[874]",
+        "to_node": "header[874]"
+      },
+      {
+        "slack_ns": 0.037,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "header[810]",
+        "to_node": "header[810]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[23]|crucible_g1_top:legacy|matrix[23]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[123]|crucible_g1_top:legacy|matrix[123]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[214]|crucible_g1_top:legacy|matrix[214]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[83]|crucible_g1_top:legacy|matrix[83]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_transform:transform|result[272]|crucible_g1_top:legacy|g1_transform:transform|result[272]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_transform:transform|result[373]|crucible_g1_top:legacy|g1_transform:transform|result[373]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g2_engine:engine",
+        "to_node": "g2_interpolator:interpolator|attributes[323]~_Duplicate_4|g2_engine:engine|g2_interpolator:interpolator|attributes[323]~_Duplicate_4"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "g1_clipper:clipper|component[1]|crucible_g1_top:legacy|g1_clipper:clipper|component[1]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "header[116]",
+        "to_node": "header[116]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "header[84]",
+        "to_node": "header[84]"
+      },
+      {
+        "slack_ns": 0.038,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "header[69]",
+        "to_node": "header[69]"
+      },
+      {
+        "slack_ns": 0.039,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[256]|crucible_g1_top:legacy|matrix[256]"
+      },
+      {
+        "slack_ns": 0.039,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[17]|crucible_g1_top:legacy|vertices[17]"
+      },
+      {
+        "slack_ns": 0.039,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "vertices[273]|crucible_g1_top:legacy|vertices[273]"
+      },
+      {
+        "slack_ns": 0.039,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g1_top:legacy",
+        "to_node": "matrix[22]|crucible_g1_top:legacy|matrix[22]"
+      }
+    ],
+    "stderr_tail": []
+  },
+  "detail": "Timing closed: Setup WNS = 1.341 ns",
+  "top_module": "crucible_g2_top",
+  "clock_port": "clk",
+  "clock_period_ns": 10.0,
+  "target_frequency_mhz": 100.0,
+  "fmax_mhz": 115.49,
+  "critical_path_delay_ns": 8.659,
+  "fitter_resource_summary": {
+    "alms_used": 14114,
+    "alms_total": 427200,
+    "alms_pct": "3 %",
+    "total_registers": 27268,
+    "block_memory_bits": 2041728,
+    "m20k_ram_blocks": 129,
+    "m20k_ram_blocks_total": 2713,
+    "dsp_blocks": 161,
+    "virtual_pins": 71
+  },
+  "parameters": {},
+  "source_sha256": "b1bfb0f2d84faa09ae1393ab81ea854c43d6f7adee33117227c46602040b5f32",
+  "applicable": true
+}
