@@ -1,0 +1,231 @@
+{
+  "chip": "Crucible-G1",
+  "passed_checks": {
+    "check:native-contract-retention-capsule-0307": {
+      "attempt_id": 446,
+      "duration_s": 0.8090701410546899,
+      "stdout_preview": "gICJ0ZXN0cy93b3JrbG9hZC5weSI6ICIzY2U5OGUyODZmZWI1ODFkZjMwNThmMWY0Njc5ZWRmM2E4NzUyZGRmYjVmNDIyNjQzNGY1ZTVkNDkzY2ZhYzcyIgogIH0sCiAgInN0YXJ0IjogMTc5MzIyOTQ4OS4zOTA4NDk0LAogICJzdGF0dXMiOiAiaW52b2NhdGlvbl9oZWxwX3JldGFpbmVkX25vdF9uYXRpdmVfYWNjZXB0YW5jZSIsCiAgInRvb2xfdmVyc2lvbnMiOiB7CiAgICAicHl0aG9uMyI6IHsKICAgICAgInZlcnNpb24iOiAiMy4xMi4zIChtYWluLCBBdWcgMzEgMjAyNiwgMTA6MTg6MjYpIFtHQ0MgMTMuMy4wXSIKICAgIH0sCiAgICAidnVsY2FuIjogewogICAgICAiYXJndiI6IFsKICAgICAgICAidnVsY2FuIiwKICAgICAgICAiLS12ZXJzaW9uIgogICAgICBdLAogICAgICAiZXhpdF9jb2RlIjogMCwKICAgICAgInN0ZGVyciI6ICJldmlkZW5jZS9uYXRpdmUtY29udHJhY3QvcnVuLWJhZWMxOWViZTZlMjQxN2RiYzgxNzBmNDgyMTgwOTZkL3Z1bGNhbi12ZXJzaW9uLnN0ZGVyciIsCiAgICAgICJzdGRvdXQiOiAiZXZpZGVuY2UvbmF0aXZlLWNvbnRyYWN0L3J1bi1iYWVjMTllYmU2ZTI0MTdkYmM4MTcwZjQ4MjE4MDk2ZC92dWxjYW4tdmVyc2lvbi5zdGRvdXQiCiAgICB9CiAgfQp9Cg==\", \"bytes\": 5134, \"sha256\": \"f213f1630772524187a1bc93229e1c43a5ea023e9c835376c5043a6af7ae9170\"}, \"evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stderr\": {\"base64\": \"\", \"bytes\": 0, \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"}, \"evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stdout\": {\"base64\": \"MC45LjUK\", \"bytes\": 6, \"sha256\": \"8780409dbc52c96276102c5a079a7d3e325510d7bf87af5257508ecc088a3730\"}}, \"historical_evidence_reconstructed\": false, \"kind\": \"native-invocation-discovery-capsule\", \"schema\": 1}\nevidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/receipt.json\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/receipt.json",
+          "data": {
+            "acceptance_evidence": false,
+            "argv": [
+              "python3",
+              "tests/native_contract.py"
+            ],
+            "commands": [
+              {
+                "argv": [
+                  "vulcan",
+                  "--version"
+                ],
+                "cwd": ".",
+                "end": 1793229489.5613081,
+                "exit_code": 0,
+                "name": "vulcan-version",
+                "start": 1793229489.3957438,
+                "stderr": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stderr",
+                "stdout": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stdout",
+                "timed_out": false,
+                "timeout_s": 3600
+              },
+              {
+                "argv": [
+                  "vulcan",
+                  "hardware",
+                  "fpga",
+                  "quartus-sta",
+                  "--help"
+                ],
+                "cwd": ".",
+                "end": 1793229489.7786598,
+                "exit_code": 0,
+                "name": "quartus-sta",
+                "start": 1793229489.5625665,
+                "stderr": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/quartus-sta.stderr",
+                "stdout": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/quartus-sta.stdout",
+                "timed_out": false,
+                "timeout_s": 3600
+              },
+              {
+                "argv": [
+                  "vulcan",
+                  "hardware",
+                  "fpga",
+                  "board-hil",
+                  "--help"
+                ],
+                "cwd": ".",
+                "end": 1793229489.9959023,
+                "exit_code": 0,
+                "name": "board-hil",
+                "start": 1793229489.7793267,
+                "stderr": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/board-hil.stderr",
+                "stdout": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/board-hil.stdout",
+                "timed_out": false,
+                "timeout_s": 3600
+              }
+            ],
+            "cwd": ".",
+            "end": 1793229489.997164,
+            "exit_code": 0,
+            "historical_evidence_reconstructed": false,
+            "kind": "native-invocation-contract-discovery",
+            "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+            "retained_files": {
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/board-hil.stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/board-hil.stdout": {
+                "bytes": 1197,
+                "sha256": "c9b32649dec01d0df7525e5638c0a6737d6b5fc9ec936903f1f7ff2d9f771e4d"
+              },
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/quartus-sta.stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/quartus-sta.stdout": {
+                "bytes": 1340,
+                "sha256": "e517ba7c908993a169fa15ada83ce0936335ea43b509ac511aa199cfb6de11e6"
+              },
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stderr": {
+                "bytes": 0,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stdout": {
+                "bytes": 6,
+                "sha256": "8780409dbc52c96276102c5a079a7d3e325510d7bf87af5257508ecc088a3730"
+              }
+            },
+            "source_sha256": {
+              "design/ARCHITECTURE.md": "50a02757f3633f0507be6cd2e842d584e8a3b0fbddcd1aa0f3446c449a46d0b0",
+              "design/SPEC.md": "a1a6f766ca34687049dff6ecdaa9c20520b9c816640cba16c349990667838471",
+              "rtl/crucible_g1_top.sv": "f797e4e9f1f2efafac52d61a25d51473a676735a2262167224cf0c60da7a2231",
+              "rtl/g1_clipper.sv": "ceec5889645725ca56da9e31e1266ce019b1998b70c0f032b79253336fa1c652",
+              "rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "rtl/g1_dot4.sv": "2c1bf3b27cbb9cbf30ea127052b1b78a05ca491d2b9b5b22fbd031e6aebe92f6",
+              "rtl/g1_edge.sv": "6dd27341a45cea6e9cce1132652d337856fa4f46aee881a9786e96962cc2f79c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "tests/native_contract.py": "418d3c3a4f4f7b28f4ee1e5a94b0b856d896be79c754c0e7f7b1967367d80af7",
+              "tests/native_prerequisites.py": "033cddc5678414c6d06a5def0a8cdda355f66039c0ad97906d8e939afba51a20",
+              "tests/reference.py": "4457c013f7ceeef186f3e4b9fea612572576ebaecc46fce822f40ac12e9786ea",
+              "tests/stream_compare.py": "1cef9805dffe91750af550fbbd4968e2ffdda4024b3c5eb8456634ceb2441df9",
+              "tests/verify.py": "26d2b3bd0b622c6e5506864cd29679d9781aa2f9defe0658bfa87e382038b21b",
+              "tests/workload.py": "3ce98e286feb581df3058f1f4679edf3a8752ddfb5f4226434f5e5d493cfac72"
+            },
+            "start": 1793229489.3908494,
+            "status": "invocation_help_retained_not_native_acceptance",
+            "tool_versions": {
+              "python3": {
+                "version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]"
+              },
+              "vulcan": {
+                "argv": [
+                  "vulcan",
+                  "--version"
+                ],
+                "exit_code": 0,
+                "stderr": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stderr",
+                "stdout": "evidence/native-contract/run-baec19ebe6e2417dbc8170f48218096d/vulcan-version.stdout"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "check:native-invocation-contract-discovery-0291": {
+      "attempt_id": 445,
+      "duration_s": 0.5448619299568236,
+      "stdout_preview": "evidence/native-contract-discovery-0291/receipt.json\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/native-contract-discovery-0291/receipt.json",
+          "data": {
+            "purpose": "Native invocation-contract discovery only; not engineering acceptance",
+            "cwd": ".",
+            "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+            "start": 1793229483.2736113,
+            "commands": [
+              {
+                "argv": [
+                  "vulcan",
+                  "hardware",
+                  "fpga",
+                  "quartus-sta",
+                  "--help"
+                ],
+                "cwd": ".",
+                "start": 1793229483.2754934,
+                "timeout_s": 3600,
+                "exit_code": 0,
+                "timed_out": false,
+                "stdout": "quartus-sta.stdout",
+                "stderr": "quartus-sta.stderr",
+                "end": 1793229483.4904907
+              },
+              {
+                "argv": [
+                  "vulcan",
+                  "hardware",
+                  "fpga",
+                  "board-hil",
+                  "--help"
+                ],
+                "cwd": ".",
+                "start": 1793229483.4906878,
+                "timeout_s": 3600,
+                "exit_code": 0,
+                "timed_out": false,
+                "stdout": "board-hil.stdout",
+                "stderr": "board-hil.stderr",
+                "end": 1793229483.656068
+              }
+            ],
+            "source_sha256": {
+              "rtl/crucible_g1_top.sv": "f797e4e9f1f2efafac52d61a25d51473a676735a2262167224cf0c60da7a2231",
+              "rtl/g1_clipper.sv": "ceec5889645725ca56da9e31e1266ce019b1998b70c0f032b79253336fa1c652",
+              "rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "rtl/g1_dot4.sv": "2c1bf3b27cbb9cbf30ea127052b1b78a05ca491d2b9b5b22fbd031e6aebe92f6",
+              "rtl/g1_edge.sv": "6dd27341a45cea6e9cce1132652d337856fa4f46aee881a9786e96962cc2f79c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "design/SPEC.md": "a1a6f766ca34687049dff6ecdaa9c20520b9c816640cba16c349990667838471",
+              "design/ARCHITECTURE.md": "50a02757f3633f0507be6cd2e842d584e8a3b0fbddcd1aa0f3446c449a46d0b0",
+              "tests/native_contract.py": "418d3c3a4f4f7b28f4ee1e5a94b0b856d896be79c754c0e7f7b1967367d80af7",
+              "tests/native_prerequisites.py": "033cddc5678414c6d06a5def0a8cdda355f66039c0ad97906d8e939afba51a20",
+              "tests/reference.py": "4457c013f7ceeef186f3e4b9fea612572576ebaecc46fce822f40ac12e9786ea",
+              "tests/stream_compare.py": "1cef9805dffe91750af550fbbd4968e2ffdda4024b3c5eb8456634ceb2441df9",
+              "tests/verify.py": "26d2b3bd0b622c6e5506864cd29679d9781aa2f9defe0658bfa87e382038b21b",
+              "tests/workload.py": "3ce98e286feb581df3058f1f4679edf3a8752ddfb5f4226434f5e5d493cfac72"
+            },
+            "status": "invocation_help_retained_not_native_acceptance",
+            "end": 1793229483.6562114
+          }
+        }
+      ]
+    },
+    "check:portable-l1": {
+      "attempt_id": 517,
+      "duration_s": 780.5529738420155,
+      "stdout_preview": "evidence/l1/run-5e1228dd888f4a978fbb2f6d49025986/result.json\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/l1/run-5e1228dd888f4a978fbb2f6d49025986/result.json",
+          "data": {
+            "coverage": "coverage.json",
+            "full_l1": true,
+            "status": "portable_l1_passed"
+          }
+        }
+      ]
+    }
+  }
+}
