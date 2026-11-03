@@ -1,0 +1,352 @@
+{
+  "gate": "quartus-sta",
+  "timestamp_utc": "2026-11-02T22:01:45.860792+00:00",
+  "project_dir": "/data/sufeng/crucible-g5-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work",
+  "revision": "top",
+  "clock_filter": "clk_main",
+  "min_setup_slack_ns": 0.0,
+  "min_hold_slack_ns": 0.0,
+  "status": "passed",
+  "map_summary": {
+    "exists": true,
+    "path": "/data/sufeng/crucible-g5-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/top.map.rpt",
+    "error_count": 0,
+    "errors": [],
+    "lpm_divide_error_count": 0,
+    "lpm_divide_errors": [],
+    "warning_10268_count": 0,
+    "warning_10268": [],
+    "uninferred_ram_count": 1,
+    "uninferred_rams": [
+      "Info (276007): RAM logic \"crucible_g4_top:implementation.compatibility|g4_splat:implementation.splat|sorted\" is uninferred due to asynchronous read logic File: /data/sufeng/crucible-g5-line/workspace/project/.vulcan/engineering/run-0001/quartus_sta_work/rtl_staged/g4_splat.sv Line: 27"
+    ]
+  },
+  "sta_summary": {
+    "exit_code": 0,
+    "netlist_mode": "post_fit",
+    "clocks": [
+      {
+        "name": "clk_main",
+        "period_ns": 10.0
+      }
+    ],
+    "wns_setup_ns": 2.439,
+    "wns_hold_ns": 0.039,
+    "unconstrained_setup_paths": 0,
+    "unconstrained_functional_endpoints": 0,
+    "unapproved_timing_exceptions": 0,
+    "failing_setup_count": 0,
+    "failing_hold_count": 0,
+    "setup_paths": [
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a742~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a760~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a600~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a552~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a527~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a585~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a793~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a776~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a712~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a744~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a680~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a729~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a761~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a697~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a648~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a616~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a584~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a792~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a728~reg0"
+      },
+      {
+        "slack_ns": 2.439,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "g5_lbvh:implementation.builder",
+        "to_node": "implementation.sp[0]|g5_lbvh:implementation.builder|altsyncram:implementation.nodes_rtl_1|altsyncram_fvo1:auto_generated|ram_block1a696~reg0"
+      }
+    ],
+    "hold_paths": [
+      {
+        "slack_ns": 0.039,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[71]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[71]"
+      },
+      {
+        "slack_ns": 0.041,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|g3_texture_cache:texture_cache|configured|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|g3_texture_cache:texture_cache|configured"
+      },
+      {
+        "slack_ns": 0.041,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[275]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[275]"
+      },
+      {
+        "slack_ns": 0.045,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[274]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[274]"
+      },
+      {
+        "slack_ns": 0.045,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[349]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[349]"
+      },
+      {
+        "slack_ns": 0.046,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[355]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[355]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[352]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[352]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[79]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[79]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[291]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[291]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[343]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[343]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[357]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[357]"
+      },
+      {
+        "slack_ns": 0.047,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[406]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[406]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[370]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[370]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[364]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[364]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[324]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[324]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[314]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[314]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[318]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[318]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[290]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[290]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[310]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[310]"
+      },
+      {
+        "slack_ns": 0.048,
+        "from_clock": "clk_main",
+        "to_clock": "clk_main",
+        "from_node": "crucible_g4_top:implementation.compatibility",
+        "to_node": "crucible_g3_top:implementation.compatibility|parent_record[325]|crucible_g4_top:implementation.compatibility|crucible_g3_top:implementation.compatibility|parent_record[325]"
+      }
+    ],
+    "stderr_tail": []
+  },
+  "detail": "Timing closed: Setup WNS = 2.439 ns",
+  "quartus_slot_telemetry": {
+    "slot_index": 1,
+    "max_slots": 6,
+    "slot_wait_s": 0.001
+  },
+  "top_module": "crucible_g5_top",
+  "clock_port": "clk",
+  "clock_period_ns": 10.0,
+  "target_frequency_mhz": 100.0,
+  "fmax_mhz": 132.26,
+  "critical_path_delay_ns": 7.561,
+  "fitter_resource_summary": {
+    "alms_used": 19687,
+    "alms_total": 427200,
+    "alms_pct": "5 %",
+    "total_registers": 30874,
+    "block_memory_bits": 3158256,
+    "m20k_ram_blocks": 224,
+    "m20k_ram_blocks_total": 2713,
+    "dsp_blocks": 22,
+    "virtual_pins": 214
+  },
+  "parameters": {},
+  "source_sha256": "819c08de7f94f94910ec9f3b0e64d3aec647ec5ebac18efb832c62c51d03c2e7",
+  "applicable": true
+}
