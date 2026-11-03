@@ -1,0 +1,17 @@
+Fitter Status : Successful - Mon Nov  2 14:00:52 2026
+Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Standard Edition
+Revision Name : top
+Top-level Entity Name : crucible_g5_top
+Family : Arria 10
+Device : 10AX115N2F45E1SG
+Timing Models : Final
+Logic utilization (in ALMs) : 19,687 / 427,200 ( 5 % )
+Total registers : 30874
+Total pins : 0 / 992 ( 0 % )
+Total virtual pins : 214
+Total block memory bits : 3,158,256 / 55,562,240 ( 6 % )
+Total RAM Blocks : 224 / 2,713 ( 8 % )
+Total DSP Blocks : 22 / 1,518 ( 1 % )
+Total HSSI RX channels : 0 / 48 ( 0 % )
+Total HSSI TX channels : 0 / 48 ( 0 % )
+Total PLLs : 0 / 112 ( 0 % )

@@ -1,0 +1,27 @@
+{
+  "chip": "Crucible-G3",
+  "fitter_resources": {
+    "alms_used": 17635,
+    "alms_total": 427200,
+    "alms_pct": "4 %",
+    "total_registers": 31518,
+    "block_memory_bits": 4140928,
+    "m20k_ram_blocks": 258,
+    "m20k_ram_blocks_total": 2713,
+    "dsp_blocks": 191,
+    "virtual_pins": 214
+  },
+  "timing": {
+    "device": "10AX115N2F45E1SG",
+    "netlist_mode": "post_fit",
+    "target_frequency_mhz": 100.0,
+    "fmax_mhz": 115.77,
+    "critical_path_delay_ns": 8.638,
+    "wns_setup_ns": 1.362,
+    "wns_hold_ns": 0.044
+  },
+  "verification_tiers": {
+    "L3_board_hil": "L3_BRIDGE_CONNECTIVITY_PROBE_ONLY",
+    "L3_note": "Catapult PCIe BAR0 hardware bridge connectivity probe (reg 57) only; per-chip bitstream flash and on-board workload vector execution require fpga/board_hil.json role wrapper."
+  }
+}
