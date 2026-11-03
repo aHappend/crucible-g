@@ -1,0 +1,2545 @@
+{
+  "chip": "Crucible-G3",
+  "passed_checks": {
+    "check:behavior": {
+      "attempt_id": 3,
+      "duration_s": 808.7490316180047,
+      "stdout_preview": "havior-13-11-0-17-run active 30s\nPROGRESS behavior-13-11-0-17-run active 60s\nPROGRESS behavior configuration=(13, 11, 0) seed=17 compared\nPROGRESS behavior-13-11-0-89-run active 30s\nPROGRESS behavior-13-11-0-89-run active 60s\nPROGRESS behavior configuration=(13, 11, 0) seed=89 compared\nPROGRESS behavior-13-11-0-233-run active 30s\nPROGRESS behavior-13-11-0-233-run active 60s\nPROGRESS behavior configuration=(13, 11, 0) seed=233 compared\nPROGRESS behavior-13-11-3-17-run active 30s\nPROGRESS behavior configuration=(13, 11, 3) seed=17 compared\nPROGRESS behavior-13-11-3-89-run active 30s\nPROGRESS behavior configuration=(13, 11, 3) seed=89 compared\nPROGRESS behavior-13-11-3-233-run active 30s\nPROGRESS behavior configuration=(13, 11, 3) seed=233 compared\nPROGRESS behavior-19-17-4-17-run active 30s\nPROGRESS behavior configuration=(19, 17, 4) seed=17 compared\nPROGRESS behavior-19-17-4-89-run active 30s\nPROGRESS behavior configuration=(19, 17, 4) seed=89 compared\nPROGRESS behavior-19-17-4-233-run active 30s\nPROGRESS behavior configuration=(19, 17, 4) seed=233 compared\nPROGRESS behavior-256-256-3-17-run active 30s\nPROGRESS behavior configuration=(256, 256, 3) seed=17 compared\nPROGRESS behavior-256-256-3-89-run active 30s\nPROGRESS behavior configuration=(256, 256, 3) seed=89 compared\nPROGRESS behavior-256-256-3-233-run active 30s\nPROGRESS behavior configuration=(256, 256, 3) seed=233 compared\n{\"status\": \"passed\", \"receipt\": \"evidence/behavior-20261031T152146853440Z-1d3fd594/receipt.json\"}\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/behavior-20261031T152146853440Z-1d3fd594/behavior-1-1-0-prerequisites.json",
+          "data": {
+            "configuration": [
+              1,
+              1,
+              0
+            ],
+            "transactions": [
+              {
+                "label": "prerequisite-depth-init",
+                "tag": 2164260865,
+                "opcode": 4,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 13,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-514",
+                "tag": 2164260866,
+                "opcode": 514,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260867,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-515",
+                "tag": 2164260868,
+                "opcode": 515,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260869,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-518",
+                "tag": 2164260870,
+                "opcode": 518,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260871,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-519",
+                "tag": 2164260872,
+                "opcode": 519,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260873,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-770",
+                "tag": 2164260874,
+                "opcode": 770,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260875,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-771",
+                "tag": 2164260876,
+                "opcode": 771,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260877,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-774",
+                "tag": 2164260878,
+                "opcode": 774,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260879,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-color-shader-775",
+                "tag": 2164260880,
+                "opcode": 775,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260881,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "prerequisite-color",
+                "tag": 2164260882,
+                "opcode": 1026,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "rejected-draws-preserved-depth",
+                "tag": 2164260883,
+                "opcode": 770,
+                "accepted_beats_required": 49,
+                "records_required": 2,
+                "output_words_required": 32,
+                "status": 0,
+                "pixels": 1,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {
+                  "clip_intersections": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              },
+              {
+                "label": "prerequisite-depth-reinit",
+                "tag": 2164260884,
+                "opcode": 4,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 13,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "enable-unconfigured-texture",
+                "tag": 2164260885,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "missing-texture",
+                "tag": 2164260886,
+                "opcode": 770,
+                "accepted_beats_required": 49,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 4,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "immediate-valid-following-command",
+                "tag": 2164260887,
+                "opcode": 1025,
+                "accepted_beats_required": 31,
+                "records_required": 1,
+                "output_words_required": 16,
+                "status": 0,
+                "pixels": 0,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {}
+              },
+              {
+                "label": "texture-rejection-preserved-depth",
+                "tag": 2164260888,
+                "opcode": 770,
+                "accepted_beats_required": 49,
+                "records_required": 2,
+                "output_words_required": 32,
+                "status": 0,
+                "pixels": 1,
+                "texture_reads": 0,
+                "dma_requests": 0,
+                "independent_geometry_events": {
+                  "clip_intersections": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "check:defect-sensitivity": {
+      "attempt_id": 4,
+      "duration_s": 143.27132936404087,
+      "stdout_preview": "{\"status\": \"passed\", \"receipt\": \"evidence/defects-20261031T153518833981Z-5decda11/receipt.json\"}\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/defects-20261031T153518833981Z-5decda11/receipt.json",
+          "data": {
+            "schema": 1,
+            "suite": "defects",
+            "argv": [
+              "python3",
+              "tests/verify.py",
+              "--suite",
+              "defects"
+            ],
+            "cwd": ".",
+            "started_at": "2026-10-31T15:35:18.834244+00:00",
+            "acceptance_evidence": true,
+            "commands": [
+              {
+                "argv": [
+                  "python3",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:18.854978+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/version-python3.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/version-python3.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:18.861165+00:00",
+                "duration_s": 0.005539017030969262
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:18.861922+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/version-verilator.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/version-verilator.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:18.978090+00:00",
+                "duration_s": 0.11569941998459399
+              },
+              {
+                "argv": [
+                  "make",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:18.979665+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/version-make.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/version-make.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:18.985781+00:00",
+                "duration_s": 0.005556628806516528
+              },
+              {
+                "argv": [
+                  "g++",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:18.986575+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/version-g++.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/version-g++.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:18.992211+00:00",
+                "duration_s": 0.005064210155978799
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "leaf_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-e6b700a9/compile-obj-e6b700a9",
+                  "rtl/g3_bilinear.sv",
+                  "rtl/g3_shader_pipeline.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:19.027755+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:24.758248+00:00",
+                "duration_s": 5.729801842011511
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-e6b700a9/compile-obj-e6b700a9/Vleaf_tb",
+                  "+vectors=evidence/defects-20261031T153518833981Z-5decda11/mutant-bilinear-vectors.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:24.759455+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:24.875450+00:00",
+                "duration_s": 0.11543922405689955
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "leaf_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-53c5368c/compile-obj-53c5368c",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-bilinear-b95b3f10c650/rtl/g3_bilinear.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-bilinear-b95b3f10c650/rtl/g3_shader_pipeline.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:24.880172+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:30.411242+00:00",
+                "duration_s": 5.530484170187265
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-53c5368c/compile-obj-53c5368c/Vleaf_tb",
+                  "+vectors=evidence/defects-20261031T153518833981Z-5decda11/mutant-bilinear-vectors.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:30.413043+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:31.732880+00:00",
+                "duration_s": 1.3191451209131628
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-f27a7414/compile-obj-f27a7414",
+                  "-GW=13",
+                  "-GH=11",
+                  "-GL=3",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/crucible_g3_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "rtl/g3_bilinear.sv",
+                  "rtl/g3_framebuffer_dma.sv",
+                  "rtl/g3_shader_pipeline.sv",
+                  "rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:31.813060+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:45.262324+00:00",
+                "duration_s": 13.448522686958313
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-f27a7414/compile-obj-f27a7414/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:45.263857+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:35:50.743301+00:00",
+                "duration_s": 5.478760407073423
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-b764feaf/compile-obj-b764feaf",
+                  "-GW=13",
+                  "-GH=11",
+                  "-GL=3",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/crucible_g1_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/crucible_g2_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/crucible_g3_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_dot4.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_edge.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g1_transform.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_engine.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_interpolator.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_setup.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g2_zbuffer.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g3_bilinear.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g3_framebuffer_dma.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g3_shader_pipeline.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:35:50.843488+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:05.639211+00:00",
+                "duration_s": 14.794757198076695
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-b764feaf/compile-obj-b764feaf/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:05.640692+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:08.061799+00:00",
+                "duration_s": 2.4203855188097805
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "leaf_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-e872eae3/compile-obj-e872eae3",
+                  "rtl/g3_bilinear.sv",
+                  "rtl/g3_shader_pipeline.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:08.192989+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:13.771430+00:00",
+                "duration_s": 5.577735614962876
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-e872eae3/compile-obj-e872eae3/Vleaf_tb",
+                  "+vectors=evidence/defects-20261031T153518833981Z-5decda11/mutant-shader-vectors.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:13.772981+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:13.889674+00:00",
+                "duration_s": 0.11588779208250344
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "leaf_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-6806039b/compile-obj-6806039b",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-shader-10219889bc5e/rtl/g3_bilinear.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-shader-10219889bc5e/rtl/g3_shader_pipeline.sv",
+                  "tests/leaf_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:13.893898+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:19.237296+00:00",
+                "duration_s": 5.342563935089856
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-6806039b/compile-obj-6806039b/Vleaf_tb",
+                  "+vectors=evidence/defects-20261031T153518833981Z-5decda11/mutant-shader-vectors.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:19.238877+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:20.558161+00:00",
+                "duration_s": 1.3184457230381668
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-aad7454a/compile-obj-aad7454a",
+                  "-GW=3",
+                  "-GH=3",
+                  "-GL=0",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/crucible_g3_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "rtl/g3_bilinear.sv",
+                  "rtl/g3_framebuffer_dma.sv",
+                  "rtl/g3_shader_pipeline.sv",
+                  "rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:20.571581+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:34.422287+00:00",
+                "duration_s": 13.84983370010741
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-aad7454a/compile-obj-aad7454a/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:34.424006+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:34.740933+00:00",
+                "duration_s": 0.3160438099876046
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-a406ba77/compile-obj-a406ba77",
+                  "-GW=3",
+                  "-GH=3",
+                  "-GL=0",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/crucible_g1_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/crucible_g2_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/crucible_g3_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_dot4.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_edge.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g1_transform.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_engine.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_interpolator.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_setup.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g2_zbuffer.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g3_bilinear.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g3_framebuffer_dma.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g3_shader_pipeline.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:34.839246+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:49.241078+00:00",
+                "duration_s": 14.400769799947739
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-a406ba77/compile-obj-a406ba77/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:49.243051+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:36:50.712922+00:00",
+                "duration_s": 1.4689022318925709
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-2efef89b/compile-obj-2efef89b",
+                  "-GW=3",
+                  "-GH=3",
+                  "-GL=0",
+                  "rtl/crucible_g1_top.sv",
+                  "rtl/crucible_g2_top.sv",
+                  "rtl/crucible_g3_top.sv",
+                  "rtl/g1_clipper.sv",
+                  "rtl/g1_divider.sv",
+                  "rtl/g1_dot4.sv",
+                  "rtl/g1_edge.sv",
+                  "rtl/g1_project.sv",
+                  "rtl/g1_raster.sv",
+                  "rtl/g1_transform.sv",
+                  "rtl/g2_clipper.sv",
+                  "rtl/g2_divider.sv",
+                  "rtl/g2_engine.sv",
+                  "rtl/g2_interpolator.sv",
+                  "rtl/g2_project.sv",
+                  "rtl/g2_raster.sv",
+                  "rtl/g2_setup.sv",
+                  "rtl/g2_zbuffer.sv",
+                  "rtl/g3_bilinear.sv",
+                  "rtl/g3_framebuffer_dma.sv",
+                  "rtl/g3_shader_pipeline.sv",
+                  "rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:36:50.821696+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:04.223952+00:00",
+                "duration_s": 13.401177749969065
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-2efef89b/compile-obj-2efef89b/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:04.225687+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:04.542744+00:00",
+                "duration_s": 0.31600839481689036
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "top_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-5a93195f/compile-obj-5a93195f",
+                  "-GW=3",
+                  "-GH=3",
+                  "-GL=0",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/crucible_g1_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/crucible_g2_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/crucible_g3_top.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_dot4.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_edge.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g1_transform.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_clipper.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_divider.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_engine.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_interpolator.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_project.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_raster.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_setup.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g2_zbuffer.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g3_bilinear.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g3_framebuffer_dma.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g3_shader_pipeline.sv",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/rtl/g3_texture_cache.sv",
+                  "tests/top_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:04.640601+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:18.642532+00:00",
+                "duration_s": 14.000669495901093
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-5a93195f/compile-obj-5a93195f/Vtop_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-scenario.txt",
+                  "+coverage=evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated.coverage.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:18.644608+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:20.063812+00:00",
+                "duration_s": 1.4180964860133827
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "dma_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-1a2eb8d8/compile-obj-1a2eb8d8",
+                  "-GW=13",
+                  "-GH=11",
+                  "-GL=3",
+                  "rtl/g3_framebuffer_dma.sv",
+                  "tests/dma_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:20.169860+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:30.161507+00:00",
+                "duration_s": 9.990698937093839
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-1a2eb8d8/compile-obj-1a2eb8d8/Vdma_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-dma-scenario.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:30.163969+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-run.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:30.280615+00:00",
+                "duration_s": 0.11548894690349698
+              },
+              {
+                "argv": [
+                  "verilator",
+                  "--binary",
+                  "--timing",
+                  "-Wno-fatal",
+                  "--top-module",
+                  "dma_tb",
+                  "-j",
+                  "2",
+                  "--Mdir",
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-d120e62f/compile-obj-d120e62f",
+                  "-GW=13",
+                  "-GH=11",
+                  "-GL=3",
+                  "evidence/defects-20261031T153518833981Z-5decda11/mutant-dma-6d7a8a3ff5ab/rtl/g3_framebuffer_dma.sv",
+                  "tests/dma_tb.sv"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:30.374063+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-compile.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-compile.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:40.473874+00:00",
+                "duration_s": 10.098387217149138
+              },
+              {
+                "argv": [
+                  "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-d120e62f/compile-obj-d120e62f/Vdma_tb",
+                  "+scenario=evidence/defects-20261031T153518833981Z-5decda11/mutant-dma-scenario.txt"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:40.475295+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-run.stdout.txt",
+                "stderr": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-run.stderr.txt",
+                "exit_code": -6,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:41.794172+00:00",
+                "duration_s": 1.3182000359520316
+              }
+            ],
+            "status": "passed",
+            "source_sha256": {
+              "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+              "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+              "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+              "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+              "rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+              "rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+              "rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+              "design/ARCHITECTURE.md": "bc9fa4d082edb6f168e79194627e04a17ed6c9b3a6660039203555ed33962f18",
+              "design/SPEC.md": "a33b54476aef80da07269dbff8a70dad8d05a09feee59ebaf1ed66f2bd5fa5d5",
+              "tests/README.md": "9a1c368bc2cc516fcec5a2295d5e49282d38da78692217945bf8f270b9e603de",
+              "tests/dma_tb.sv": "7de08ee7e3e07578f6ecef86f3144c0b145e6a15ff96dc6651a2455f2caf44c5",
+              "tests/evidence.py": "564d82f8f7070de2294a23de55ae05d403fc1af76bba2b1fb628f0219f883c24",
+              "tests/leaf_tb.sv": "c654a506b91849d21515bbe097f052445bdf9b3c74695e9c21b4651d89b24e68",
+              "tests/model.py": "e78367a5b79475a90306bce67177005bb178de639f881f32c13b0b679ad67005",
+              "tests/parameter_tb.sv": "ec855becaea768c83b24b2247b2d5250680f4ac007649278021b314b13630a12",
+              "tests/reset_tb.sv": "f49f90d0d366c64be826e26d3bfa810a3514fdd0a7b449cdc5b608647f680c43",
+              "tests/scenarios.py": "0fd69e80f92fa34c23c724f79ab03b3b2315a4cd8770228249b390af7fb9673a",
+              "tests/top_tb.sv": "2418dc4f8278ed7071cc19a7ad6a8c1708150ac583214e6110bc2978d283449c",
+              "tests/verify.py": "5ad334b940e8d443b0797cebb88b58ab937abc379ff5f6727944c8d30a841c32",
+              "crucible_g2_reference/rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "crucible_g2_reference/rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "crucible_g2_reference/rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "crucible_g2_reference/rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "crucible_g2_reference/rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "crucible_g2_reference/rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "crucible_g2_reference/rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "crucible_g2_reference/rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "crucible_g2_reference/rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "crucible_g2_reference/rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "crucible_g2_reference/rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "crucible_g2_reference/rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "crucible_g2_reference/rtl/g2_interpolator.sv": "cb16bb1e946d1adcd17a92661f946258ab435197b466afcce17faecc6d3cbf5f",
+              "crucible_g2_reference/rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "crucible_g2_reference/rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "crucible_g2_reference/rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "crucible_g2_reference/rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866"
+            },
+            "timeout_s": null,
+            "timeout_owner": "shared runtime",
+            "exit_code": 0,
+            "timed_out": false,
+            "ended_at": "2026-10-31T15:37:41.894427+00:00",
+            "runs": [
+              {
+                "kind": "bilinear",
+                "file": "rtl/g3_bilinear.sv",
+                "original_sha256": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+                "mutated_sha256": "3edc506059205028eea2ed3c549c0dd6587250456086218a786b58f4da3e8433",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-bilinear-b95b3f10c650/mutation.diff",
+                "expected_mismatch": "BILINEAR_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-bilinear-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              },
+              {
+                "kind": "cache",
+                "file": "rtl/g3_texture_cache.sv",
+                "original_sha256": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+                "mutated_sha256": "ccc8f49f86944e1a801cc4c80cd4f5219c790c096ef9789897cabd01835f021d",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-cache-3cd438ac8c4d/mutation.diff",
+                "expected_mismatch": "RECORD_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-cache-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              },
+              {
+                "kind": "shader",
+                "file": "rtl/g3_shader_pipeline.sv",
+                "original_sha256": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+                "mutated_sha256": "846c300f8aab8ed45b631799128196e768f79958a30970a2ea6174c31045787a",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-shader-10219889bc5e/mutation.diff",
+                "expected_mismatch": "SHADER_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-shader-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              },
+              {
+                "kind": "depth",
+                "file": "rtl/g2_zbuffer.sv",
+                "original_sha256": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+                "mutated_sha256": "7440714563076bda15b63403bd8a0a8b3e12f6cb725015125ce456c396544bff",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-depth-15f69633bc08/mutation.diff",
+                "expected_mismatch": "RECORD_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-depth-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              },
+              {
+                "kind": "perspective",
+                "file": "rtl/g2_interpolator.sv",
+                "original_sha256": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+                "mutated_sha256": "74a94f6de698e077e347edde3cb8d8058284b5f01739a0cbb85de0d7e6e513c3",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-perspective-aa7ee67d66ed/mutation.diff",
+                "expected_mismatch": "RECORD_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-perspective-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              },
+              {
+                "kind": "dma",
+                "file": "rtl/g3_framebuffer_dma.sv",
+                "original_sha256": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+                "mutated_sha256": "0af4f9053ff930c8a2d763deb6725628606c4a2e6b08efb74528d300a0f1caa2",
+                "diff": "evidence/defects-20261031T153518833981Z-5decda11/mutant-dma-6d7a8a3ff5ab/mutation.diff",
+                "expected_mismatch": "DMA_NUMERICAL_MISMATCH",
+                "original": {
+                  "exit_code": 0,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-original-run.stdout.txt",
+                  "specific_behavioral_mismatch": false
+                },
+                "mutated": {
+                  "exit_code": -6,
+                  "stdout": "evidence/defects-20261031T153518833981Z-5decda11/defect-dma-mutated-run.stdout.txt",
+                  "specific_behavioral_mismatch": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "check:portable-reproduction": {
+      "attempt_id": 6,
+      "duration_s": 26.874165709828958,
+      "stdout_preview": "{\"status\": \"passed\", \"receipt\": \"evidence/reproduce-20261031T153834954817Z-66c66181/receipt.json\"}\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/reproduce-20261031T153834954817Z-66c66181/receipt.json",
+          "data": {
+            "schema": 1,
+            "suite": "reproduce",
+            "argv": [
+              "python3",
+              "tests/verify.py",
+              "--suite",
+              "reproduce"
+            ],
+            "cwd": ".",
+            "started_at": "2026-10-31T15:38:34.954971+00:00",
+            "acceptance_evidence": true,
+            "commands": [
+              {
+                "argv": [
+                  "python3",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:38:34.965765+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/reproduce-20261031T153834954817Z-66c66181/version-python3.stdout.txt",
+                "stderr": "evidence/reproduce-20261031T153834954817Z-66c66181/version-python3.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:34.971332+00:00",
+                "duration_s": 0.005274743074551225
+              },
+              {
+                "argv": [
+                  "iverilog",
+                  "-V"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:38:34.971647+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/reproduce-20261031T153834954817Z-66c66181/version-iverilog.stdout.txt",
+                "stderr": "evidence/reproduce-20261031T153834954817Z-66c66181/version-iverilog.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:34.988790+00:00",
+                "duration_s": 0.016943797934800386
+              },
+              {
+                "argv": [
+                  "vvp",
+                  "-V"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:38:34.989111+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/reproduce-20261031T153834954817Z-66c66181/version-vvp.stdout.txt",
+                "stderr": "evidence/reproduce-20261031T153834954817Z-66c66181/version-vvp.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:34.998049+00:00",
+                "duration_s": 0.008726323954761028
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-V"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:38:34.998376+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/reproduce-20261031T153834954817Z-66c66181/version-yosys.stdout.txt",
+                "stderr": "evidence/reproduce-20261031T153834954817Z-66c66181/version-yosys.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:35.007577+00:00",
+                "duration_s": 0.008954588789492846
+              },
+              {
+                "argv": [
+                  "python3",
+                  "tests/verify.py",
+                  "--suite",
+                  "reproduce",
+                  "--portable-child"
+                ],
+                "cwd": "evidence/reproduce-20261031T153834954817Z-66c66181/portable-root-6f9a2c71",
+                "started_at": "2026-10-31T15:38:35.016658+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/reproduce-20261031T153834954817Z-66c66181/portable-child.stdout.txt",
+                "stderr": "evidence/reproduce-20261031T153834954817Z-66c66181/portable-child.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:39:01.646803+00:00",
+                "duration_s": 26.629929887130857
+              }
+            ],
+            "status": "passed",
+            "source_sha256": {
+              "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+              "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+              "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+              "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+              "rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+              "rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+              "rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+              "design/ARCHITECTURE.md": "bc9fa4d082edb6f168e79194627e04a17ed6c9b3a6660039203555ed33962f18",
+              "design/SPEC.md": "a33b54476aef80da07269dbff8a70dad8d05a09feee59ebaf1ed66f2bd5fa5d5",
+              "tests/README.md": "9a1c368bc2cc516fcec5a2295d5e49282d38da78692217945bf8f270b9e603de",
+              "tests/dma_tb.sv": "7de08ee7e3e07578f6ecef86f3144c0b145e6a15ff96dc6651a2455f2caf44c5",
+              "tests/evidence.py": "564d82f8f7070de2294a23de55ae05d403fc1af76bba2b1fb628f0219f883c24",
+              "tests/leaf_tb.sv": "c654a506b91849d21515bbe097f052445bdf9b3c74695e9c21b4651d89b24e68",
+              "tests/model.py": "e78367a5b79475a90306bce67177005bb178de639f881f32c13b0b679ad67005",
+              "tests/parameter_tb.sv": "ec855becaea768c83b24b2247b2d5250680f4ac007649278021b314b13630a12",
+              "tests/reset_tb.sv": "f49f90d0d366c64be826e26d3bfa810a3514fdd0a7b449cdc5b608647f680c43",
+              "tests/scenarios.py": "0fd69e80f92fa34c23c724f79ab03b3b2315a4cd8770228249b390af7fb9673a",
+              "tests/top_tb.sv": "2418dc4f8278ed7071cc19a7ad6a8c1708150ac583214e6110bc2978d283449c",
+              "tests/verify.py": "5ad334b940e8d443b0797cebb88b58ab937abc379ff5f6727944c8d30a841c32",
+              "crucible_g2_reference/rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "crucible_g2_reference/rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "crucible_g2_reference/rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "crucible_g2_reference/rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "crucible_g2_reference/rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "crucible_g2_reference/rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "crucible_g2_reference/rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "crucible_g2_reference/rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "crucible_g2_reference/rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "crucible_g2_reference/rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "crucible_g2_reference/rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "crucible_g2_reference/rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "crucible_g2_reference/rtl/g2_interpolator.sv": "cb16bb1e946d1adcd17a92661f946258ab435197b466afcce17faecc6d3cbf5f",
+              "crucible_g2_reference/rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "crucible_g2_reference/rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "crucible_g2_reference/rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "crucible_g2_reference/rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866"
+            },
+            "timeout_s": null,
+            "timeout_owner": "shared runtime",
+            "exit_code": 0,
+            "timed_out": false,
+            "ended_at": "2026-10-31T15:39:01.648444+00:00",
+            "runs": {
+              "copied_source_sha256": {
+                "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+                "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+                "rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+                "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+                "rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+                "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+                "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+                "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+                "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+                "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+                "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+                "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+                "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+                "rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+                "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+                "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+                "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+                "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+                "rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+                "rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+                "rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+                "rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+                "design/ARCHITECTURE.md": "bc9fa4d082edb6f168e79194627e04a17ed6c9b3a6660039203555ed33962f18",
+                "design/SPEC.md": "a33b54476aef80da07269dbff8a70dad8d05a09feee59ebaf1ed66f2bd5fa5d5",
+                "tests/README.md": "9a1c368bc2cc516fcec5a2295d5e49282d38da78692217945bf8f270b9e603de",
+                "tests/dma_tb.sv": "7de08ee7e3e07578f6ecef86f3144c0b145e6a15ff96dc6651a2455f2caf44c5",
+                "tests/evidence.py": "564d82f8f7070de2294a23de55ae05d403fc1af76bba2b1fb628f0219f883c24",
+                "tests/leaf_tb.sv": "c654a506b91849d21515bbe097f052445bdf9b3c74695e9c21b4651d89b24e68",
+                "tests/model.py": "e78367a5b79475a90306bce67177005bb178de639f881f32c13b0b679ad67005",
+                "tests/parameter_tb.sv": "ec855becaea768c83b24b2247b2d5250680f4ac007649278021b314b13630a12",
+                "tests/reset_tb.sv": "f49f90d0d366c64be826e26d3bfa810a3514fdd0a7b449cdc5b608647f680c43",
+                "tests/scenarios.py": "0fd69e80f92fa34c23c724f79ab03b3b2315a4cd8770228249b390af7fb9673a",
+                "tests/top_tb.sv": "2418dc4f8278ed7071cc19a7ad6a8c1708150ac583214e6110bc2978d283449c",
+                "tests/verify.py": "5ad334b940e8d443b0797cebb88b58ab937abc379ff5f6727944c8d30a841c32"
+              },
+              "child_receipt": "evidence/reproduce-20261031T153834954817Z-66c66181/portable-root-6f9a2c71/evidence/reproduce-20261031T153835131028Z-5ab50a50/receipt.json",
+              "child_receipt_sha256": "6c7b69cf84bcd5bb4696ab218c5a6f2b0cf7c0e746ed7959e5ba570036f5ce93",
+              "independent_comparisons_and_tools": {
+                "smoke": [
+                  {
+                    "label": "smoke-color",
+                    "tag": 2164260865,
+                    "opcode": 1026,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 64,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-shader",
+                    "tag": 2164260866,
+                    "opcode": 1025,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 4,
+                    "observed_cycles": 64,
+                    "observed_header_stalls": 2,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-depth",
+                    "tag": 2164260867,
+                    "opcode": 4,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 13,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 13,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 4,
+                    "observed_cycles": 95,
+                    "observed_header_stalls": 2,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-legacy",
+                    "tag": 2164260868,
+                    "opcode": 0,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 6,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {
+                      "clip_intersections": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 6,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 3912,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-g3",
+                    "tag": 2164260869,
+                    "opcode": 770,
+                    "accepted_beats_required": 49,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {
+                      "clip_intersections": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "observed_accepted_beats": 49,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 4,
+                    "observed_cycles": 7523,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 1,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-dma",
+                    "tag": 2164260870,
+                    "opcode": 1027,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 1,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 1,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 76,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-texture-config",
+                    "tag": 2164260871,
+                    "opcode": 1024,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 66,
+                    "observed_header_stalls": 2,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-texture-shader",
+                    "tag": 2164260872,
+                    "opcode": 1025,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 4,
+                    "observed_cycles": 63,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-texture-depth",
+                    "tag": 2164260873,
+                    "opcode": 4,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 13,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 13,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 4,
+                    "observed_cycles": 95,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-textured-g3",
+                    "tag": 2164260874,
+                    "opcode": 770,
+                    "accepted_beats_required": 49,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 0,
+                    "independent_geometry_events": {
+                      "clip_intersections": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "observed_accepted_beats": 49,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 0,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 7521,
+                    "observed_header_stalls": 2,
+                    "observed_attribute_stalls": 1,
+                    "complete_independent_response_compared": true
+                  },
+                  {
+                    "label": "smoke-textured-dma",
+                    "tag": 2164260875,
+                    "opcode": 1027,
+                    "accepted_beats_required": 31,
+                    "records_required": 1,
+                    "output_words_required": 16,
+                    "status": 0,
+                    "pixels": 0,
+                    "texture_reads": 0,
+                    "dma_requests": 1,
+                    "independent_geometry_events": {},
+                    "observed_accepted_beats": 31,
+                    "observed_output_words": 16,
+                    "observed_texture_reads": 0,
+                    "observed_dma_requests": 1,
+                    "observed_terminal_stalls": 3,
+                    "observed_cycles": 79,
+                    "observed_header_stalls": 1,
+                    "observed_attribute_stalls": 0,
+                    "complete_independent_response_compared": true
+                  }
+                ],
+                "leaf": [
+                  {
+                    "simulator": "icarus",
+                    "seed": 17,
+                    "compared": 100
+                  }
+                ],
+                "structure": {
+                  "configuration": [
+                    1,
+                    1,
+                    0
+                  ],
+                  "instances": {
+                    "compatibility.engine.area_edge": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[0].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[1].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[2].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[3].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[4].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator.attribute_lane[5].divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.interpolator": {
+                      "module": "g2_interpolator",
+                      "primitive_cells": 1616
+                    },
+                    "compatibility.engine.raster.divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.raster.edge0": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.engine.raster.edge_1": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.engine.raster.edge_2": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.engine.raster": {
+                      "module": "g2_raster",
+                      "primitive_cells": 561
+                    },
+                    "compatibility.engine.setup.clipper.divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.setup.clipper": {
+                      "module": "g2_clipper",
+                      "primitive_cells": 487
+                    },
+                    "compatibility.engine.setup.project.divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.engine.setup.project": {
+                      "module": "g2_project",
+                      "primitive_cells": 320
+                    },
+                    "compatibility.engine.setup.transform.dot": {
+                      "module": "g1_dot4",
+                      "primitive_cells": 68
+                    },
+                    "compatibility.engine.setup.transform": {
+                      "module": "g1_transform",
+                      "primitive_cells": 137
+                    },
+                    "compatibility.engine.setup": {
+                      "module": "g2_setup",
+                      "primitive_cells": 1012
+                    },
+                    "compatibility.engine.zbuffer": {
+                      "module": "g2_zbuffer",
+                      "primitive_cells": 160
+                    },
+                    "compatibility.engine": {
+                      "module": "g2_engine",
+                      "primitive_cells": 3820,
+                      "state_bits": 23064
+                    },
+                    "compatibility.legacy.clipper.divider.limb_divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.clipper.divider": {
+                      "module": "g1_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.clipper": {
+                      "module": "g1_clipper",
+                      "primitive_cells": 482
+                    },
+                    "compatibility.legacy.project.divider.limb_divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.project.divider": {
+                      "module": "g1_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.project": {
+                      "module": "g1_project",
+                      "primitive_cells": 276
+                    },
+                    "compatibility.legacy.raster.divider.limb_divider": {
+                      "module": "g2_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.raster.divider": {
+                      "module": "g1_divider",
+                      "primitive_cells": 210
+                    },
+                    "compatibility.legacy.raster.edge0": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.legacy.raster.edge_1": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.legacy.raster.edge_2": {
+                      "module": "g1_edge",
+                      "primitive_cells": 39
+                    },
+                    "compatibility.legacy.raster": {
+                      "module": "g1_raster",
+                      "primitive_cells": 554
+                    },
+                    "compatibility.legacy.transform.dot": {
+                      "module": "g1_dot4",
+                      "primitive_cells": 68
+                    },
+                    "compatibility.legacy.transform": {
+                      "module": "g1_transform",
+                      "primitive_cells": 137
+                    },
+                    "compatibility.legacy": {
+                      "module": "crucible_g1_top",
+                      "primitive_cells": 1782,
+                      "state_bits": 8273
+                    },
+                    "compatibility": {
+                      "module": "crucible_g2_top",
+                      "primitive_cells": 5747,
+                      "state_bits": 32917
+                    },
+                    "framebuffer_dma": {
+                      "module": "g3_framebuffer_dma",
+                      "primitive_cells": 237,
+                      "state_bits": 390
+                    },
+                    "shader": {
+                      "module": "g3_shader_pipeline",
+                      "primitive_cells": 233,
+                      "state_bits": 634
+                    },
+                    "texture_cache.filter": {
+                      "module": "g3_bilinear",
+                      "primitive_cells": 126,
+                      "state_bits": 1359
+                    },
+                    "texture_cache": {
+                      "module": "g3_texture_cache",
+                      "primitive_cells": 402,
+                      "state_bits": 1881
+                    }
+                  },
+                  "primitive_counts": {
+                    "$add": 309,
+                    "$and": 88,
+                    "$eq": 1485,
+                    "$logic_not": 489,
+                    "$ge": 41,
+                    "$gt": 38,
+                    "$le": 32,
+                    "$logic_and": 298,
+                    "$logic_or": 99,
+                    "$lt": 52,
+                    "$mul": 99,
+                    "$reduce_bool": 58,
+                    "$neg": 181,
+                    "$not": 160,
+                    "$or": 90,
+                    "$adff": 795,
+                    "$mux": 2163,
+                    "$reduce_or": 4,
+                    "$pmux": 279,
+                    "$shift": 176,
+                    "$shiftx": 127,
+                    "$sub": 156,
+                    "$dff": 9,
+                    "$reduce_and": 8,
+                    "$xor": 12,
+                    "$mem_v2": 9,
+                    "$ne": 1
+                  },
+                  "memory_bits": 470968,
+                  "latch_cells": 0,
+                  "division_modulo_cells": 0,
+                  "structural_assertions": "Yosys check -noinit -assert",
+                  "raw_stdout": "evidence/reproduce-20261031T153835131028Z-5ab50a50/portable-structure.stdout.txt"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "check:synthesis": {
+      "attempt_id": 5,
+      "duration_s": 46.657226828858256,
+      "stdout_preview": "{\"status\": \"passed\", \"receipt\": \"evidence/synthesis-20261031T153745347367Z-11925581/receipt.json\"}\n",
+      "receipt_count": 1,
+      "receipts": [
+        {
+          "path": "evidence/synthesis-20261031T153745347367Z-11925581/receipt.json",
+          "data": {
+            "schema": 1,
+            "suite": "synthesis",
+            "argv": [
+              "python3",
+              "tests/verify.py",
+              "--suite",
+              "synthesis"
+            ],
+            "cwd": ".",
+            "started_at": "2026-10-31T15:37:45.347608+00:00",
+            "acceptance_evidence": true,
+            "commands": [
+              {
+                "argv": [
+                  "python3",
+                  "--version"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:45.366700+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/synthesis-20261031T153745347367Z-11925581/version-python3.stdout.txt",
+                "stderr": "evidence/synthesis-20261031T153745347367Z-11925581/version-python3.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:45.372377+00:00",
+                "duration_s": 0.005217085126787424
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-V"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:45.372926+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/synthesis-20261031T153745347367Z-11925581/version-yosys.stdout.txt",
+                "stderr": "evidence/synthesis-20261031T153745347367Z-11925581/version-yosys.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:37:45.390099+00:00",
+                "duration_s": 0.016814606031402946
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-Q",
+                  "-T",
+                  "-s",
+                  "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-13-11-3.ys"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:37:45.391343+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-13-11-3.stdout.txt",
+                "stderr": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-13-11-3.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:08.111910+00:00",
+                "duration_s": 22.720182636985555
+              },
+              {
+                "argv": [
+                  "yosys",
+                  "-Q",
+                  "-T",
+                  "-s",
+                  "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-1-1-0.ys"
+                ],
+                "cwd": ".",
+                "started_at": "2026-10-31T15:38:08.373986+00:00",
+                "timeout_s": 3600,
+                "stdout": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-1-1-0.stdout.txt",
+                "stderr": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-1-1-0.stderr.txt",
+                "exit_code": 0,
+                "timed_out": false,
+                "ended_at": "2026-10-31T15:38:31.440692+00:00",
+                "duration_s": 23.066141752060503
+              }
+            ],
+            "status": "passed",
+            "source_sha256": {
+              "rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "rtl/crucible_g3_top.sv": "4954c1afe18a6bd1aa5943341fa5ec8f080c592d966547529f8a3e4eecdaa064",
+              "rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "rtl/g1_divider.sv": "511b86da11a7a6a73363672d5d153d772ee08679f7c7f63340f4c028c1c59b48",
+              "rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "rtl/g2_interpolator.sv": "020380a53bb0cde0b40006d8f661a46a86d77b17536db34640c6d6be4771c4c7",
+              "rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866",
+              "rtl/g3_bilinear.sv": "dd58670890b675ba43acf8e4866da54df594fe44bdee4b7502e195632629c5d2",
+              "rtl/g3_framebuffer_dma.sv": "932f64393f9605b1a2417a8006698cd9c0686459b98724356c632480fc94033e",
+              "rtl/g3_shader_pipeline.sv": "d5b9782fe5451fe3730ea1a1cb442ccc328e39a3a89a2af80ad161894606edf5",
+              "rtl/g3_texture_cache.sv": "8c3af922b4820208a6ebde15745d013fadeee1db3e1a11a469a3ba8176e0defe",
+              "design/ARCHITECTURE.md": "bc9fa4d082edb6f168e79194627e04a17ed6c9b3a6660039203555ed33962f18",
+              "design/SPEC.md": "a33b54476aef80da07269dbff8a70dad8d05a09feee59ebaf1ed66f2bd5fa5d5",
+              "tests/README.md": "9a1c368bc2cc516fcec5a2295d5e49282d38da78692217945bf8f270b9e603de",
+              "tests/dma_tb.sv": "7de08ee7e3e07578f6ecef86f3144c0b145e6a15ff96dc6651a2455f2caf44c5",
+              "tests/evidence.py": "564d82f8f7070de2294a23de55ae05d403fc1af76bba2b1fb628f0219f883c24",
+              "tests/leaf_tb.sv": "c654a506b91849d21515bbe097f052445bdf9b3c74695e9c21b4651d89b24e68",
+              "tests/model.py": "e78367a5b79475a90306bce67177005bb178de639f881f32c13b0b679ad67005",
+              "tests/parameter_tb.sv": "ec855becaea768c83b24b2247b2d5250680f4ac007649278021b314b13630a12",
+              "tests/reset_tb.sv": "f49f90d0d366c64be826e26d3bfa810a3514fdd0a7b449cdc5b608647f680c43",
+              "tests/scenarios.py": "0fd69e80f92fa34c23c724f79ab03b3b2315a4cd8770228249b390af7fb9673a",
+              "tests/top_tb.sv": "2418dc4f8278ed7071cc19a7ad6a8c1708150ac583214e6110bc2978d283449c",
+              "tests/verify.py": "5ad334b940e8d443b0797cebb88b58ab937abc379ff5f6727944c8d30a841c32",
+              "crucible_g2_reference/rtl/crucible_g1_top.sv": "9d69eca4b6a069ddd36d829d9b32d07874a933099694da1a16213dd08f995006",
+              "crucible_g2_reference/rtl/crucible_g2_top.sv": "85fab67681c32737bc0ffc911a3acfb5849e0c1d6d715d8d0a7e94b6502a95bf",
+              "crucible_g2_reference/rtl/g1_clipper.sv": "7a73192d22d701e0182af45152e7860a5a0ec04a0d20c8c5c17144f35f30c2a8",
+              "crucible_g2_reference/rtl/g1_divider.sv": "35e01f7fe8d594c97ec38a7f834981e916fc1a077b17f87dfbc844147d51720b",
+              "crucible_g2_reference/rtl/g1_dot4.sv": "abeafa1e14be6936e2fc4ae6e887ca950740a19d39946811c1a00544221034c8",
+              "crucible_g2_reference/rtl/g1_edge.sv": "3aa571eecb8cb0cda4eeb8456e8c6dbec129564fed0a21dbf6b9447a8685dc4c",
+              "crucible_g2_reference/rtl/g1_project.sv": "f523375f82d1c2a11b848a7d88f12710c9ef7c760ff51cc881a87400f36a5c38",
+              "crucible_g2_reference/rtl/g1_raster.sv": "cee34f25c7b70a5f1d66d5341ab00a09175e6bb05d6fe63a6e3b40045cf41c9d",
+              "crucible_g2_reference/rtl/g1_transform.sv": "1a40c390f97cf9b68ec52ed9e8841d5f8ea614b5d6a84f4d49da114f3a7dc9a1",
+              "crucible_g2_reference/rtl/g2_clipper.sv": "b430d8e602c852a049dbd8ad2df6200aa254b9b96466eaeaca3d135e829d71cc",
+              "crucible_g2_reference/rtl/g2_divider.sv": "b10ff1fa7418e85502bba898d28aab2d34470c4ac73d4fcf8ecae62bf4cea0d7",
+              "crucible_g2_reference/rtl/g2_engine.sv": "a1932ae4bb041c03ebadbc2595ce1161289d59fdb228778d7a157b107c75b8ce",
+              "crucible_g2_reference/rtl/g2_interpolator.sv": "cb16bb1e946d1adcd17a92661f946258ab435197b466afcce17faecc6d3cbf5f",
+              "crucible_g2_reference/rtl/g2_project.sv": "d59b8d40db7fffcd93e4cba0867998ef63d7897496a732594f78b8c8cfb81cc7",
+              "crucible_g2_reference/rtl/g2_raster.sv": "05cf2dcb5a2f2571b4f82724c0ee0ff1e58dcf3f62628b79c033aef39ed94437",
+              "crucible_g2_reference/rtl/g2_setup.sv": "9b9dcb7fc89a0f6892a6410e5ea4f32218966128867c5839a0cb1c90be0527f2",
+              "crucible_g2_reference/rtl/g2_zbuffer.sv": "89073d1c99290ce949d79f342df09bccac609c25eccc2c85c04082aedaaf8866"
+            },
+            "timeout_s": null,
+            "timeout_owner": "shared runtime",
+            "exit_code": 0,
+            "timed_out": false,
+            "ended_at": "2026-10-31T15:38:31.693969+00:00",
+            "runs": [
+              {
+                "configuration": [
+                  13,
+                  11,
+                  3
+                ],
+                "instances": {
+                  "compatibility.engine.area_edge": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[0].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[1].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[2].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[3].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[4].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[5].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator": {
+                    "module": "g2_interpolator",
+                    "primitive_cells": 1616
+                  },
+                  "compatibility.engine.raster.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.raster.edge0": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster.edge_1": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster.edge_2": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster": {
+                    "module": "g2_raster",
+                    "primitive_cells": 561
+                  },
+                  "compatibility.engine.setup.clipper.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.setup.clipper": {
+                    "module": "g2_clipper",
+                    "primitive_cells": 487
+                  },
+                  "compatibility.engine.setup.project.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.setup.project": {
+                    "module": "g2_project",
+                    "primitive_cells": 320
+                  },
+                  "compatibility.engine.setup.transform.dot": {
+                    "module": "g1_dot4",
+                    "primitive_cells": 68
+                  },
+                  "compatibility.engine.setup.transform": {
+                    "module": "g1_transform",
+                    "primitive_cells": 137
+                  },
+                  "compatibility.engine.setup": {
+                    "module": "g2_setup",
+                    "primitive_cells": 1012
+                  },
+                  "compatibility.engine.zbuffer": {
+                    "module": "g2_zbuffer",
+                    "primitive_cells": 160
+                  },
+                  "compatibility.engine": {
+                    "module": "g2_engine",
+                    "primitive_cells": 3820,
+                    "state_bits": 23064
+                  },
+                  "compatibility.legacy.clipper.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.clipper.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.clipper": {
+                    "module": "g1_clipper",
+                    "primitive_cells": 482
+                  },
+                  "compatibility.legacy.project.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.project.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.project": {
+                    "module": "g1_project",
+                    "primitive_cells": 276
+                  },
+                  "compatibility.legacy.raster.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.raster.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.raster.edge0": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster.edge_1": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster.edge_2": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster": {
+                    "module": "g1_raster",
+                    "primitive_cells": 554
+                  },
+                  "compatibility.legacy.transform.dot": {
+                    "module": "g1_dot4",
+                    "primitive_cells": 68
+                  },
+                  "compatibility.legacy.transform": {
+                    "module": "g1_transform",
+                    "primitive_cells": 137
+                  },
+                  "compatibility.legacy": {
+                    "module": "crucible_g1_top",
+                    "primitive_cells": 1782,
+                    "state_bits": 8273
+                  },
+                  "compatibility": {
+                    "module": "crucible_g2_top",
+                    "primitive_cells": 5747,
+                    "state_bits": 32917
+                  },
+                  "framebuffer_dma": {
+                    "module": "g3_framebuffer_dma",
+                    "primitive_cells": 237,
+                    "state_bits": 390
+                  },
+                  "shader": {
+                    "module": "g3_shader_pipeline",
+                    "primitive_cells": 233,
+                    "state_bits": 634
+                  },
+                  "texture_cache.filter": {
+                    "module": "g3_bilinear",
+                    "primitive_cells": 126,
+                    "state_bits": 1359
+                  },
+                  "texture_cache": {
+                    "module": "g3_texture_cache",
+                    "primitive_cells": 402,
+                    "state_bits": 1881
+                  }
+                },
+                "primitive_counts": {
+                  "$add": 309,
+                  "$and": 88,
+                  "$eq": 1485,
+                  "$logic_not": 489,
+                  "$ge": 41,
+                  "$gt": 38,
+                  "$le": 32,
+                  "$logic_and": 298,
+                  "$logic_or": 99,
+                  "$lt": 52,
+                  "$mul": 99,
+                  "$reduce_bool": 58,
+                  "$neg": 181,
+                  "$not": 160,
+                  "$or": 90,
+                  "$adff": 795,
+                  "$mux": 2163,
+                  "$reduce_or": 4,
+                  "$pmux": 279,
+                  "$shift": 176,
+                  "$shiftx": 127,
+                  "$sub": 156,
+                  "$dff": 9,
+                  "$reduce_and": 8,
+                  "$xor": 12,
+                  "$mem_v2": 9,
+                  "$ne": 1
+                },
+                "memory_bits": 485248,
+                "latch_cells": 0,
+                "division_modulo_cells": 0,
+                "structural_assertions": "Yosys check -noinit -assert",
+                "raw_stdout": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-13-11-3.stdout.txt"
+              },
+              {
+                "configuration": [
+                  1,
+                  1,
+                  0
+                ],
+                "instances": {
+                  "compatibility.engine.area_edge": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[0].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[1].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[2].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[3].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[4].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator.attribute_lane[5].divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.interpolator": {
+                    "module": "g2_interpolator",
+                    "primitive_cells": 1616
+                  },
+                  "compatibility.engine.raster.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.raster.edge0": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster.edge_1": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster.edge_2": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.engine.raster": {
+                    "module": "g2_raster",
+                    "primitive_cells": 561
+                  },
+                  "compatibility.engine.setup.clipper.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.setup.clipper": {
+                    "module": "g2_clipper",
+                    "primitive_cells": 487
+                  },
+                  "compatibility.engine.setup.project.divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.engine.setup.project": {
+                    "module": "g2_project",
+                    "primitive_cells": 320
+                  },
+                  "compatibility.engine.setup.transform.dot": {
+                    "module": "g1_dot4",
+                    "primitive_cells": 68
+                  },
+                  "compatibility.engine.setup.transform": {
+                    "module": "g1_transform",
+                    "primitive_cells": 137
+                  },
+                  "compatibility.engine.setup": {
+                    "module": "g2_setup",
+                    "primitive_cells": 1012
+                  },
+                  "compatibility.engine.zbuffer": {
+                    "module": "g2_zbuffer",
+                    "primitive_cells": 160
+                  },
+                  "compatibility.engine": {
+                    "module": "g2_engine",
+                    "primitive_cells": 3820,
+                    "state_bits": 23064
+                  },
+                  "compatibility.legacy.clipper.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.clipper.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.clipper": {
+                    "module": "g1_clipper",
+                    "primitive_cells": 482
+                  },
+                  "compatibility.legacy.project.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.project.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.project": {
+                    "module": "g1_project",
+                    "primitive_cells": 276
+                  },
+                  "compatibility.legacy.raster.divider.limb_divider": {
+                    "module": "g2_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.raster.divider": {
+                    "module": "g1_divider",
+                    "primitive_cells": 210
+                  },
+                  "compatibility.legacy.raster.edge0": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster.edge_1": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster.edge_2": {
+                    "module": "g1_edge",
+                    "primitive_cells": 39
+                  },
+                  "compatibility.legacy.raster": {
+                    "module": "g1_raster",
+                    "primitive_cells": 554
+                  },
+                  "compatibility.legacy.transform.dot": {
+                    "module": "g1_dot4",
+                    "primitive_cells": 68
+                  },
+                  "compatibility.legacy.transform": {
+                    "module": "g1_transform",
+                    "primitive_cells": 137
+                  },
+                  "compatibility.legacy": {
+                    "module": "crucible_g1_top",
+                    "primitive_cells": 1782,
+                    "state_bits": 8273
+                  },
+                  "compatibility": {
+                    "module": "crucible_g2_top",
+                    "primitive_cells": 5747,
+                    "state_bits": 32917
+                  },
+                  "framebuffer_dma": {
+                    "module": "g3_framebuffer_dma",
+                    "primitive_cells": 237,
+                    "state_bits": 390
+                  },
+                  "shader": {
+                    "module": "g3_shader_pipeline",
+                    "primitive_cells": 233,
+                    "state_bits": 634
+                  },
+                  "texture_cache.filter": {
+                    "module": "g3_bilinear",
+                    "primitive_cells": 126,
+                    "state_bits": 1359
+                  },
+                  "texture_cache": {
+                    "module": "g3_texture_cache",
+                    "primitive_cells": 402,
+                    "state_bits": 1881
+                  }
+                },
+                "primitive_counts": {
+                  "$add": 309,
+                  "$and": 88,
+                  "$eq": 1485,
+                  "$logic_not": 489,
+                  "$ge": 41,
+                  "$gt": 38,
+                  "$le": 32,
+                  "$logic_and": 298,
+                  "$logic_or": 99,
+                  "$lt": 52,
+                  "$mul": 99,
+                  "$reduce_bool": 58,
+                  "$neg": 181,
+                  "$not": 160,
+                  "$or": 90,
+                  "$adff": 795,
+                  "$mux": 2163,
+                  "$reduce_or": 4,
+                  "$pmux": 279,
+                  "$shift": 176,
+                  "$shiftx": 127,
+                  "$sub": 156,
+                  "$dff": 9,
+                  "$reduce_and": 8,
+                  "$xor": 12,
+                  "$mem_v2": 9,
+                  "$ne": 1
+                },
+                "memory_bits": 470968,
+                "latch_cells": 0,
+                "division_modulo_cells": 0,
+                "structural_assertions": "Yosys check -noinit -assert",
+                "raw_stdout": "evidence/synthesis-20261031T153745347367Z-11925581/synthesis-1-1-0.stdout.txt"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
