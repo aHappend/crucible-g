@@ -1,57 +1,52 @@
-<div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="brand/logo-dark.svg">
-    <img src="brand/logo.svg" width="420" alt="Vulcan">
-  </picture>
-  <h1>Crucible-G · 3D 图形光栅化、Z-Buffer 与纹理着色加速器系列</h1>
-  <p><strong>100 MHz+ 可综合定点 3D 三角形建立、半空间边缘函数分块光栅化、深度缓冲（Z-Buffer）与双线性纹理光照着色引擎 · Intel Arria 10 GX</strong></p>
-  <p>
-    <img src="https://img.shields.io/badge/Platform-Intel_Arria_10_GX-0f766e?style=flat-square" alt="Platform">
-    <img src="https://img.shields.io/badge/Quartus_17.1_STA-100_MHz%2B_Closed-0f766e?style=flat-square" alt="STA">
-    <img src="https://img.shields.io/badge/PCIe_Gen3x8_HIL-100%25_Passed-1d4ed8?style=flat-square" alt="HIL">
-    <img src="https://img.shields.io/badge/Author-Sufeng_Guo_(MSRA)-334155?style=flat-square" alt="Author">
-    <img src="https://img.shields.io/badge/License-MIT-64748b?style=flat-square" alt="License">
-  </p>
-  <p>
-    <a href="https://ahappend.github.io/vulcan/">项目主页</a> ·
-    <a href="https://github.com/aHappend/vulcan-showcase">Vulcan 芯片总览</a> ·
-    <a href="https://github.com/aHappend/anvil-q">Anvil-Q (大模型)</a> ·
-    <a href="https://github.com/aHappend/anvil-e">Anvil-E (多模态向量)</a> ·
-    <a href="https://github.com/aHappend/billet-t">Billet-T (频谱变换)</a> ·
-    <a href="https://github.com/aHappend/billet-f">Billet-F (数字滤波)</a> ·
-    <a href="https://github.com/aHappend/rivet-a">Rivet-A (认证加密)</a> ·
-    <a href="https://github.com/aHappend/rivet-h">Rivet-H (杂凑认证)</a> ·
-    <a href="https://github.com/aHappend/swage-s">Swage-S (视觉ISP)</a> ·
-    <a href="https://github.com/aHappend/bellows-l">Bellows-L (LZ4压缩)</a> ·
-    <a href="https://github.com/aHappend/crucible-g">Crucible-G (图形渲染)</a> ·
-    <a href="https://github.com/aHappend/furnace-x">Furnace-X (异构SoC)</a> ·
-    <a href="README.md"><strong>English</strong></a>
-  </p>
-</div>
+# Crucible-G — 图形与渲染加速器 RTL
 
----
+[English](README.md) · [简体中文](README.zh-CN.md) · [Repository guide / 文件导航](REPOSITORY_GUIDE.md)
 
-**Crucible-G** 是 Vulcan **Crucible（坩埚）** 图形处理与渲染家族的核心系列，将几何变换、重心坐标插值、Z-Buffer 深度测试与双线性纹理光照汇合于 100 MHz+ 确定性硬件流水线中。
+文档更新：2026-11-17。本页对应仓库快照，不是实时作业看板。
 
-## 全系芯片 `100 MHz+` 硬件签核与双轨学术报告总览
+## 概览
 
-| 代际 | 芯片代号 | 架构与数值规格 | Quartus 17.1 STA (`10.0 ns`) | Intel Arria 10 GX 资源占用 | PCIe Gen3x8 板级 HIL | 学术白皮书与开发者工程报告 |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Gen-1** | **CRUCIBLE-G1** | 2D/3D 三角形建立与半空间重心坐标边缘函数分块光栅化引擎（Q16.16 定点） | 目标 `>= 100 MHz` | — | 推进中 | *规划中* |
-| **Gen-2** | **CRUCIBLE-G2** | 16×16 分块 Z-Buffer 深度测试 + 透视校正属性插值与 Gouraud 着色流水线 | 目标 `>= 100 MHz` | — | 推进中 | *规划中* |
-| **Gen-3** | **CRUCIBLE-G3** | 双线性纹理映射缓存 + Blinn-Phong 镜面/漫反射光照与 Alpha 混合片元渲染管线 | 目标 `>= 100 MHz` | — | 推进中 | *规划中* |
+**Crucible-G**：图形与渲染加速器 RTL。下方保留芯片技术与报告入口；具体实现范围以所链接目录、规范、测试和结果原件为准。
 
-## Vulcan 七大工坊芯片家族矩阵
+芯片项目公开；Vulcan 本身保持私有、闭源。今后公开发布仅限芯片技术与公开复现资料，不得包含 Vulcan 内部架构或运作资料。本次更新仅整理文档，并非对全部历史材料进行全面披露审查，也不声称既有仓库树已完成此类清查。
 
-| 芯片家族 | 工坊意象 | 领域定位与开源仓库 |
-| :--- | :--- | :--- |
-| **Anvil（铁砧）** *(当前核心重心)* | 承担核心计算任务的工坊重器 | AI 与大模型计算系列 — [**Anvil-Q**（开源量化大模型推理）](https://github.com/aHappend/anvil-q) · [**Anvil-E**（多模态向量表征）](https://github.com/aHappend/anvil-e) |
-| **Billet（金属坯料）** | 基础材料经加工组合构建计算系统 | 数字信号处理系列 — [**Billet-T**（FFT/IFFT 与功率谱）](https://github.com/aHappend/billet-t) · [**Billet-F**（FIR 与级联 SOS-IIR 滤波）](https://github.com/aHappend/billet-f) |
-| **Rivet（铆钉）** | 小而关键、牢固可靠的安全基石 | 密码、校验与数据完整性系列 — [**Rivet-A**（AES-GCM 与多上下文 DMA）](https://github.com/aHappend/rivet-a) · [**Rivet-H**（SHA-256/512 与 HMAC）](https://github.com/aHappend/rivet-h) |
-| **Swage（型锻模）** | 将输入加工成形的精密模具 | 图像处理与 ISP 系列 — [**Swage-S**（双线性图像缩放、3×3 空间卷积滤波、Bayer 去马赛克、色彩空间转换）](https://github.com/aHappend/swage-s) |
-| **Bellows（风箱）** | 收缩展开、连续高吞吐的数据流 | 压缩、解压与流式数据处理系列 — [**Bellows-L**（流式 LZ4 解压/哈希压缩、多通道 XXH32/CRC32 DMA）](https://github.com/aHappend/bellows-l) |
-| **Crucible（坩埚）** | 多种材料融合成形的渲染容器 | 图形处理与渲染系列 — [**Crucible-G**（三角形建立、分块光栅化、Z-Buffer 与纹理光照着色）](https://github.com/aHappend/crucible-g) |
-| **Furnace（工业炉）** | 整合多计算环节的系统级设备 | 大型异构 SoC 系列 — [**Furnace-X**（多引擎 AI + DSP + 密码 + ISP + 压缩异构计算 SoC）](https://github.com/aHappend/furnace-x) |
+## 范围与证据
 
----
-<p align="center"><sub>作者：<strong>Sufeng Guo</strong> · 微软亚洲研究院 (Microsoft Research Asia) · <a href="mailto:sufeng_guo@smail.nju.edu.cn">sufeng_guo@smail.nju.edu.cn</a> · <a href="LICENSE">MIT License</a></sub></p>
+按实际目录核对[公开结果索引](REPOSITORY_GUIDE.md)。功能仿真、综合、独立 IP／虚拟引脚时序、板卡桥接探测、工作负载数值读回和系统软件执行是不同层级；一种通过不能替代另一种。现有历史结果保留，不因本次文档更新自动升级或作废。
+
+时钟、资源与性能指标必须读取对应目录的原始记录和适用条件；同名副本不合并为一个数值。此处不宣称全系完成上板、完整模型推理、Linux 实机启动或功耗／能效测量。
+
+## 文件导航
+
+[文件与证据导航](REPOSITORY_GUIDE.md)列出真实存在的源码、约束、测试、报告及结果路径。连字符、下划线和 `chips/` 目录可能是不同发布副本，不自动指定某份为权威，也不移动或删除原件。
+
+公开复现从对应芯片的规范、测试说明和脚本开始；所需工具、输入和板卡条件以该目录为准。文档更新没有重新执行芯片实验。
+
+## 已有芯片目录
+
+| 芯片／变体 | 现存根路径 | 公开交付物 |
+| --- | --- | --- |
+| CRUCIBLE-G1 | [`crucible-g1/`](crucible-g1/) · [`crucible_g1/`](crucible_g1/) | [REPORT.md](crucible-g1/REPORT.md) · [REPORT.pdf](crucible-g1/REPORT.pdf) · [SHOWCASE_REPORT.pdf](crucible-g1/SHOWCASE_REPORT.pdf) · [SHOWCASE_REPORT.zh-CN.pdf](crucible-g1/SHOWCASE_REPORT.zh-CN.pdf) |
+| CRUCIBLE-G2 | [`crucible-g2/`](crucible-g2/) · [`crucible_g2/`](crucible_g2/) | [REPORT.md](crucible-g2/REPORT.md) · [REPORT.pdf](crucible-g2/REPORT.pdf) · [SHOWCASE_REPORT.pdf](crucible-g2/SHOWCASE_REPORT.pdf) · [SHOWCASE_REPORT.zh-CN.pdf](crucible-g2/SHOWCASE_REPORT.zh-CN.pdf) |
+| CRUCIBLE-G3 | [`crucible-g3/`](crucible-g3/) · [`crucible_g3/`](crucible_g3/) | [REPORT.md](crucible-g3/REPORT.md) · [REPORT.pdf](crucible-g3/REPORT.pdf) · [SHOWCASE_REPORT.pdf](crucible-g3/SHOWCASE_REPORT.pdf) · [SHOWCASE_REPORT.zh-CN.pdf](crucible-g3/SHOWCASE_REPORT.zh-CN.pdf) |
+| CRUCIBLE-G4 | [`crucible-g4/`](crucible-g4/) · [`crucible_g4/`](crucible_g4/) | [REPORT.md](crucible-g4/REPORT.md) · [REPORT.pdf](crucible-g4/REPORT.pdf) · [SHOWCASE_REPORT.pdf](crucible-g4/SHOWCASE_REPORT.pdf) · [SHOWCASE_REPORT.zh-CN.pdf](crucible-g4/SHOWCASE_REPORT.zh-CN.pdf) |
+| CRUCIBLE-G5 | [`crucible-g5/`](crucible-g5/) · [`crucible_g5/`](crucible_g5/) | [REPORT.md](crucible-g5/REPORT.md) · [REPORT.pdf](crucible-g5/REPORT.pdf) · [SHOWCASE_REPORT.pdf](crucible-g5/SHOWCASE_REPORT.pdf) · [SHOWCASE_REPORT.zh-CN.pdf](crucible-g5/SHOWCASE_REPORT.zh-CN.pdf) |
+
+## 架构目录与技术报告
+
+| 代际 | 芯片 | 架构／研究范围 | 记录导航 | 报告 |
+| --- | --- | --- | --- | --- |
+| **Gen-1** | **CRUCIBLE-G1** | 2D/3D 三角形建立与半空间重心坐标边缘函数分块光栅化引擎（Q16.16 定点） | [Exact-directory records](REPOSITORY_GUIDE.md) | *规划中* |
+| **Gen-2** | **CRUCIBLE-G2** | 16×16 分块 Z-Buffer 深度测试 + 透视校正属性插值与 Gouraud 着色流水线 | [Exact-directory records](REPOSITORY_GUIDE.md) | *规划中* |
+| **Gen-3** | **CRUCIBLE-G3** | 双线性纹理映射缓存 + Blinn-Phong 镜面/漫反射光照与 Alpha 混合片元渲染管线 | [Exact-directory records](REPOSITORY_GUIDE.md) | *规划中* |
+
+后续代际目录已在上方补齐，具体技术范围和结果按对应目录核对。
+
+## 关联项目
+
+- AI / embeddings: [Anvil-Q](https://github.com/aHappend/anvil-q), [Anvil-E](https://github.com/aHappend/anvil-e), [Anvil-QN](https://github.com/aHappend/anvil-qn), [Anvil-EN](https://github.com/aHappend/anvil-en), [Anvil-D](https://github.com/aHappend/anvil-d).
+- Systems: [Hammer-V](https://github.com/aHappend/hammer-v), [Furnace-X](https://github.com/aHappend/furnace-x).
+- DSP / vision: [Billet-F](https://github.com/aHappend/billet-f), [Billet-T](https://github.com/aHappend/billet-t), [Swage-S](https://github.com/aHappend/swage-s).
+- Data / security / graphics: [Bellows-L](https://github.com/aHappend/bellows-l), [Bellows-N](https://github.com/aHappend/bellows-n), [Rivet-A](https://github.com/aHappend/rivet-a), [Rivet-H](https://github.com/aHappend/rivet-h), [Crucible-G](https://github.com/aHappend/crucible-g), [SABLE](https://github.com/aHappend/sable).
+- [Public fleet catalog](https://github.com/aHappend/vulcan-showcase). Related independent research: [ACE-2](https://github.com/aHappend/ace-2), [ACE-3](https://github.com/aHappend/ace-3); these retain their own provenance and acceptance boundaries.
+- DSpark 是研究方向，不代表本仓库已交付对应芯片；此处不虚构实现或仓库链接。
